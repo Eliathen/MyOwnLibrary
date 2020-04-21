@@ -1,0 +1,2 @@
+rootProject.name='My Own Library'
+include ':app'
