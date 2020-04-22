@@ -15,4 +15,7 @@
     <string name="my_books_tabItem">My books</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="double_click_to_exit_text">Please click BACK again to exit</string>
+    <string name="search_button_description">Search Icon</string>
+    <string name="sort_by_name_button_description">Sort by name</string>
 </resources>

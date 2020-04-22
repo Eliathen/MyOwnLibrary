@@ -1,11 +1,10 @@
-package com.szymanski.myownlibrary
+package com.szymanski.myownlibrary.activities
 
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.view.View
 import android.widget.Toast
-import androidx.core.content.ContextCompat.startActivity
+import com.szymanski.myownlibrary.R
 import kotlinx.android.synthetic.main.activity_login.*
 
 class LoginActivity : AppCompatActivity() {

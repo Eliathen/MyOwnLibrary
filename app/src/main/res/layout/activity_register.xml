@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".RegisterActivity">
+    tools:context=".activities.RegisterActivity">
 
     <ImageView
         android:id="@+id/backgroundImageView"
@@ -72,7 +72,7 @@
         app:layout_constraintGuide_percent="0.6" />
 
     <Button
-        style="@style/loginViewButtonStyle"
+        style="@style/LoginViewButtonStyle"
         android:id="@+id/signInButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

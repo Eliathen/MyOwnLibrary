@@ -8,9 +8,13 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
-    <style name="loginViewButtonStyle">
+    <style name="LoginViewButtonStyle">
         <item type="dimen" name="android:layout_marginLeft">32dp</item>
         <item type="dimen" name="android:layout_marginRight">32dp</item>
-        <item type="" name="android:background">@color/colorLoginTextHint</item>
+        <item type="" name="android:background">@color/colorAccent</item>
+    </style>
+
+    <style name="AppToolbarStyle">
+        <item name="android:background">@color/colorPrimary</item>
     </style>
 </resources>
