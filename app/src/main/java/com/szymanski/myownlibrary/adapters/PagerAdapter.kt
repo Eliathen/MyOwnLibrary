@@ -1,4 +1,4 @@
-package com.szymanski.myownlibrary.adapter
+package com.szymanski.myownlibrary.adapters
 
 import androidx.fragment.app.Fragment
 import androidx.viewpager2.adapter.FragmentStateAdapter

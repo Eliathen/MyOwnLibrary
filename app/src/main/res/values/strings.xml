@@ -18,4 +18,11 @@
     <string name="double_click_to_exit_text">Please click BACK again to exit</string>
     <string name="search_button_description">Search Icon</string>
     <string name="sort_by_name_button_description">Sort by name</string>
+    <string name="isbn_search_text">ISBN SEARCH</string>
+    <string name="keyword_search_text">KEYWORD SEARCH</string>
+    <string name="search_with_isbn_text">SEARCH WITH ISBN</string>
+    <string name="add_the_book_manually_text">ADD THE BOOK MANUALLY</string>
+    <string name="search_text">SEARCH</string>
+    <string name="keyword_search_hint">Title, author...</string>
+    <string name="isbn_text_hint">Isbn</string>
 </resources>
