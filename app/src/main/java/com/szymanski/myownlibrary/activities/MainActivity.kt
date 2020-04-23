@@ -1,25 +1,30 @@
 package com.szymanski.myownlibrary.activities
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
+import android.util.Log
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.ViewModelProvider
 import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.tabs.TabLayoutMediator
 import com.szymanski.myownlibrary.R
 import com.szymanski.myownlibrary.adapters.PagerAdapter
+import com.szymanski.myownlibrary.viewModels.BookViewModel
 import kotlinx.android.synthetic.main.activity_main.*
+
 
 class MainActivity : AppCompatActivity() {
     private var doubleBackToExitPressedOnce = false
     private lateinit var viewPager: ViewPager2
+    private lateinit var bookViewModel: BookViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         setSupportActionBar(findViewById(R.id.app_bar))
         setViewPager()
-
+        bookViewModel = ViewModelProvider(this).get(BookViewModel::class.java).apply { this.loadExampleData() }
     }
 
     private fun setViewPager() {
@@ -40,6 +45,7 @@ class MainActivity : AppCompatActivity() {
             }
         }.attach()
     }
+
 
     override fun onBackPressed() {
         if (doubleBackToExitPressedOnce) {
