@@ -28,7 +28,7 @@
         app:layout_constraintTop_toBottomOf="@id/isbnNumberText">
 
         <Button
-            android:id="@+id/button"
+            android:id="@+id/searchWitIsbnButton"
             android:layout_margin="0sp"
             style="?attr/buttonBarButtonStyle"
             android:layout_width="0dp"
@@ -39,7 +39,7 @@
             android:text="@string/search_with_isbn_text" />
 
         <Button
-            android:id="@+id/button2"
+            android:id="@+id/AddManualButton"
             style="?attr/buttonBarButtonStyle"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
