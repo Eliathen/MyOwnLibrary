@@ -9,6 +9,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.tabs.TabLayoutMediator
 import com.szymanski.myownlibrary.R
+import com.szymanski.myownlibrary.adapters.MyBookAdapter
 import com.szymanski.myownlibrary.adapters.PagerAdapter
 import com.szymanski.myownlibrary.viewModels.BookViewModel
 import kotlinx.android.synthetic.main.activity_main.*
@@ -45,8 +46,6 @@ class MainActivity : AppCompatActivity() {
             }
         }.attach()
     }
-
-
     override fun onBackPressed() {
         if (doubleBackToExitPressedOnce) {
             super.onBackPressed()

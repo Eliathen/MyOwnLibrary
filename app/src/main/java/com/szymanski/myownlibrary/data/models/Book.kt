@@ -1,3 +1,5 @@
 package com.szymanski.myownlibrary.data.models
 
-data class Book(val title: String, val authors: ArrayList<String>, val yearOfPublished: String)
+import java.io.Serializable
+
+data class Book(val title: String, val authors: ArrayList<String>, val yearOfPublished: String, val coverUrl: String): Serializable
