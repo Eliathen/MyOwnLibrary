@@ -25,4 +25,6 @@
     <string name="search_text">SEARCH</string>
     <string name="keyword_search_hint">Title, author...</string>
     <string name="isbn_text_hint">Isbn</string>
+    <string name="book_add_correct">Book add correct!</string>
+    <string name="book_not_found">Book not found</string>
 </resources>
