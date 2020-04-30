@@ -3,6 +3,7 @@ package com.szymanski.myownlibrary.activities
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.widget.Toast
 import com.szymanski.myownlibrary.R
 import kotlinx.android.synthetic.main.activity_login.*
@@ -36,6 +37,7 @@ class LoginActivity : AppCompatActivity() {
     }
 
     private fun validate(email: String, password: String): Boolean {
+        Log.d("LoginActivity", "email: $email password: $password")
         //TODO implements login
         return true
     }

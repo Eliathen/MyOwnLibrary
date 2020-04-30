@@ -1,30 +1,28 @@
 package com.szymanski.myownlibrary.fragments
 
-import android.graphics.Color
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.ViewModelStoreOwner
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.szymanski.myownlibrary.R
-import com.szymanski.myownlibrary.activities.MainActivity
 import com.szymanski.myownlibrary.adapters.MyBookAdapter
 import com.szymanski.myownlibrary.data.models.Book
 import com.szymanski.myownlibrary.fragments.dialogFragments.SaveBookDialogFragment
-import com.szymanski.myownlibrary.viewModels.BookViewModel
-import kotlinx.android.synthetic.main.activity_main.*
+import com.szymanski.myownlibrary.viewModels.MainViewModel
 import kotlinx.android.synthetic.main.fragment_my_books.view.*
 import kotlinx.android.synthetic.main.fragment_my_books.view.myBooks
 
 /**
  * A simple [Fragment] subclass.
  */
-class MyBooksFragment : Fragment() {
-    private lateinit var viewModel: BookViewModel
+class MyBooksFragment : Fragment(), ViewModelStoreOwner {
+    private lateinit var viewModel: MainViewModel
     private lateinit var myBooksAdapter: MyBookAdapter
 
     override fun onCreateView(
@@ -36,15 +34,13 @@ class MyBooksFragment : Fragment() {
         rootView.addBookButton?.setOnClickListener {
             showDialog()
         }
-        viewModel = ViewModelProvider(requireActivity()).get(BookViewModel::class.java)
+        viewModel = ViewModelProvider(requireActivity()).get(MainViewModel::class.java)
         initRecyclerView(rootView)
         this.activity?.let {
-            viewModel.getBooks().observe(it, Observer<List<Book>> {
-                myBooksAdapter.notifyDataSetChanged()
+            viewModel.getBooks().observe(it, Observer<List<Book>> {books->
+                myBooksAdapter.setBooks(books)
             })
         }
-
-
         return rootView
     }
 

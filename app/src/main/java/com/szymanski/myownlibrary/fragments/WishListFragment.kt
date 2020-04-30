@@ -11,8 +11,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.szymanski.myownlibrary.R
 import com.szymanski.myownlibrary.adapters.MyBookAdapter
 import com.szymanski.myownlibrary.data.models.Book
-import com.szymanski.myownlibrary.viewModels.BookViewModel
-import kotlinx.android.synthetic.main.fragment_lend_borrow.view.*
+import com.szymanski.myownlibrary.viewModels.MainViewModel
 import kotlinx.android.synthetic.main.fragment_wish_list.view.*
 
 /**
@@ -20,7 +19,7 @@ import kotlinx.android.synthetic.main.fragment_wish_list.view.*
  */
 class WishListFragment : Fragment() {
 
-    private lateinit var viewModel: BookViewModel
+    private lateinit var viewModel: MainViewModel
     private lateinit var myBooksAdapter: MyBookAdapter
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -28,7 +27,7 @@ class WishListFragment : Fragment() {
     ): View? {
         val rootView = inflater.inflate(R.layout.fragment_wish_list, container, false)
 
-        viewModel = ViewModelProvider(requireActivity()).get(BookViewModel::class.java)
+        viewModel = ViewModelProvider(requireActivity()).get(MainViewModel::class.java)
         initRecyclerView(rootView)
         this.activity?.let {
             viewModel.getWishList().observe(it, Observer<List<Book>> {
