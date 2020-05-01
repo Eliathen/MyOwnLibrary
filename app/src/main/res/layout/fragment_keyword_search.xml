@@ -24,7 +24,7 @@
 
         >
         <Button
-            android:id="@+id/search"
+            android:id="@+id/searchByKeywords"
             style="?attr/buttonBarButtonStyle"
             android:text="@string/search_text"
             android:layout_width="0dp"
@@ -33,7 +33,7 @@
             android:layout_height="wrap_content" />
 
         <Button
-            android:id="@+id/addManual"
+            android:id="@+id/addBookManually"
             android:text="@string/add_the_book_manually_text"
             android:layout_width="0dp"
             android:layout_weight="3"

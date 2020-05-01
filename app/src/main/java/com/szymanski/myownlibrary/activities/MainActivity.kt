@@ -5,6 +5,7 @@ import android.os.Handler
 import android.util.Log
 import android.view.View
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.viewpager2.widget.ViewPager2
@@ -30,23 +31,16 @@ class MainActivity : AppCompatActivity() {
         mainViewModel = ViewModelProvider(this).get(MainViewModel::class.java)
         loadExampleData()
         sort_button.setOnClickListener {
-            sort_options.visibility = if(sort_options.visibility == View.GONE) View.VISIBLE else View.GONE
+            //TODO("Implement sort a-z, z-a")
         }
-        lendButton.setOnClickListener {
-            displayLendDialog()
+        search_button.setOnClickListener {
+            Toast.makeText(this, "search button", Toast.LENGTH_SHORT).show()
+            setSupportActionBar(findViewById(R.id.search_toolbar))
         }
-        borrowButton.setOnClickListener {
-            displayBorrowDialog()
-        }
+
     }
 
-    private fun displayBorrowDialog() {
-        TODO("Not yet implemented")
-    }
 
-    private fun displayLendDialog() {
-        TODO("Not yet implemented")
-    }
 
     private fun setViewPager() {
         viewPager = findViewById(R.id.pager)
