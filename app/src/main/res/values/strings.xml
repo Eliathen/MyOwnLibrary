@@ -31,4 +31,8 @@
     <string name="isbn_label_text">ISBN:</string>
     <string name="borrow_button_text">Borrow</string>
     <string name="lend_button_text">LEND</string>
+    <string name="borrow_text">Borrow</string>
+    <string name="lend_text">Lend</string>
+    <string name="to_dialog_text">To:</string>
+    <string name="from_dialog_text">From:</string>
 </resources>

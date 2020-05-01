@@ -39,7 +39,7 @@
             android:text="@string/search_with_isbn_text" />
 
         <Button
-            android:id="@+id/AddManualButton"
+            android:id="@+id/addManualButton"
             style="?attr/buttonBarButtonStyle"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
