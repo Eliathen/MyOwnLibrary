@@ -27,6 +27,7 @@ class BookJsonDeserializer: JsonDeserializer<BookResult> {
         return BookResult(
             BookInfo(
                 Book(
+                    json?.asJsonObject?.keySet()?.first().toString().removePrefix("isbn:"),
                     ifNotNullGetStringValue(bookInfo,"title"),
                     authors,
                     ifNotNullGetStringValue(bookInfo,"publish_date"),

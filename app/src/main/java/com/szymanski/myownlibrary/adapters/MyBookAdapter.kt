@@ -2,7 +2,6 @@ package com.szymanski.myownlibrary.adapters
 
 import android.content.Intent
 import android.text.SpannableStringBuilder
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,7 +9,7 @@ import androidx.fragment.app.FragmentActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.szymanski.myownlibrary.R
-import com.szymanski.myownlibrary.activities.BookDetails
+import com.szymanski.myownlibrary.activities.BookDetailsActivity
 import com.szymanski.myownlibrary.data.models.Book
 import kotlinx.android.synthetic.main.my_book_item.view.*
 
@@ -53,7 +52,7 @@ class MyBookAdapter(var activity: FragmentActivity?): RecyclerView.Adapter<MyBoo
                 bookYear.text = book.publishedDate
 
                 setOnClickListener {
-                    val intent = Intent(this@MyBookAdapter.activity?.baseContext, BookDetails::class.java)
+                    val intent = Intent(this@MyBookAdapter.activity?.baseContext, BookDetailsActivity::class.java)
                     intent.putExtra("Book", book)
                     this@MyBookAdapter.activity?.startActivity(intent)
                 }
