@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.szymanski.myownlibrary.R
 import com.szymanski.myownlibrary.data.models.Book
+import com.szymanski.myownlibrary.data.models.Rent
 import com.szymanski.myownlibrary.data.repositories.BookRepository
 import com.szymanski.myownlibrary.exceptions.NotFoundIsbn
 import kotlinx.coroutines.Dispatchers
@@ -14,6 +15,7 @@ import kotlinx.coroutines.withContext
 
 class MainViewModel: ViewModel() {
     private val books = MutableLiveData<MutableList<Book>>()
+    private val borrowLendBooks = MutableLiveData<MutableList<Rent>>()
     private val wishList = MutableLiveData<MutableList<Book>>()
     private val error = MutableLiveData<NotFoundIsbn>()
     private var isBookSave = MutableLiveData<Boolean>()
@@ -41,6 +43,9 @@ class MainViewModel: ViewModel() {
     }
     fun getWishList(): MutableLiveData<MutableList<Book>>{
         return wishList
+    }
+    fun getBorrowLendBooks(): MutableLiveData<MutableList<Rent>>{
+        return borrowLendBooks
     }
     fun selectedBook(book: Book){
         books.value?.add(book)

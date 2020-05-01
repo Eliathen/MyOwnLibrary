@@ -13,7 +13,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.DayNight.NoActionBar"
         tools:ignore="LockedOrientationActivity">
-        <activity android:name=".activities.BookDetails"></activity>
+        <activity android:name=".activities.BookDetailsActivity"></activity>
         <activity android:name=".activities.BookDetailsActivity" />
         <activity android:name=".activities.MainActivity" />
         <activity

@@ -20,8 +20,6 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginStart="10dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginBottom="16dp"
         app:layout_constraintBottom_toBottomOf="@+id/bookCover"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/bookCover"
@@ -49,11 +47,11 @@
                 android:id="@+id/bookAuthors"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="80"
+                android:layout_weight="70"
                 android:background="@null"
+                android:inputType="textNoSuggestions"
                 android:singleLine="false"
                 android:textSize="12sp"
-                android:inputType="textNoSuggestions"
                 android:textStyle="italic"
                 tools:text="authors" />
 
@@ -62,7 +60,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="end"
-                android:layout_weight="20"
+                android:layout_weight="30"
                 android:gravity="end"
                 android:textSize="12sp"
                 tools:text="bookYear" />
