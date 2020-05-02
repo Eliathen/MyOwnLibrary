@@ -35,4 +35,8 @@
     <string name="lend_text">Lend</string>
     <string name="to_dialog_text">To:</string>
     <string name="from_dialog_text">From:</string>
+    <string name="title_hint">Title</string>
+    <string name="authors_hint">Authors</string>
+    <string name="date_format_hint">dd/mm/yyyy</string>
+    <string name="save_book_manually_button">SAVE</string>
 </resources>
