@@ -9,7 +9,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.szymanski.myownlibrary.R
-import com.szymanski.myownlibrary.adapters.MyBookAdapter
+import com.szymanski.myownlibrary.adapters.SearchResultAdapter
 import com.szymanski.myownlibrary.data.models.Book
 import com.szymanski.myownlibrary.viewModels.MainViewModel
 import kotlinx.android.synthetic.main.fragment_wish_list.view.*
@@ -20,7 +20,8 @@ import kotlinx.android.synthetic.main.fragment_wish_list.view.*
 class WishListFragment : Fragment() {
 
     private lateinit var viewModel: MainViewModel
-    private lateinit var myBooksAdapter: MyBookAdapter
+    private lateinit var searchResultAdapter: SearchResultAdapter
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -31,7 +32,7 @@ class WishListFragment : Fragment() {
         initRecyclerView(rootView)
         this.activity?.let {
             viewModel.getWishList().observe(it, Observer<List<Book>> {
-                myBooksAdapter.notifyDataSetChanged()
+
             })
         }
 
@@ -39,11 +40,7 @@ class WishListFragment : Fragment() {
     }
 
     private fun initRecyclerView(rootView: View) {
-        val recyclerView = rootView.wishListBooks
-        recyclerView.layoutManager = LinearLayoutManager(activity)
-        this.myBooksAdapter = MyBookAdapter(activity)
-        viewModel.getWishList().value?.let { myBooksAdapter.setBooks(it) }
-        recyclerView.adapter = myBooksAdapter
+
     }
 
 }
