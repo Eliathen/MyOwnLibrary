@@ -72,7 +72,7 @@ class MainActivity : AppCompatActivity() {
     }
     private fun loadExampleData(){
         mainViewModel.searchBookByIsbn("9780641723445")
-        mainViewModel.searchBookByIsbn("9781857230765")
+//        mainViewModel.searchBookByIsbn("9781857230765")
     }
 
     override fun onStart() {

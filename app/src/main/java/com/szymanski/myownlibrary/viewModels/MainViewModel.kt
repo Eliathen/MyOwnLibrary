@@ -1,6 +1,8 @@
 package com.szymanski.myownlibrary.viewModels
 
+import android.os.Build
 import android.util.Log
+import androidx.annotation.RequiresApi
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -12,6 +14,7 @@ import com.szymanski.myownlibrary.exceptions.NotFoundIsbn
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import java.time.LocalDate
 
 class MainViewModel: ViewModel() {
     private val books = MutableLiveData<MutableList<Book>>()
@@ -60,4 +63,11 @@ class MainViewModel: ViewModel() {
         this.isBookSave.value = isSaved
     }
 
+    fun loadExampleBorrowBook(){
+        val rent = Rent(
+            Book("9780641723445","The ligthing thief", arrayListOf("Rick Riordan"),"2005",377,"https://covers.openlibrary.org/b/id/7989100-M.jpg"),
+            "startDate", "end", "To John" )
+        borrowLendBooks.value?.add(rent)
+        borrowLendBooks.value?.add(rent)
+    }
 }
