@@ -7,6 +7,7 @@ import androidx.appcompat.app.AlertDialog
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
+import com.bumptech.glide.request.RequestListener
 import com.szymanski.myownlibrary.R
 import com.szymanski.myownlibrary.data.models.Book
 import com.szymanski.myownlibrary.viewModels.BookDetailsViewModel
@@ -21,6 +22,7 @@ class BookDetailsActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_book_details)
+        actionBar?.setDisplayHomeAsUpEnabled(true)
         bookDetailsViewModel = ViewModelProvider(this).get(BookDetailsViewModel::class.java)
         val book: Book = this.intent.getSerializableExtra("Book") as Book
         bookDetailsViewModel.setBook(book)

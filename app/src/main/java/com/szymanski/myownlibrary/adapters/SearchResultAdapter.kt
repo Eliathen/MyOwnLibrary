@@ -44,7 +44,7 @@ class SearchResultAdapter(val onItemListener: OnItemListener): RecyclerView.Adap
                 Glide.with(this)
                     .load(book.cover)
                     .error(R.drawable.books)
-                    .into(searchCover)
+                    .into(wishItemCover)
                 searchTitle.text = book.title
                 searchAuthors.text = book.authors.toString()
                 saveBookButton.setOnClickListener {
