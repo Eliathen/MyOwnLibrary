@@ -6,7 +6,7 @@
     android:id="@+id/myBooksContainer"
     android:layout_height="match_parent"
     tools:context=".fragments.MyBooksFragment">
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
@@ -14,37 +14,34 @@
             android:id="@+id/myBooks"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+            />
 
-        </androidx.recyclerview.widget.RecyclerView>
+<!--        <androidx.constraintlayout.widget.Guideline-->
+<!--            android:id="@+id/guideline4"-->
+<!--            android:layout_width="0dp"-->
+<!--            android:layout_height="match_parent"-->
+<!--            android:orientation="vertical"-->
+<!--            app:layout_constraintGuide_percent="0.9" />-->
 
-        <androidx.constraintlayout.widget.Guideline
-            android:id="@+id/guideline4"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            app:layout_constraintGuide_percent="0.9" />
-
-        <androidx.constraintlayout.widget.Guideline
-            android:id="@+id/guideline5"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            app:layout_constraintGuide_percent="0.95" />
+<!--        <androidx.constraintlayout.widget.Guideline-->
+<!--            android:id="@+id/guideline5"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="0dp"-->
+<!--            android:orientation="horizontal"-->
+<!--            app:layout_constraintGuide_percent="0.95" />-->
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/addBookButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:backgroundTint="@color/colorPrimaryDark"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentBottom="true"
+            app:useCompatPadding="true"
             android:clickable="true"
             android:focusable="true"
-            android:scaleType="center"
             android:src="@drawable/plus_icon_24dp"
-            app:layout_constraintBottom_toTopOf="@+id/guideline5"
-            app:layout_constraintEnd_toStartOf="@+id/guideline4"
-            app:maxImageSize="60dp" />
-    </androidx.constraintlayout.widget.ConstraintLayout>
+            app:maxImageSize="60dp"
+            tools:ignore="RtlHardcoded" />
+    </RelativeLayout>
 
 </FrameLayout>

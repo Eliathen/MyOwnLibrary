@@ -39,4 +39,7 @@
     <string name="authors_hint">Authors</string>
     <string name="date_format_hint">dd/mm/yyyy</string>
     <string name="save_book_manually_button">SAVE</string>
+    <string name="unit_label_text">Who:</string>
+    <string name="date_label">Date:</string>
+    <string name="sort_text">sort</string>
 </resources>

@@ -1,11 +1,11 @@
 package com.szymanski.myownlibrary.activities
 
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.os.Handler
-import android.util.Log
-import android.view.View
+import android.view.Menu
 import android.widget.Toast
-import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.viewpager2.widget.ViewPager2
@@ -13,9 +13,7 @@ import com.google.android.material.tabs.TabLayoutMediator
 import com.szymanski.myownlibrary.R
 import com.szymanski.myownlibrary.adapters.PagerAdapter
 import com.szymanski.myownlibrary.viewModels.MainViewModel
-import kotlinx.android.synthetic.main.activity_book_details.*
 import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.android.synthetic.main.app_bar.*
 
 
 class MainActivity : AppCompatActivity() {
@@ -26,21 +24,15 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        setSupportActionBar(findViewById(R.id.app_bar))
         setViewPager()
         mainViewModel = ViewModelProvider(this).get(MainViewModel::class.java)
         loadExampleData()
-        sort_button.setOnClickListener {
-            //TODO("Implement sort a-z, z-a")
-        }
-        search_button.setOnClickListener {
-            Toast.makeText(this, "search button", Toast.LENGTH_SHORT).show()
-            setSupportActionBar(findViewById(R.id.search_toolbar))
-        }
-
     }
 
-
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.main_activity_menu, menu)
+        return true
+    }
 
     private fun setViewPager() {
         viewPager = findViewById(R.id.pager)

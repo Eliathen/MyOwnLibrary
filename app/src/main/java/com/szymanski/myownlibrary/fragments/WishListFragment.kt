@@ -10,9 +10,13 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.szymanski.myownlibrary.R
 import com.szymanski.myownlibrary.adapters.SearchResultAdapter
+import com.szymanski.myownlibrary.adapters.WishListAdapter
 import com.szymanski.myownlibrary.data.models.Book
+import com.szymanski.myownlibrary.data.models.Rent
 import com.szymanski.myownlibrary.viewModels.MainViewModel
+import kotlinx.android.synthetic.main.fragment_wish_list.*
 import kotlinx.android.synthetic.main.fragment_wish_list.view.*
+import kotlinx.android.synthetic.main.fragment_wish_list.view.wishListBooks
 
 /**
  * A simple [Fragment] subclass.
@@ -20,7 +24,7 @@ import kotlinx.android.synthetic.main.fragment_wish_list.view.*
 class WishListFragment : Fragment() {
 
     private lateinit var viewModel: MainViewModel
-    private lateinit var searchResultAdapter: SearchResultAdapter
+    private var wishListAdapter = WishListAdapter()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -40,7 +44,20 @@ class WishListFragment : Fragment() {
     }
 
     private fun initRecyclerView(rootView: View) {
-
+        val books = arrayListOf<Book>()
+        val book = Book("9780641723445",
+            "The lightning thief",
+            arrayListOf("Rick Riordan"),
+            "2005",
+            377,
+            "https://covers.openlibrary.org/b/id/7989100-M.jpg")
+        repeat(10){
+            books.add(book)
+        }
+        val recyclerView = rootView.wishListBooks
+        recyclerView.layoutManager = LinearLayoutManager(rootView.context)
+        wishListAdapter.setBooks(books)
+        recyclerView.adapter = wishListAdapter
     }
 
 }

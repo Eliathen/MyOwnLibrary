@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="5dp"
+    android:padding="5dp"
     xmlns:tools="http://schemas.android.com/tools">
 
     <ImageView
@@ -15,40 +15,45 @@
         tools:src="@drawable/books" />
 
     <TextView
-        android:id="@+id/searchTitle"
+        android:id="@+id/wishItemTitle"
         android:layout_width="0dp"
+        android:textSize="20sp"
         android:layout_height="wrap_content"
-        app:layout_constraintEnd_toStartOf="@+id/linearLayout2"
+        app:layout_constraintEnd_toStartOf="@+id/relativeLayout"
         app:layout_constraintStart_toEndOf="@id/wishItemCover"
         app:layout_constraintTop_toTopOf="@id/wishItemCover"
         tools:text="Title" />
 
     <TextView
-        android:id="@+id/searchAuthors"
+        android:id="@+id/wishItemAuthors"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="@+id/wishItemCover"
         app:layout_constraintStart_toEndOf="@+id/wishItemCover"
         tools:text="Authors" />
 
-    <LinearLayout
-        android:id="@+id/linearLayout2"
+    <RelativeLayout
+        android:id="@+id/relativeLayout"
         android:layout_width="wrap_content"
         android:layout_height="0dp"
         android:orientation="vertical"
+        android:paddingVertical="10dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
         <Button
-            android:id="@+id/saveBookButton"
-            android:layout_width="50dp"
-            android:layout_height="wrap_content"
+            android:id="@+id/markAsOwn"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_alignParentTop="true"
             android:background="@drawable/ic_add_green_24dp" />
 
         <Button
-            android:id="@+id/addToWishListButton"
-            android:layout_width="50dp"
-            android:layout_height="wrap_content"
-            android:background="@drawable/ic_star_gold_24dp" />
-    </LinearLayout>
+            android:id="@+id/removeFromList"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_alignParentBottom="true"
+            android:background="@drawable/ic_remove_red_24dp" />
+    </RelativeLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

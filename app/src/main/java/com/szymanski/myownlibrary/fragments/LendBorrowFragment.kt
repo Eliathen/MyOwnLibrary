@@ -56,7 +56,7 @@ class LendBorrowFragment : Fragment() {
                 books.add(rent)
             }
         val recyclerView = rootView.lendBorrowBooks
-        recyclerView.layoutManager = GridLayoutManager(rootView.context,2)
+        recyclerView.layoutManager = LinearLayoutManager(rootView.context)
         this.borrowLendAdapter = BorrowLendAdapter(activity)
         borrowLendAdapter.setRents(books)
         recyclerView.adapter = borrowLendAdapter
