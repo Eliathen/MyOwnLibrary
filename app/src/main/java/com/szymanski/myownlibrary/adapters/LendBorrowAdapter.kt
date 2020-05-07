@@ -1,6 +1,6 @@
 package com.szymanski.myownlibrary.adapters
 
-import android.util.Log
+import android.text.Editable
 import com.szymanski.myownlibrary.data.models.Rent
 
 import android.view.LayoutInflater
@@ -11,9 +11,9 @@ import androidx.fragment.app.FragmentActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.szymanski.myownlibrary.R
-import kotlinx.android.synthetic.main.borrow_lend_item.view.*
+import kotlinx.android.synthetic.main.lend_borrow_item.view.*
 
-class BorrowLendAdapter(var activity: FragmentActivity?): RecyclerView.Adapter<BorrowLendAdapter.RentViewHolder>() {
+class LendBorrowAdapter(var activity: FragmentActivity?): RecyclerView.Adapter<LendBorrowAdapter.RentViewHolder>() {
     private val rents by lazy { mutableListOf<Rent>()}
 
     fun setRents(rents: List<Rent>){
@@ -25,8 +25,7 @@ class BorrowLendAdapter(var activity: FragmentActivity?): RecyclerView.Adapter<B
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RentViewHolder {
-        Log.i("BorrowLendAdapter", "BorrowLendAdapter")
-        val itemView = LayoutInflater.from(parent.context).inflate(R.layout.borrow_lend_item, parent, false)
+        val itemView = LayoutInflater.from(parent.context).inflate(R.layout.lend_borrow_item, parent, false)
         return RentViewHolder(itemView)
     }
 
@@ -35,7 +34,6 @@ class BorrowLendAdapter(var activity: FragmentActivity?): RecyclerView.Adapter<B
     }
 
     override fun onBindViewHolder(holder: RentViewHolder, position: Int) {
-        Log.i("BorrowLendAdapter", "BorrowLendAdapter")
         val rent = rents[position]
         holder.bind(rent)
     }
@@ -48,7 +46,7 @@ class BorrowLendAdapter(var activity: FragmentActivity?): RecyclerView.Adapter<B
                     .error(R.drawable.books)
                     .into(cover)
                 title.text = rent.book.title
-                unit.text = rent.unit
+                unit.text = Editable.Factory.getInstance().newEditable(rent.unit)
                 date.text = rent.endDate
                 endRentButton.setOnClickListener {
                     Toast.makeText(activity,"Finished rent", Toast.LENGTH_SHORT).show()

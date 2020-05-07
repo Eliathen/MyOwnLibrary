@@ -1,19 +1,27 @@
 package com.szymanski.myownlibrary.adapters
 
 import android.content.Intent
+import android.graphics.drawable.Drawable
 import android.text.SpannableStringBuilder
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import androidx.fragment.app.FragmentActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.DataSource
+import com.bumptech.glide.load.engine.GlideException
+import com.bumptech.glide.request.Request
+import com.bumptech.glide.request.RequestListener
+import com.bumptech.glide.request.target.Target
 import com.szymanski.myownlibrary.R
 import com.szymanski.myownlibrary.activities.BookDetailsActivity
 import com.szymanski.myownlibrary.data.models.Book
 import kotlinx.android.synthetic.main.my_book_item.view.*
 
-class MyBookAdapter(var activity: FragmentActivity?): RecyclerView.Adapter<MyBookAdapter.MyBookViewHolder>() {
+class MyBookAdapter(var activity: FragmentActivity?, var onBookItemListener: OnBookItemListener): RecyclerView.Adapter<MyBookAdapter.MyBookViewHolder>() {
     private val books by lazy { mutableListOf<Book>()}
 
     fun setBooks(books: List<Book>){
@@ -27,7 +35,7 @@ class MyBookAdapter(var activity: FragmentActivity?): RecyclerView.Adapter<MyBoo
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyBookViewHolder {
         val itemView = LayoutInflater.from(parent.context).inflate(R.layout.my_book_item, parent, false)
 
-        return MyBookViewHolder(itemView)
+        return MyBookViewHolder(itemView, onBookItemListener)
     }
 
     override fun getItemCount(): Int {
@@ -38,13 +46,35 @@ class MyBookAdapter(var activity: FragmentActivity?): RecyclerView.Adapter<MyBoo
         val book = books[position]
         holder.bind(book)
     }
-    inner class MyBookViewHolder(itemView: View): RecyclerView.ViewHolder(itemView){
+    inner class MyBookViewHolder(itemView: View, onBookItemListener: OnBookItemListener): RecyclerView.ViewHolder(itemView), View.OnLongClickListener{
 
         fun bind(book: Book){
             with(itemView){
                 val cover = book.cover
                 Glide.with(this)
                     .load(cover)
+                    .listener(object: RequestListener<Drawable>{
+                        override fun onLoadFailed(
+                            e: GlideException?,
+                            model: Any?,
+                            target: Target<Drawable>?,
+                            isFirstResource: Boolean
+                        ): Boolean {
+                            imageProgressBar.visibility = View.VISIBLE
+                            return false
+                        }
+
+                        override fun onResourceReady(
+                            resource: Drawable?,
+                            model: Any?,
+                            target: Target<Drawable>?,
+                            dataSource: DataSource?,
+                            isFirstResource: Boolean
+                        ): Boolean {
+                            imageProgressBar.visibility = View.INVISIBLE
+                            return false
+                        }
+                    })
                     .error(R.drawable.books)
                     .into(bookCover)
                 bookTitle.text = book.title
@@ -56,7 +86,18 @@ class MyBookAdapter(var activity: FragmentActivity?): RecyclerView.Adapter<MyBoo
                     intent.putExtra("Book", book)
                     this@MyBookAdapter.activity?.startActivity(intent)
                 }
+
+                this.setOnLongClickListener(this@MyBookViewHolder)
+
             }
         }
+
+        override fun onLongClick(v: View?): Boolean {
+            onBookItemListener.onItemLongClick(adapterPosition)
+            return true
+        }
+    }
+    interface OnBookItemListener{
+        fun onItemLongClick(position: Int)
     }
 }

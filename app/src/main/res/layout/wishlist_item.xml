@@ -17,9 +17,9 @@
     <TextView
         android:id="@+id/wishItemTitle"
         android:layout_width="0dp"
-        android:textSize="20sp"
         android:layout_height="wrap_content"
-        app:layout_constraintEnd_toStartOf="@+id/relativeLayout"
+        android:textSize="20sp"
+        app:layout_constraintEnd_toStartOf="@+id/itemOptions"
         app:layout_constraintStart_toEndOf="@id/wishItemCover"
         app:layout_constraintTop_toTopOf="@id/wishItemCover"
         tools:text="Title" />
@@ -32,28 +32,15 @@
         app:layout_constraintStart_toEndOf="@+id/wishItemCover"
         tools:text="Authors" />
 
-    <RelativeLayout
-        android:id="@+id/relativeLayout"
+    <TextView
+        android:id="@+id/itemOptions"
         android:layout_width="wrap_content"
-        android:layout_height="0dp"
-        android:orientation="vertical"
-        android:paddingVertical="10dp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_height="wrap_content"
+        android:text="@string/three_dots_text"
+        android:paddingHorizontal="15dp"
+        android:paddingBottom="15dp"
+        android:textAppearance="?android:textAppearanceLarge"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="parent" />
 
-        <Button
-            android:id="@+id/markAsOwn"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:layout_alignParentTop="true"
-            android:background="@drawable/ic_add_green_24dp" />
-
-        <Button
-            android:id="@+id/removeFromList"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:layout_alignParentBottom="true"
-            android:background="@drawable/ic_remove_red_24dp" />
-    </RelativeLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
