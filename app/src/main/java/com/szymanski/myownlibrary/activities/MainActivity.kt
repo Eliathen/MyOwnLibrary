@@ -1,10 +1,10 @@
 package com.szymanski.myownlibrary.activities
 
-import android.graphics.Color
-import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.os.Handler
+import android.util.Log
 import android.view.Menu
+import android.view.MenuItem
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
@@ -31,8 +31,30 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.main_activity_menu, menu)
-        return true
+
+        return (super.onCreateOptionsMenu(menu))
     }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        Log.i("MainActivity", "OnContextItemSelected")
+        return when(item.itemId){
+            R.id.searchButton -> {
+                Log.i("MainActivity", "Search button clicked")
+                true
+            }
+            R.id.sortButton -> {
+                Log.i("MainActivity", "Sort button clicked")
+                true
+            }
+            R.id.helpButton -> {
+                Log.i("MainActivity", "Help button clicked")
+
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
+        }
+    }
+
 
     private fun setViewPager() {
         viewPager = findViewById(R.id.pager)

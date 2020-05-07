@@ -42,4 +42,9 @@
     <string name="unit_label_text">Who:</string>
     <string name="date_label">Date:</string>
     <string name="sort_text">sort</string>
+    <string name="help_menu_item">Help</string>
+    <string name="three_dots">⋮</string>
+    <string name="remove_item_text">Remove</string>
+    <string name="save_item_text">Save</string>
+    <string name="three_dots_text">⋮</string>
 </resources>

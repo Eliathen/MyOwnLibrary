@@ -1,10 +1,14 @@
 package com.szymanski.myownlibrary.fragments
 
 import android.os.Bundle
+import android.util.Log
+import android.view.Gravity
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.PopupMenu
+import android.widget.Toast
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -21,10 +25,10 @@ import kotlinx.android.synthetic.main.fragment_wish_list.view.wishListBooks
 /**
  * A simple [Fragment] subclass.
  */
-class WishListFragment : Fragment() {
+class WishListFragment : Fragment(), WishListAdapter.ClickListener {
 
     private lateinit var viewModel: MainViewModel
-    private var wishListAdapter = WishListAdapter()
+    private var wishListAdapter = WishListAdapter(this)
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -58,6 +62,24 @@ class WishListFragment : Fragment() {
         recyclerView.layoutManager = LinearLayoutManager(rootView.context)
         wishListAdapter.setBooks(books)
         recyclerView.adapter = wishListAdapter
+    }
+
+    override fun onClick(view: View, position: Int) {
+        Log.d("WishListFragment", "DisplayMenu")
+        val popupMenu = PopupMenu(view.context, view)
+        popupMenu.inflate(R.menu.wish_item_menu)
+        popupMenu.setOnMenuItemClickListener {
+            when (it.itemId) {
+                R.id.saveItem -> {
+                    Toast.makeText(activity?.baseContext, "Save", Toast.LENGTH_SHORT).show()
+                }
+                R.id.removeItem -> {
+                    Toast.makeText(activity?.baseContext, "Save", Toast.LENGTH_SHORT).show()
+                }
+            }
+            true
+        }
+        popupMenu.show()
     }
 
 }

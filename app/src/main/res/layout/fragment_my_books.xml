@@ -1,14 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+
+<RelativeLayout android:layout_width="match_parent"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
     android:id="@+id/myBooksContainer"
+    tools:context=".fragments.MyBooksFragment"
     android:layout_height="match_parent"
-    tools:context=".fragments.MyBooksFragment">
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
+    android:fitsSystemWindows="true"
+    xmlns:android="http://schemas.android.com/apk/res/android">
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/myBooks"
@@ -16,32 +14,16 @@
             android:layout_height="match_parent"
             />
 
-<!--        <androidx.constraintlayout.widget.Guideline-->
-<!--            android:id="@+id/guideline4"-->
-<!--            android:layout_width="0dp"-->
-<!--            android:layout_height="match_parent"-->
-<!--            android:orientation="vertical"-->
-<!--            app:layout_constraintGuide_percent="0.9" />-->
-
-<!--        <androidx.constraintlayout.widget.Guideline-->
-<!--            android:id="@+id/guideline5"-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="0dp"-->
-<!--            android:orientation="horizontal"-->
-<!--            app:layout_constraintGuide_percent="0.95" />-->
-
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/addBookButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentBottom="true"
-            app:useCompatPadding="true"
-            android:clickable="true"
-            android:focusable="true"
-            android:src="@drawable/plus_icon_24dp"
-            app:maxImageSize="60dp"
-            tools:ignore="RtlHardcoded" />
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/addBookButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginEnd="30dp"
+        android:layout_marginBottom="30dp"
+        android:clickable="true"
+        android:focusable="true"
+        android:src="@drawable/plus_icon_24dp"
+        tools:ignore="RtlHardcoded" />
     </RelativeLayout>
-
-</FrameLayout>

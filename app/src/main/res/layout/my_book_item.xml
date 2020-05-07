@@ -16,10 +16,21 @@
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@mipmap/ic_launcher_round" />
 
+    <androidx.core.widget.ContentLoadingProgressBar
+        android:id="@+id/imageProgressBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="invisible"
+        android:indeterminate="true"
+        app:layout_constraintBottom_toBottomOf="@+id/bookCover"
+        app:layout_constraintEnd_toEndOf="@+id/bookCover"
+        app:layout_constraintStart_toStartOf="@+id/bookCover"
+        app:layout_constraintTop_toTopOf="@+id/bookCover" />
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginStart="10dp"
+        android:layout_marginStart="5dp"
+        android:paddingVertical="10dp"
         app:layout_constraintBottom_toBottomOf="@+id/bookCover"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/bookCover"
@@ -49,8 +60,9 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="70"
                 android:background="@null"
-                android:inputType="textNoSuggestions"
+                android:inputType="none"
                 android:singleLine="false"
+                android:focusable="false"
                 android:textSize="12sp"
                 android:textStyle="italic"
                 tools:text="authors" />

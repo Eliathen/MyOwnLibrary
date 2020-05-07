@@ -10,7 +10,7 @@ import com.szymanski.myownlibrary.R
 import com.szymanski.myownlibrary.data.models.Book
 import kotlinx.android.synthetic.main.keyword_search_result_item.view.*
 
-class SearchResultAdapter(val onItemListener: OnItemListener): RecyclerView.Adapter<SearchResultAdapter.ViewHolder>() {
+class SearchResultAdapter(private val onItemListener: OnItemListener): RecyclerView.Adapter<SearchResultAdapter.ViewHolder>() {
 
     private val books: ArrayList<Book> = arrayListOf()
 
@@ -61,7 +61,6 @@ class SearchResultAdapter(val onItemListener: OnItemListener): RecyclerView.Adap
             onItemListener.onItemClick(adapterPosition)
         }
     }
-
 
     interface OnItemListener{
         fun onItemClick(position: Int)

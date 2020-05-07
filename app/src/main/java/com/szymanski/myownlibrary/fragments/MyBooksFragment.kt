@@ -1,15 +1,20 @@
 package com.szymanski.myownlibrary.fragments
 
+import android.app.AlertDialog
+import android.app.Dialog
+import android.content.DialogInterface
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelStoreOwner
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.szymanski.myownlibrary.R
 import com.szymanski.myownlibrary.adapters.MyBookAdapter
 import com.szymanski.myownlibrary.data.models.Book
@@ -21,7 +26,7 @@ import kotlinx.android.synthetic.main.fragment_my_books.view.myBooks
 /**
  * A simple [Fragment] subclass.
  */
-class MyBooksFragment : Fragment(), ViewModelStoreOwner {
+class MyBooksFragment : Fragment(), ViewModelStoreOwner, MyBookAdapter.OnBookItemListener {
     private lateinit var viewModel: MainViewModel
     private lateinit var myBooksAdapter: MyBookAdapter
 
@@ -47,7 +52,7 @@ class MyBooksFragment : Fragment(), ViewModelStoreOwner {
     private fun initRecyclerView(rootView: View) {
         val recyclerView = rootView.myBooks
         recyclerView.layoutManager = LinearLayoutManager(activity)
-        this.myBooksAdapter = MyBookAdapter(activity)
+        this.myBooksAdapter = MyBookAdapter(activity, this)
         viewModel.getBooks().value?.let { myBooksAdapter.setBooks(it) }
         recyclerView.adapter = myBooksAdapter
     }
@@ -64,4 +69,23 @@ class MyBooksFragment : Fragment(), ViewModelStoreOwner {
         fragmentManager?.let { dialogFragment.show(it, "dialog") }
     }
 
+    override fun onItemLongClick(position: Int) {
+        displayRemoveBookAlertDialog()
+        val book = viewModel.getBooks().value?.get(position)
+    }
+
+    private fun displayRemoveBookAlertDialog(){
+        val alertDialog = this.let {
+            val builder = AlertDialog.Builder(it.context)
+            builder.apply {
+                setMessage("Do you want to remove this book?")
+                setCancelable(false)
+                setPositiveButton("Remove"){ _, _ ->
+                    Toast.makeText(activity?.baseContext, "Remove", Toast.LENGTH_SHORT).show()
+                }
+                setNegativeButton("Cancel"){ _, _ ->
+                }
+            }.create()
+        }.show()
+    }
 }

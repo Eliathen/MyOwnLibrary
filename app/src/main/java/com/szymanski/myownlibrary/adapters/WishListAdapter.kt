@@ -10,7 +10,7 @@ import com.szymanski.myownlibrary.data.models.Book
 import kotlinx.android.synthetic.main.wishlist_item.view.*
 import java.util.zip.Inflater
 
-class WishListAdapter: RecyclerView.Adapter<WishListAdapter.ItemViewHolder>() {
+class WishListAdapter(private val listener: ClickListener): RecyclerView.Adapter<WishListAdapter.ItemViewHolder>() {
     private val books = ArrayList<Book>()
 
     fun setBooks(books: ArrayList<Book>){
@@ -25,7 +25,7 @@ class WishListAdapter: RecyclerView.Adapter<WishListAdapter.ItemViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ItemViewHolder {
         val itemView = LayoutInflater.from(parent.context).inflate(R.layout.wishlist_item,parent, false)
-        return ItemViewHolder(itemView)
+        return ItemViewHolder(itemView, listener)
     }
 
     override fun getItemCount(): Int {
@@ -36,7 +36,7 @@ class WishListAdapter: RecyclerView.Adapter<WishListAdapter.ItemViewHolder>() {
         holder.bind(books[position])
     }
 
-    inner class ItemViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView){
+    inner class ItemViewHolder(itemView: View, private val listener: ClickListener) : RecyclerView.ViewHolder(itemView), View.OnClickListener{
 
         fun bind(book: Book){
             with(itemView){
@@ -46,7 +46,16 @@ class WishListAdapter: RecyclerView.Adapter<WishListAdapter.ItemViewHolder>() {
                     .into(wishItemCover)
                 wishItemTitle.text = book.title
                 wishItemAuthors.text = book.authors.toString()
+                itemOptions.setOnClickListener(this@ItemViewHolder)
             }
         }
+
+        override fun onClick(v: View?) {
+            listener.onClick(itemView.itemOptions, adapterPosition)
+
+        }
+    }
+    interface ClickListener{
+        fun onClick(view:View, position: Int)
     }
 }

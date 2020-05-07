@@ -62,7 +62,6 @@ class MainViewModel: ViewModel() {
     fun setIsBookSaved(isSaved: Boolean){
         this.isBookSave.value = isSaved
     }
-
     fun loadExampleBorrowBook(){
         val rent = Rent(
             Book("9780641723445","The ligthing thief", arrayListOf("Rick Riordan"),"2005",377,"https://covers.openlibrary.org/b/id/7989100-M.jpg"),
