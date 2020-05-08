@@ -1,5 +1,6 @@
 package com.szymanski.myownlibrary.activities
 
+import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.util.Log
@@ -48,7 +49,9 @@ class MainActivity : AppCompatActivity() {
             }
             R.id.helpButton -> {
                 Log.i("MainActivity", "Help button clicked")
-
+                val intent = Intent(this,
+                    HelpActivity::class.java)
+                startActivity(intent)
                 true
             }
             else -> super.onOptionsItemSelected(item)

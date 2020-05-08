@@ -61,7 +61,6 @@ class KeywordSearchResultActivity : AppCompatActivity(), SearchResultAdapter.OnI
             val builder = AlertDialog.Builder(it)
             builder.apply{
                 setView(this@KeywordSearchResultActivity.layoutInflater.inflate(R.layout.search_item_details_dialog, null))
-                setTitle("Book Details")
 
             }.create()
         }

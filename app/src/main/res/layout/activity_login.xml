@@ -69,7 +69,7 @@
 
     <Button
         android:id="@+id/signUpButton"
-        style="@style/LoginViewButtonStyle"
+        style="@style/ButtonStyle"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:text="@string/sign_in_text"
@@ -80,7 +80,7 @@
 
     <Button
         android:id="@+id/registerButton"
-        style="@style/LoginViewButtonStyle"
+        style="@style/ButtonStyle"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:text="@string/register_text"

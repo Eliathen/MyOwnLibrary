@@ -12,41 +12,49 @@
         android:screenOrientation="userPortrait"
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.DayNight"
-
         tools:ignore="LockedOrientationActivity">
-        <activity android:name=".activities.SaveBookManuallyActivity"
+
+        <activity android:name=".activities.HelpActivity"
             android:parentActivityName=".activities.MainActivity"
-            android:theme="@style/Theme.AppCompat.DayNight"
+            android:label="Help"
             android:screenOrientation="portrait"
-            />
-        <activity android:name=".activities.KeywordSearchResultActivity"
+            android:theme="@style/MainActivityTheme"/>
+
+        <activity
+            android:name=".activities.SaveBookManuallyActivity"
             android:parentActivityName=".activities.MainActivity"
-            android:theme="@style/Theme.AppCompat.DayNight"
             android:screenOrientation="portrait"
-            />
-        <activity android:name=".activities.BookDetailsActivity"
+            android:theme="@style/MainActivityTheme" />
+
+        <activity
+            android:name=".activities.KeywordSearchResultActivity"
             android:parentActivityName=".activities.MainActivity"
-            android:theme="@style/Theme.AppCompat.DayNight"
+            android:screenOrientation="portrait"
+            android:theme="@style/MainActivityTheme" />
+
+        <activity
+            android:name=".activities.BookDetailsActivity"
             android:label="Book Details"
+            android:parentActivityName=".activities.MainActivity"
             android:screenOrientation="portrait"
-            />
-        <activity android:name=".activities.MainActivity"
+            android:theme="@style/AppTheme" />
+        <activity
+            android:name=".activities.MainActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/MainActivityTheme"
-            />
+            android:theme="@style/MainActivityTheme" />
         <activity
             android:name=".activities.RegisterActivity"
-            android:theme="@style/Theme.AppCompat.DayNight.NoActionBar"
             android:label="@string/register_activity_label"
             android:noHistory="true"
             android:screenOrientation="portrait"
+            android:theme="@style/Theme.AppCompat.DayNight.NoActionBar"
             tools:ignore="LockedOrientationActivity" />
         <activity
             android:name=".activities.LoginActivity"
-            android:theme="@style/Theme.AppCompat.DayNight.NoActionBar"
             android:label="@string/app_name"
+            android:noHistory="true"
             android:screenOrientation="portrait"
-            android:noHistory="true">
+            android:theme="@style/Theme.AppCompat.DayNight.NoActionBar">
             <intent-filter>
                 <action
                     android:name="android.intent.action.MAIN"
