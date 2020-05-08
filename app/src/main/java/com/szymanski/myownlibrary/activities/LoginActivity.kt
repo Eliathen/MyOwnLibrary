@@ -5,6 +5,9 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
+import com.elconfidencial.bubbleshowcase.BubbleShowCase
+import com.elconfidencial.bubbleshowcase.BubbleShowCaseBuilder
+import com.elconfidencial.bubbleshowcase.BubbleShowCaseSequence
 import com.szymanski.myownlibrary.R
 import kotlinx.android.synthetic.main.activity_login.*
 
@@ -24,9 +27,30 @@ class LoginActivity : AppCompatActivity() {
         registerButton.setOnClickListener{
             startActivity(Intent(applicationContext, RegisterActivity::class.java))
         }
+        displayShowCaseView()
 
     }
 
+    private fun displayShowCaseView(){
+        val loginShowCase = BubbleShowCaseBuilder(this)
+            .title("SIGN IN")
+            .description("Click to sign in")
+            .arrowPosition(BubbleShowCase.ArrowPosition.BOTTOM)
+            .targetView(signUpButton)
+            .backgroundColorResourceId(R.color.colorPrimaryLight)
+            .textColorResourceId(R.color.colorPrimaryText)
+        val registerShowCase = BubbleShowCaseBuilder(this)
+            .title("REGISTER")
+            .description("Click here to create your account.")
+            .arrowPosition(BubbleShowCase.ArrowPosition.TOP)
+            .targetView(registerButton)
+            .backgroundColorResourceId(R.color.colorPrimaryLight)
+            .textColorResourceId(R.color.colorPrimaryText)
+        BubbleShowCaseSequence()
+            .addShowCase(loginShowCase)
+            .addShowCase(registerShowCase)
+            .show()
+    }
 
     private fun onLoginFailed() {
         Toast.makeText(this@LoginActivity, "Login Failed", Toast.LENGTH_LONG).show()

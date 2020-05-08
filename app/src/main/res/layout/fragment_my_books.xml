@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<RelativeLayout android:layout_width="match_parent"
+<RelativeLayout xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/myBooksContainer"
     tools:context=".fragments.MyBooksFragment"
@@ -16,6 +17,7 @@
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/addBookButton"
+        style="@style/ButtonStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
@@ -24,6 +26,9 @@
         android:layout_marginBottom="30dp"
         android:clickable="true"
         android:focusable="true"
+        app:maxImageSize="48dp"
         android:src="@drawable/plus_icon_24dp"
+        app:backgroundTint="@color/colorAccent"
+        app:fabSize="normal"
         tools:ignore="RtlHardcoded" />
     </RelativeLayout>

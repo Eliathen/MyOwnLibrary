@@ -4,6 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="5dp"
+    android:background="@drawable/search_list_item_background"
     xmlns:tools="http://schemas.android.com/tools">
 
     <ImageView
@@ -45,10 +46,5 @@
             android:layout_height="wrap_content"
             android:background="@drawable/ic_add_green_24dp" />
 
-        <Button
-            android:id="@+id/addToWishListButton"
-            android:layout_width="50dp"
-            android:layout_height="wrap_content"
-            android:background="@drawable/ic_star_gold_24dp" />
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

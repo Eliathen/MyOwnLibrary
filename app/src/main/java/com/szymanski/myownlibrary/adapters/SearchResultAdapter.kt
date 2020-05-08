@@ -50,9 +50,6 @@ class SearchResultAdapter(private val onItemListener: OnItemListener): RecyclerV
                 saveBookButton.setOnClickListener {
                     Toast.makeText(this.context,"Save book", Toast.LENGTH_SHORT).show()
                 }
-                addToWishListButton.setOnClickListener {
-                    Toast.makeText(this.context,"To wishList", Toast.LENGTH_SHORT).show()
-                }
                 this.setOnClickListener(this@ViewHolder)
             }
         }

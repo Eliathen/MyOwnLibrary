@@ -83,7 +83,7 @@
         app:layout_constraintGuide_percent="0.6" />
 
     <Button
-        style="@style/LoginViewButtonStyle"
+        style="@style/ButtonStyle"
         android:id="@+id/signInButton"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
