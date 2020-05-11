@@ -5,7 +5,7 @@
         android:id="@+id/searchButton"
         android:icon="@drawable/ic_search_white_24dp"
         android:title="@string/search_text"
-        app:actionViewClass="android.widget.SearchView"
+        app:actionViewClass="androidx.appcompat.widget.SearchView"
         app:showAsAction="ifRoom" />
     <item
         android:id="@+id/sortButton"
@@ -15,5 +15,7 @@
     <item
         android:id="@+id/helpButton"
         android:icon="@drawable/ic_help_outline_white_24dp"
-        android:title="@string/help_menu_item"/>
+        android:title="@string/help_menu_item"
+        app:showAsAction="collapseActionView"
+        />
 </menu>

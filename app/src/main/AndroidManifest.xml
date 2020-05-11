@@ -16,7 +16,7 @@
 
         <activity android:name=".activities.HelpActivity"
             android:parentActivityName=".activities.MainActivity"
-            android:label="Help"
+            android:label="@string/help_menu_item"
             android:screenOrientation="portrait"
             android:theme="@style/MainActivityTheme"/>
 

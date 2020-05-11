@@ -4,10 +4,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+
 import androidx.recyclerview.widget.RecyclerView
+
 import com.bumptech.glide.Glide
+
 import com.szymanski.myownlibrary.R
 import com.szymanski.myownlibrary.data.models.Book
+
 import kotlinx.android.synthetic.main.keyword_search_result_item.view.*
 
 class SearchResultAdapter(private val onItemListener: OnItemListener): RecyclerView.Adapter<SearchResultAdapter.ViewHolder>() {

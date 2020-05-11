@@ -1,19 +1,21 @@
 package com.szymanski.myownlibrary.activities
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
-import android.view.View
+
+import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AlertDialog
+
 import androidx.recyclerview.widget.LinearLayoutManager
+
 import com.bumptech.glide.Glide
+
 import com.szymanski.myownlibrary.R
 import com.szymanski.myownlibrary.adapters.SearchResultAdapter
 import com.szymanski.myownlibrary.data.models.Book
+
 import kotlinx.android.synthetic.main.activity_keyword_search_result.*
-import kotlinx.android.synthetic.main.fragment_wish_list.view.*
 import kotlinx.android.synthetic.main.search_item_details_dialog.*
-import java.util.zip.Inflater
 
 class KeywordSearchResultActivity : AppCompatActivity(), SearchResultAdapter.OnItemListener {
 
