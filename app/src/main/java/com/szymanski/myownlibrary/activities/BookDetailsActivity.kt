@@ -1,20 +1,25 @@
 package com.szymanski.myownlibrary.activities
 
 import androidx.appcompat.app.AppCompatActivity
+
 import android.os.Bundle
+
 import android.widget.Toast
+
 import androidx.appcompat.app.AlertDialog
+
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+
 import com.bumptech.glide.Glide
-import com.bumptech.glide.request.RequestListener
+
 import com.szymanski.myownlibrary.R
 import com.szymanski.myownlibrary.data.models.Book
 import com.szymanski.myownlibrary.viewModels.BookDetailsViewModel
+
 import kotlinx.android.synthetic.main.activity_book_details.*
 import kotlinx.android.synthetic.main.borrow_lend_dialog.*
-import java.time.LocalDate
-import java.util.*
+
 
 class BookDetailsActivity : AppCompatActivity() {
     private lateinit var bookDetailsViewModel: BookDetailsViewModel

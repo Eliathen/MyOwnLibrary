@@ -1,24 +1,28 @@
 package com.szymanski.myownlibrary.adapters
 
 import android.content.Intent
+
 import android.graphics.drawable.Drawable
+
 import android.text.SpannableStringBuilder
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
+
 import androidx.fragment.app.FragmentActivity
+
 import androidx.recyclerview.widget.RecyclerView
+
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.DataSource
 import com.bumptech.glide.load.engine.GlideException
-import com.bumptech.glide.request.Request
 import com.bumptech.glide.request.RequestListener
 import com.bumptech.glide.request.target.Target
+
 import com.szymanski.myownlibrary.R
 import com.szymanski.myownlibrary.activities.BookDetailsActivity
 import com.szymanski.myownlibrary.data.models.Book
+
 import kotlinx.android.synthetic.main.my_book_item.view.*
 
 class MyBookAdapter(var activity: FragmentActivity?, var onBookItemListener: OnBookItemListener): RecyclerView.Adapter<MyBookAdapter.MyBookViewHolder>() {

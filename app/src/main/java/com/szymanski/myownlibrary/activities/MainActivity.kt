@@ -1,21 +1,30 @@
 package com.szymanski.myownlibrary.activities
 
 import android.content.Intent
+
 import android.os.Bundle
 import android.os.Handler
 import android.util.Log
+
 import android.view.Menu
 import android.view.MenuItem
+
 import android.widget.Toast
+
 import androidx.appcompat.app.AppCompatActivity
+
 import androidx.lifecycle.ViewModelProvider
+
 import androidx.viewpager2.widget.ViewPager2
+
 import com.google.android.material.tabs.TabLayoutMediator
+
 import com.szymanski.myownlibrary.R
 import com.szymanski.myownlibrary.adapters.PagerAdapter
+import com.szymanski.myownlibrary.data.models.Book
 import com.szymanski.myownlibrary.viewModels.MainViewModel
-import kotlinx.android.synthetic.main.activity_main.*
 
+import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
     private var doubleBackToExitPressedOnce = false
@@ -88,9 +97,20 @@ class MainActivity : AppCompatActivity() {
         Handler().postDelayed({ doubleBackToExitPressedOnce = false }, 2000)
     }
     private fun loadExampleData(){
-        mainViewModel.searchBookByIsbn("9780641723445")
-//        mainViewModel.searchBookByIsbn("9781857230765")
-    }
+//        mainViewModel.searchBookByIsbn("9780641723445")
+        val book = Book("9780641723445",
+            "The lightning thief",
+            arrayListOf<String>().apply{add("Rick Riordan")}, "2005", 377, "https://covers.openlibrary.org/b/id/7989100-M.jpg")
+        mainViewModel.searchBookByIsbn("9781857230765")
+        val array = mutableListOf<Book>()
+        mainViewModel.getBooks().value.let { books ->
+            books?.forEach {
+                array.add(it)
+            }
+        }
+            array.add(book)
+            mainViewModel.setBooks(array)
+        }
 
     override fun onStart() {
         super.onStart()

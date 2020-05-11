@@ -1,20 +1,18 @@
 package com.szymanski.myownlibrary.viewModels
 
-import android.os.Build
-import android.util.Log
-import androidx.annotation.RequiresApi
+
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.szymanski.myownlibrary.R
+
 import com.szymanski.myownlibrary.data.models.Book
 import com.szymanski.myownlibrary.data.models.Rent
 import com.szymanski.myownlibrary.data.repositories.BookRepository
 import com.szymanski.myownlibrary.exceptions.NotFoundIsbn
+
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import java.time.LocalDate
 
 class MainViewModel: ViewModel() {
     private val books = MutableLiveData<MutableList<Book>>()
@@ -68,5 +66,8 @@ class MainViewModel: ViewModel() {
             "startDate", "end", "To John" )
         borrowLendBooks.value?.add(rent)
         borrowLendBooks.value?.add(rent)
+    }
+    fun setBooks(books: MutableList<Book>){
+        this.books.value = books
     }
 }

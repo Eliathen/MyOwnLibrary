@@ -3,12 +3,15 @@ package com.szymanski.myownlibrary.adapters
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+
 import androidx.recyclerview.widget.RecyclerView
+
 import com.bumptech.glide.Glide
+
 import com.szymanski.myownlibrary.R
 import com.szymanski.myownlibrary.data.models.Book
+
 import kotlinx.android.synthetic.main.wishlist_item.view.*
-import java.util.zip.Inflater
 
 class WishListAdapter(private val listener: ClickListener): RecyclerView.Adapter<WishListAdapter.ItemViewHolder>() {
     private val books = ArrayList<Book>()

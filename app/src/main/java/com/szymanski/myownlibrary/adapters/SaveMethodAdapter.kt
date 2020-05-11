@@ -1,10 +1,9 @@
 package com.szymanski.myownlibrary.adapters
 
 import androidx.fragment.app.Fragment
+
 import androidx.viewpager2.adapter.FragmentStateAdapter
-import com.szymanski.myownlibrary.fragments.LendBorrowFragment
-import com.szymanski.myownlibrary.fragments.MyBooksFragment
-import com.szymanski.myownlibrary.fragments.WishListFragment
+
 import com.szymanski.myownlibrary.fragments.dialogFragments.IsbnSearchFragment
 import com.szymanski.myownlibrary.fragments.dialogFragments.KeywordSearchFragment
 
