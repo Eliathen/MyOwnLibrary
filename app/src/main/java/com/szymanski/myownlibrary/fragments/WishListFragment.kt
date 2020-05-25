@@ -65,7 +65,6 @@ class WishListFragment : Fragment(), WishListAdapter.ClickListener {
     }
 
     override fun onClick(view: View, position: Int) {
-        Log.d("WishListFragment", "DisplayMenu")
         val popupMenu = PopupMenu(view.context, view)
         popupMenu.inflate(R.menu.wish_item_menu)
         popupMenu.setOnMenuItemClickListener {

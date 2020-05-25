@@ -52,6 +52,9 @@
     <string name="remove_book_text">Do you want to remove this book?\nThis option is irretrievable!</string>
     <string name="remove_button_text">Remove</string>
     <string name="cancel_button_text">Cancel</string>
+    <string name="edit_item_text">Edit</string>
+    <string name="registration_attempt_failed">Registration attempt failed</string>
+    <string name="error_text">Error</string>
 
     <string-array name="instructions_text">
         <item name="instruction_title">Instrukcja</item>
@@ -101,5 +104,11 @@
             Wyświetla ekran dodania książki manualnie. Użytkownik może wtedy sam uzupełnić podstawowe informacje odnośnie książki.\n
             Np. tytuł, autorów czy dodać zdjęcie. Przycisk zapisz dodaje książkę
         </item>
+    </string-array>
+    <string-array name="sort_options">
+        <item>Title ascending</item>
+        <item>Title descending</item>
+        <item>Publish date ascending</item>
+        <item>Publish date descending</item>
     </string-array>
 </resources>

@@ -7,166 +7,174 @@
     android:gravity="center_horizontal"
     android:scrollbarAlwaysDrawHorizontalTrack="true"
     xmlns:tools="http://schemas.android.com/tools">
-
-    <ImageView
-        android:id="@+id/bookDetailsCover"
-        android:layout_width="200dp"
-        android:layout_height="200dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/bookDetailsTitle"
-        android:layout_marginTop="20dp"
-        tools:srcCompat="@drawable/books" />
-
-    <TextView
-        android:id="@+id/bookDetailsTitle"
+    <ScrollView
         android:layout_width="match_parent"
-        android:gravity="center_horizontal"
-        android:layout_height="wrap_content"
-        android:textSize="40sp"
-        android:layout_marginTop="20dp"
-        tools:text="Title"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
-
-    <LinearLayout
-        android:id="@+id/linearLayout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:paddingBottom="20dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/bookDetailsCover">
-
-        <RelativeLayout
+        android:layout_height="match_parent">
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp">
+            android:layout_height="match_parent">
+
+            <ImageView
+                android:id="@+id/bookDetailsCover"
+                android:layout_width="200dp"
+                android:layout_height="200dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/bookDetailsTitle"
+                android:layout_marginTop="20dp"
+                tools:srcCompat="@drawable/books" />
 
             <TextView
-                android:id="@+id/authorsLabel"
-                android:layout_width="wrap_content"
+                android:id="@+id/bookDetailsTitle"
+                android:layout_width="match_parent"
+                android:gravity="center_horizontal"
                 android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:layout_marginStart="20dp"
-                android:text="@string/authors_label" />
+                android:textSize="40sp"
+                android:layout_marginTop="20dp"
+                tools:text="Title"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent" />
 
-            <TextView
-                android:id="@+id/bookDetailsAuthors"
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:id="@+id/linearLayout"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="20dp"
-                android:layout_toEndOf="@id/authorsLabel"
-                android:background="@null"
-                android:textColor="@color/colorSecondaryText"
-                tools:text="Authors" />
+                android:orientation="vertical"
+                android:paddingBottom="20dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/bookDetailsCover">
 
-        </RelativeLayout>
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp">
 
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp">
+                    <TextView
+                        android:id="@+id/authorsLabel"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginStart="20dp"
+                        android:text="@string/authors_label" />
 
-            <TextView
-                android:id="@+id/publishedDateLabel"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:layout_marginStart="20dp"
-                android:text="@string/published_date" />
+                    <TextView
+                        android:id="@+id/bookDetailsAuthors"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="20dp"
+                        android:layout_toEndOf="@id/authorsLabel"
+                        android:background="@null"
+                        android:textColor="@color/colorSecondaryText"
+                        tools:text="Authors" />
 
-            <TextView
-                android:id="@+id/bookDetailsPublishedDate"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="20dp"
-                android:layout_toEndOf="@id/publishedDateLabel"
-                android:background="@null"
-                android:importantForAutofill="no"
-                android:textColor="@color/colorSecondaryText"
-                tools:ignore="TextFields"
-                tools:text="Published Date" />
+                </RelativeLayout>
 
-        </RelativeLayout>
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp">
 
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp">
+                    <TextView
+                        android:id="@+id/publishedDateLabel"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginStart="20dp"
+                        android:text="@string/published_date" />
 
-            <TextView
-                android:id="@+id/pageNumberLabel"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:layout_marginStart="20dp"
-                android:text="@string/pages_label" />
+                    <TextView
+                        android:id="@+id/bookDetailsPublishedDate"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="20dp"
+                        android:layout_toEndOf="@id/publishedDateLabel"
+                        android:background="@null"
+                        android:importantForAutofill="no"
+                        android:textColor="@color/colorSecondaryText"
+                        tools:ignore="TextFields"
+                        tools:text="Published Date" />
 
-            <TextView
-                android:id="@+id/bookDetailsPages"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="20dp"
-                android:layout_toEndOf="@id/pageNumberLabel"
-                android:background="@null"
-                android:importantForAutofill="no"
-                android:textColor="@color/colorSecondaryText"
-                tools:text="Pages" />
+                </RelativeLayout>
 
-        </RelativeLayout>
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp">
 
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp">
+                    <TextView
+                        android:id="@+id/pageNumberLabel"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginStart="20dp"
+                        android:text="@string/pages_label" />
 
-            <TextView
-                android:id="@+id/isbnNumberLabel"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:layout_marginStart="20dp"
-                android:text="@string/isbn_label_text" />
+                    <TextView
+                        android:id="@+id/bookDetailsPages"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="20dp"
+                        android:layout_toEndOf="@id/pageNumberLabel"
+                        android:background="@null"
+                        android:importantForAutofill="no"
+                        android:textColor="@color/colorSecondaryText"
+                        tools:text="Pages" />
 
-            <TextView
-                android:id="@+id/bookDetailsIsbn"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="20dp"
-                android:layout_toEndOf="@id/isbnNumberLabel"
-                android:background="@null"
-                android:importantForAutofill="no"
-                android:textColor="@color/colorSecondaryText"
-                tools:text="Isbn" />
+                </RelativeLayout>
 
-        </RelativeLayout>
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:padding="5dp"
-            android:layout_height="wrap_content"
-            android:gravity="center_horizontal"
-            android:orientation="horizontal">
-            <Button
-                android:id="@+id/saveButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textColor="@android:color/white"
-                android:text="@string/save_book_search_result_button"
-                android:background="@drawable/button_shape"
-                android:layout_marginHorizontal="10dp"
-                />
-            <Button
-                android:id="@+id/addToWishListButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textColor="@android:color/white"
-                android:text="@string/add_to_wishList_button"
-                android:background="@drawable/button_shape"
-                android:layout_marginHorizontal="10dp"
-                />
-        </LinearLayout>
-    </LinearLayout>
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp">
+
+                    <TextView
+                        android:id="@+id/isbnNumberLabel"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginStart="20dp"
+                        android:text="@string/isbn_label_text" />
+
+                    <TextView
+                        android:id="@+id/bookDetailsIsbn"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="20dp"
+                        android:layout_toEndOf="@id/isbnNumberLabel"
+                        android:background="@null"
+                        android:importantForAutofill="no"
+                        android:textColor="@color/colorSecondaryText"
+                        tools:text="Isbn" />
+
+                </RelativeLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:padding="5dp"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_horizontal"
+                    android:orientation="horizontal">
+                    <Button
+                        android:id="@+id/saveButton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@android:color/white"
+                        android:text="@string/save_book_search_result_button"
+                        android:background="@drawable/button_shape"
+                        android:layout_marginHorizontal="10dp"
+                        />
+                    <Button
+                        android:id="@+id/addToWishListButton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@android:color/white"
+                        android:text="@string/add_to_wishList_button"
+                        android:background="@drawable/button_shape"
+                        android:layout_marginHorizontal="10dp"
+                        />
+                </LinearLayout>
+            </LinearLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </ScrollView>
 </androidx.constraintlayout.widget.ConstraintLayout>

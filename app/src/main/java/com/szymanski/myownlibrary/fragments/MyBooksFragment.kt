@@ -9,6 +9,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.PopupMenu
 
 import android.widget.Toast
 
@@ -26,6 +27,7 @@ import com.szymanski.myownlibrary.viewModels.MainViewModel
 
 import kotlinx.android.synthetic.main.fragment_my_books.view.*
 import kotlinx.android.synthetic.main.fragment_my_books.view.myBooks
+import kotlinx.android.synthetic.main.my_book_item.*
 
 /**
  * A simple [Fragment] subclass.
@@ -50,6 +52,7 @@ class MyBooksFragment : Fragment(), ViewModelStoreOwner, MyBookAdapter.OnBookIte
                 myBooksAdapter.setBooks(books)
             })
         }
+
         return rootView
     }
 
@@ -73,23 +76,20 @@ class MyBooksFragment : Fragment(), ViewModelStoreOwner, MyBookAdapter.OnBookIte
         fragmentManager?.let { dialogFragment.show(it, "dialog") }
     }
 
-    override fun onItemLongClick(position: Int) {
-        displayRemoveBookAlertDialog()
-        val book = viewModel.getBooks().value?.get(position)
-    }
-
-    private fun displayRemoveBookAlertDialog(){
-        val alertDialog = this.let {
-            val builder = AlertDialog.Builder(it.context)
-            builder.apply {
-                setMessage(getString(R.string.remove_book_text))
-                setCancelable(false)
-                setPositiveButton(getString(R.string.remove_button_text)){ _, _ ->
+    override fun onClick(view: View, position: Int) {
+        val popupMenu = PopupMenu(view.context, view)
+        popupMenu.inflate(R.menu.my_book_item_menu)
+        popupMenu.setOnMenuItemClickListener {
+            when (it.itemId) {
+                R.id.editItem -> {
+                    Toast.makeText(activity?.baseContext, "Edit", Toast.LENGTH_SHORT).show()
+                }
+                R.id.removeItem -> {
                     Toast.makeText(activity?.baseContext, "Remove", Toast.LENGTH_SHORT).show()
                 }
-                setNegativeButton(getString(R.string.cancel_button_text)){ _, _ ->
-                }
-            }.create()
-        }.show()
+            }
+            true
+        }
+        popupMenu.show()
     }
 }

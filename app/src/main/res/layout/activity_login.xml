@@ -73,7 +73,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:text="@string/sign_in_text"
-        android:textColor="@android:color/white"
+        android:textColor="@color/colorPrimaryText"
         app:layout_constraintEnd_toEndOf="@id/passwordTextView"
         app:layout_constraintStart_toStartOf="@id/passwordTextView"
         app:layout_constraintTop_toTopOf="@+id/bottomGuideLine" />
@@ -84,7 +84,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:text="@string/register_text"
-        android:textColor="@android:color/white"
+        android:textColor="@color/colorPrimaryText"
         app:layout_constraintBottom_toTopOf="@+id/bottomGuideLine2"
         app:layout_constraintEnd_toEndOf="@id/passwordTextView"
         app:layout_constraintStart_toStartOf="@id/passwordTextView"
