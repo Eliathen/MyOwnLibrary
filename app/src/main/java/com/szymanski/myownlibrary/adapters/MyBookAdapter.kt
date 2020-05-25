@@ -50,7 +50,7 @@ class MyBookAdapter(var activity: FragmentActivity?, var onBookItemListener: OnB
         val book = books[position]
         holder.bind(book)
     }
-    inner class MyBookViewHolder(itemView: View, onBookItemListener: OnBookItemListener): RecyclerView.ViewHolder(itemView), View.OnLongClickListener{
+    inner class MyBookViewHolder(itemView: View, onBookItemListener: OnBookItemListener): RecyclerView.ViewHolder(itemView), View.OnClickListener{
 
         fun bind(book: Book){
             with(itemView){
@@ -90,18 +90,17 @@ class MyBookAdapter(var activity: FragmentActivity?, var onBookItemListener: OnB
                     intent.putExtra("Book", book)
                     this@MyBookAdapter.activity?.startActivity(intent)
                 }
-
-                this.setOnLongClickListener(this@MyBookViewHolder)
+                myBookItemOptions.setOnClickListener(this@MyBookViewHolder)
 
             }
         }
 
-        override fun onLongClick(v: View?): Boolean {
-            onBookItemListener.onItemLongClick(adapterPosition)
-            return true
+
+        override fun onClick(v: View?) {
+            onBookItemListener.onClick(itemView.myBookItemOptions, adapterPosition)
         }
     }
     interface OnBookItemListener{
-        fun onItemLongClick(position: Int)
+        fun onClick(view: View, position: Int)
     }
 }

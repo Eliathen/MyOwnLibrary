@@ -1,5 +1,6 @@
 package com.szymanski.myownlibrary.activities
 
+import android.content.DialogInterface
 import android.content.Intent
 
 import android.os.Bundle
@@ -10,6 +11,7 @@ import android.view.Menu
 import android.view.MenuItem
 
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 
 import androidx.appcompat.app.AppCompatActivity
 
@@ -53,7 +55,7 @@ class MainActivity : AppCompatActivity() {
                 true
             }
             R.id.sortButton -> {
-                Log.i("MainActivity", "Sort button clicked")
+                displaySortOptions()
                 true
             }
             R.id.helpButton -> {
@@ -97,7 +99,6 @@ class MainActivity : AppCompatActivity() {
         Handler().postDelayed({ doubleBackToExitPressedOnce = false }, 2000)
     }
     private fun loadExampleData(){
-//        mainViewModel.searchBookByIsbn("9780641723445")
         val book = Book("9780641723445",
             "The lightning thief",
             arrayListOf<String>().apply{add("Rick Riordan")}, "2005", 377, "https://covers.openlibrary.org/b/id/7989100-M.jpg")
@@ -111,7 +112,22 @@ class MainActivity : AppCompatActivity() {
             array.add(book)
             mainViewModel.setBooks(array)
         }
+    private fun displaySortOptions(){
+        AlertDialog.Builder(this)
+            .setTitle("Choose sort option")
+            .setSingleChoiceItems(R.array.sort_options, 0, DialogInterface.OnClickListener{ dialog, id ->
 
+            })
+            .setPositiveButton("Sort",
+                DialogInterface.OnClickListener{ dialog, id ->
+
+                })
+            .setNegativeButton(R.string.cancel_button_text,
+                DialogInterface.OnClickListener { dialog, id ->
+
+                })
+            .create().show()
+    }
     override fun onStart() {
         super.onStart()
         //TODO get books list
