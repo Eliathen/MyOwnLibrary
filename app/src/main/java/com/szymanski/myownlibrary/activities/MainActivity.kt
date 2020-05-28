@@ -40,7 +40,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
         setViewPager()
         mainViewModel = ViewModelProvider(this).get(MainViewModel::class.java)
-        loadExampleData()
+//        loadExampleData()
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {

@@ -2,7 +2,7 @@ package com.szymanski.myownlibrary.adapters
 
 import android.text.Editable
 
-import com.szymanski.myownlibrary.data.firebase.Rent
+import com.szymanski.myownlibrary.data.firebase.models.FirebaseRent
 
 import android.view.LayoutInflater
 import android.view.View
@@ -21,13 +21,13 @@ import com.szymanski.myownlibrary.R
 import kotlinx.android.synthetic.main.lend_borrow_item.view.*
 
 class LendBorrowAdapter(var activity: FragmentActivity?): RecyclerView.Adapter<LendBorrowAdapter.RentViewHolder>() {
-    private val rents by lazy { mutableListOf<Rent>()}
+    private val rents by lazy { mutableListOf<FirebaseRent>()}
 
-    fun setRents(rents: List<Rent>){
-        if(rents.isNotEmpty()){
+    fun setRents(firebaseRents: List<FirebaseRent>){
+        if(firebaseRents.isNotEmpty()){
             this.rents.clear()
         }
-        this.rents.addAll(rents)
+        this.rents.addAll(firebaseRents)
         notifyDataSetChanged()
     }
 
@@ -46,15 +46,15 @@ class LendBorrowAdapter(var activity: FragmentActivity?): RecyclerView.Adapter<L
     }
     inner class RentViewHolder(itemView: View): RecyclerView.ViewHolder(itemView){
 
-        fun bind(rent: Rent){
+        fun bind(firebaseRent: FirebaseRent){
             with(itemView){
                 Glide.with(this)
-                    .load(rent.book.cover)
+                    .load(firebaseRent.book.cover)
                     .error(R.drawable.books)
                     .into(cover)
-                title.text = rent.book.title
-                unit.text = Editable.Factory.getInstance().newEditable(rent.unit)
-                date.text = rent.endDate
+                title.text = firebaseRent.book.title
+                unit.text = Editable.Factory.getInstance().newEditable(firebaseRent.unit)
+                date.text = firebaseRent.endDate
                 endRentButton.setOnClickListener {
                     Toast.makeText(activity,"Finished rent", Toast.LENGTH_SHORT).show()
                 }
