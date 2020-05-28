@@ -2,9 +2,9 @@ package com.szymanski.myownlibrary.viewModels
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.szymanski.myownlibrary.data.models.Book
-import com.szymanski.myownlibrary.data.models.Rent
+import com.szymanski.myownlibrary.data.openLibraryAPI.models.Book
 import java.time.LocalDate
+import java.util.*
 
 class BookDetailsViewModel: ViewModel() {
     private val book: MutableLiveData<Book> = MutableLiveData<Book>()
@@ -19,6 +19,12 @@ class BookDetailsViewModel: ViewModel() {
 
     public fun getBook(): MutableLiveData<Book> {
         return book
+    }
+    fun markBookAsBorrowed(unit: String, date: Date): Boolean {
+        return true
+    }
+    fun markBookAsLent(unit: String, date: Date): Boolean {
+        return false
     }
 
 }

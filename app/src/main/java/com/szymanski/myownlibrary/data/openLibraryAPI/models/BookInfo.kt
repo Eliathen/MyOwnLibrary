@@ -1,4 +1,4 @@
-package com.szymanski.myownlibrary.data.models
+package com.szymanski.myownlibrary.data.openLibraryAPI.models
 
 import com.google.gson.annotations.SerializedName
 

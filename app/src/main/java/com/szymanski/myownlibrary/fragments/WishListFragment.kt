@@ -1,8 +1,6 @@
 package com.szymanski.myownlibrary.fragments
 
 import android.os.Bundle
-import android.util.Log
-import android.view.Gravity
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -13,13 +11,9 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.szymanski.myownlibrary.R
-import com.szymanski.myownlibrary.adapters.SearchResultAdapter
 import com.szymanski.myownlibrary.adapters.WishListAdapter
-import com.szymanski.myownlibrary.data.models.Book
-import com.szymanski.myownlibrary.data.models.Rent
+import com.szymanski.myownlibrary.data.openLibraryAPI.models.Book
 import com.szymanski.myownlibrary.viewModels.MainViewModel
-import kotlinx.android.synthetic.main.fragment_wish_list.*
-import kotlinx.android.synthetic.main.fragment_wish_list.view.*
 import kotlinx.android.synthetic.main.fragment_wish_list.view.wishListBooks
 
 /**
@@ -39,8 +33,8 @@ class WishListFragment : Fragment(), WishListAdapter.ClickListener {
         viewModel = ViewModelProvider(requireActivity()).get(MainViewModel::class.java)
         initRecyclerView(rootView)
         this.activity?.let {
-            viewModel.getWishList().observe(it, Observer<List<Book>> {
-
+            viewModel.getWishList().observe(it, Observer { list ->
+                wishListAdapter.setBooks(list)
             })
         }
 
@@ -55,12 +49,20 @@ class WishListFragment : Fragment(), WishListAdapter.ClickListener {
             "2005",
             377,
             "https://covers.openlibrary.org/b/id/7989100-M.jpg")
-        repeat(10){
+        val book1 = Book(
+            "9781857230765",
+            "The Eye of the World (Wheel of Time)",
+            arrayListOf("Robert Jordan"),
+            "1992",
+            377,
+            "https://covers.openlibrary.org/b/id/908780-M.jpg"
+        )
             books.add(book)
-        }
+            books.add(book1)
+        viewModel.setWishList(books)
         val recyclerView = rootView.wishListBooks
         recyclerView.layoutManager = LinearLayoutManager(rootView.context)
-        wishListAdapter.setBooks(books)
+        viewModel.getWishList().value?.let { wishListAdapter.setBooks(it) }
         recyclerView.adapter = wishListAdapter
     }
 
@@ -70,10 +72,10 @@ class WishListFragment : Fragment(), WishListAdapter.ClickListener {
         popupMenu.setOnMenuItemClickListener {
             when (it.itemId) {
                 R.id.saveItem -> {
-                    Toast.makeText(activity?.baseContext, "Save", Toast.LENGTH_SHORT).show()
+                    viewModel.markBookFromWishListAsOwn(viewModel.getWishList().value?.get(position)!!)
                 }
                 R.id.removeItem -> {
-                    Toast.makeText(activity?.baseContext, "Save", Toast.LENGTH_SHORT).show()
+                    viewModel.removeBookFromWishList(viewModel.getWishList().value?.get(position)!!)
                 }
             }
             true

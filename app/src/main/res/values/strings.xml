@@ -26,7 +26,7 @@
     <string name="book_add_correct">Book add correct!</string>
     <string name="book_not_found">Book not found</string>
     <string name="authors_label">Authors:</string>
-    <string name="published_date">Published Date:</string>
+    <string name="published_date">Published year:</string>
     <string name="pages_label">Pages:</string>
     <string name="isbn_label_text">ISBN:</string>
     <string name="borrow_button_text">Borrow</string>
@@ -37,7 +37,7 @@
     <string name="from_dialog_text">From:</string>
     <string name="title_hint">Title</string>
     <string name="authors_hint">Authors</string>
-    <string name="date_format_hint">dd/mm/yyyy</string>
+    <string name="date_format_hint">yyyy</string>
     <string name="save_book_manually_button">SAVE</string>
     <string name="unit_label_text">Who:</string>
     <string name="date_label">Date:</string>
@@ -55,6 +55,9 @@
     <string name="edit_item_text">Edit</string>
     <string name="registration_attempt_failed">Registration attempt failed</string>
     <string name="error_text">Error</string>
+    <string name="error_message">Unknown error occurred</string>
+    <string name="borrow_success_message">Book marked as borrowed</string>
+    <string name="lend_success_message">Book marked as lent</string>
 
     <string-array name="instructions_text">
         <item name="instruction_title">Instrukcja</item>
@@ -108,7 +111,7 @@
     <string-array name="sort_options">
         <item>Title ascending</item>
         <item>Title descending</item>
-        <item>Publish date ascending</item>
-        <item>Publish date descending</item>
+        <item>Publish year ascending</item>
+        <item>Publish year descending</item>
     </string-array>
 </resources>

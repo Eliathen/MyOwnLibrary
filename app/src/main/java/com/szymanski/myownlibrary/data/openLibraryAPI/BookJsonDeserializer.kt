@@ -1,13 +1,12 @@
-package com.szymanski.myownlibrary.data
+package com.szymanski.myownlibrary.data.openLibraryAPI
 
-import android.util.Log
 import com.google.gson.JsonDeserializationContext
 import com.google.gson.JsonDeserializer
 import com.google.gson.JsonElement
 import com.google.gson.JsonObject
-import com.szymanski.myownlibrary.data.models.Book
-import com.szymanski.myownlibrary.data.models.BookInfo
-import com.szymanski.myownlibrary.data.models.BookResult
+import com.szymanski.myownlibrary.data.openLibraryAPI.models.Book
+import com.szymanski.myownlibrary.data.openLibraryAPI.models.BookInfo
+import com.szymanski.myownlibrary.data.openLibraryAPI.models.BookResult
 import java.lang.reflect.Type
 
 class BookJsonDeserializer: JsonDeserializer<BookResult> {
@@ -30,7 +29,7 @@ class BookJsonDeserializer: JsonDeserializer<BookResult> {
                     json?.asJsonObject?.keySet()?.first().toString().removePrefix("isbn:"),
                     ifNotNullGetStringValue(bookInfo,"title"),
                     authors,
-                    ifNotNullGetStringValue(bookInfo,"publish_date"),
+                    extractYearFromData(ifNotNullGetStringValue(bookInfo,"publish_date")),
                     ifNotNullGetIntValue(bookInfo, "number_of_pages"),
                     ifNotNullGetStringValue(bookInfo?.get("cover")?.asJsonObject, "medium")
                 )
@@ -51,5 +50,12 @@ class BookJsonDeserializer: JsonDeserializer<BookResult> {
     }
     private fun removeQuotes(phrase: String): String{
         return phrase.substring(1 until phrase.length - 1)
+    }
+    private fun extractYearFromData(data: String): String{
+        return if(data.length > 4){
+            data.split(" ").last()
+        } else {
+            data
+        }
     }
 }

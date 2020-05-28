@@ -21,7 +21,7 @@ import com.bumptech.glide.request.target.Target
 
 import com.szymanski.myownlibrary.R
 import com.szymanski.myownlibrary.activities.BookDetailsActivity
-import com.szymanski.myownlibrary.data.models.Book
+import com.szymanski.myownlibrary.data.openLibraryAPI.models.Book
 
 import kotlinx.android.synthetic.main.my_book_item.view.*
 
@@ -83,7 +83,7 @@ class MyBookAdapter(var activity: FragmentActivity?, var onBookItemListener: OnB
                     .into(bookCover)
                 bookTitle.text = book.title
                 bookAuthors.text = SpannableStringBuilder(book.authors.toString().substring(1,book.authors.toString().length-1))
-                bookYear.text = book.publishedDate
+                bookYear.text = book.publishedYear
 
                 setOnClickListener {
                     val intent = Intent(this@MyBookAdapter.activity?.baseContext, BookDetailsActivity::class.java)
