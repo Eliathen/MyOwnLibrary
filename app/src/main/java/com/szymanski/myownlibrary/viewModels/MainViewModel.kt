@@ -1,30 +1,41 @@
 package com.szymanski.myownlibrary.viewModels
 
 
+import android.app.Application
+import android.graphics.Bitmap
+import android.graphics.drawable.Drawable
+import android.util.Base64
+import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.bumptech.glide.Glide
+import com.bumptech.glide.request.target.CustomTarget
+import com.bumptech.glide.request.transition.Transition
 
 import com.szymanski.myownlibrary.SortType
+import com.szymanski.myownlibrary.data.firebase.FirebaseBookConverter
 
-import android.util.Log
+import com.szymanski.myownlibrary.data.firebase.services.FirebaseService
+import com.szymanski.myownlibrary.data.firebase.services.FirebaseServiceImpl
 
 import com.szymanski.myownlibrary.data.openLibraryAPI.models.Book
-import com.szymanski.myownlibrary.data.firebase.Rent
+import com.szymanski.myownlibrary.data.firebase.models.FirebaseRent
 import com.szymanski.myownlibrary.data.openLibraryAPI.repositories.BookRepository
 import com.szymanski.myownlibrary.exceptions.NotFoundIsbn
 
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import java.io.ByteArrayOutputStream
 import java.util.*
 
-class MainViewModel: ViewModel() {
+class MainViewModel(application: Application): AndroidViewModel(application) {
     private val books = MutableLiveData<MutableList<Book>>()
-    private val borrowLendBooks = MutableLiveData<MutableList<Rent>>()
+    private val borrowLendBooks = MutableLiveData<MutableList<FirebaseRent>>()
     private val wishList = MutableLiveData<MutableList<Book>>()
     private val error = MutableLiveData<NotFoundIsbn>()
     private var isBookSave = MutableLiveData<Boolean>()
+    private lateinit var firebaseService: FirebaseService
 
     fun searchBookByIsbn(isbn: String){
         var readyIsbn = "isbn:" + isbn.trim().replace("-", "")
@@ -33,6 +44,7 @@ class MainViewModel: ViewModel() {
                 runCatching{BookRepository.getBookByIsbn(readyIsbn)}
             }
             result.onSuccess {
+                saveBook(it.bookInfo.book)
                 val list: MutableList<Book> = mutableListOf()
                 books.value?.let { books -> list.addAll(books) }
                 list.add(it.bookInfo.book)
@@ -55,7 +67,7 @@ class MainViewModel: ViewModel() {
     fun setWishList(list: MutableList<Book>){
         this.wishList.value = list
     }
-    fun getBorrowLendBooks(): MutableLiveData<MutableList<Rent>>{
+    fun getBorrowLendBooks(): MutableLiveData<MutableList<FirebaseRent>>{
         return borrowLendBooks
     }
     fun selectedBook(book: Book){
@@ -71,7 +83,7 @@ class MainViewModel: ViewModel() {
         this.isBookSave.value = isSaved
     }
     fun loadExampleBorrowBook(){
-        val rent = Rent(
+        val rent = FirebaseRent(
             Book(
                 "9780641723445",
                 "The ligthing thief",
@@ -82,7 +94,7 @@ class MainViewModel: ViewModel() {
             ),
             "startDate", "end", "To John"
         )
-        val rent1 = Rent(
+        val rent1 = FirebaseRent(
             Book(
                 "9781857230765",
                 "The Eye of the World (Wheel of Time)",
@@ -130,4 +142,24 @@ class MainViewModel: ViewModel() {
         wish?.let { this.wishList.value = it}
     }
 
+    private fun saveBook(book: Book){
+        firebaseService =
+            FirebaseServiceImpl()
+
+        Glide.with(getApplication<Application>().baseContext)
+            .asBitmap()
+            .load(book.cover)
+            .into(object: CustomTarget<Bitmap>(){
+                override fun onLoadCleared(placeholder: Drawable?) {
+                }
+                override fun onResourceReady(resource: Bitmap, transition: Transition<in Bitmap>?) {
+                    val stream = ByteArrayOutputStream()
+                    if(resource.compress(Bitmap.CompressFormat.PNG, 100, stream)) {
+                        val image = Base64.encodeToString(stream.toByteArray(), Base64.DEFAULT)
+                        val fireBook = FirebaseBookConverter().toFirebaseBook(book, image)
+                        firebaseService.saveMyBook(fireBook)
+                    }
+                }
+            })
+    }
 }
