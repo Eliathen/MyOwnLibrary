@@ -4,32 +4,38 @@ import androidx.appcompat.app.AppCompatActivity
 
 import android.os.Bundle
 
-import android.widget.Toast
-
 import androidx.appcompat.app.AlertDialog
 
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 
 import com.bumptech.glide.Glide
+import com.google.android.material.snackbar.Snackbar
 
 import com.szymanski.myownlibrary.R
-import com.szymanski.myownlibrary.data.models.Book
+import com.szymanski.myownlibrary.data.openLibraryAPI.models.Book
 import com.szymanski.myownlibrary.viewModels.BookDetailsViewModel
 
 import kotlinx.android.synthetic.main.activity_book_details.*
 import kotlinx.android.synthetic.main.borrow_lend_dialog.*
+import kotlinx.android.synthetic.main.borrow_lend_dialog.view.*
+
+import java.util.*
 
 
 class BookDetailsActivity : AppCompatActivity() {
     private lateinit var bookDetailsViewModel: BookDetailsViewModel
+    private lateinit var book: Book
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_book_details)
         actionBar?.setDisplayHomeAsUpEnabled(true)
+
         bookDetailsViewModel = ViewModelProvider(this).get(BookDetailsViewModel::class.java)
-        val book: Book = this.intent.getSerializableExtra("Book") as Book
+
+        book = this.intent.getSerializableExtra("Book") as Book
+
         bookDetailsViewModel.setBook(book)
         bookDetailsViewModel.getBook().observe(this, Observer {
             loadDetails()
@@ -38,22 +44,30 @@ class BookDetailsActivity : AppCompatActivity() {
             displayLendDialog()
         }
         borrowButton.setOnClickListener {
-            createBorrowDialog()
+            displayBorrowDialog()
         }
     }
 
-    private fun createBorrowDialog() {
+    private fun displayBorrowDialog() {
         val inflater = this.layoutInflater
         val alertDialog: AlertDialog? = this.let {
+            val dialogLayout = inflater.inflate(R.layout.borrow_lend_dialog, null)
+            dialogLayout.calendarView.minDate = Calendar.getInstance().timeInMillis
             val builder = AlertDialog.Builder(it).apply {
-                setView(inflater.inflate(R.layout.borrow_lend_dialog, null))
+                setView(dialogLayout)
                 setPositiveButton(R.string.borrow_text
-                ) { dialog, id ->
-                    Toast.makeText(it,"Borrow", Toast.LENGTH_SHORT).show()
-                    //TODO("Implements borrow functionality")
+                ) { _, _ ->
+                    val unit = dialogLayout.unit_dialog.text.toString()
+                    val date = Date(dialogLayout.calendarView.date)
+                    if(bookDetailsViewModel.markBookAsBorrowed(unit, date)){
+                        displayResultMessage(getString(R.string.borrow_success_message))
+                    } else {
+                        displayResultMessage(getString(R.string.error_message))
+                    }
+
                 }
                 setNegativeButton(android.R.string.cancel
-                ) { dialog, id ->
+                ) { dialog, _ ->
                     dialog.cancel()
                 }
                 setTitle(getString(R.string.borrow_text).toUpperCase())
@@ -68,17 +82,25 @@ class BookDetailsActivity : AppCompatActivity() {
     private fun displayLendDialog() {
         val inflater = this.layoutInflater
         val alertDialog: AlertDialog? = this.let {
+            val dialogLayout = inflater.inflate(R.layout.borrow_lend_dialog, null)
+            dialogLayout.calendarView.minDate = Calendar.getInstance().timeInMillis
             val builder = AlertDialog.Builder(it).apply {
-                setView(inflater.inflate(R.layout.borrow_lend_dialog, null))
+                setView(dialogLayout)
                 setPositiveButton(R.string.lend_text
-                ) { dialog, id ->
-                    Toast.makeText(it,"Lend", Toast.LENGTH_SHORT).show()
+                ) { _, _ ->
+                    val unit = dialogLayout.unit_dialog.text.toString()
+                    val date = Calendar.getInstance().time
+                    if(bookDetailsViewModel.markBookAsLent(unit, date)){
+                        displayResultMessage(getString(R.string.lend_success_message))
+                    } else {
+                        displayResultMessage(getString(R.string.error_message))
+                    }
                 }
                 setNegativeButton(android.R.string.cancel
                 ) { dialog, id ->
                     dialog.cancel()
                 }
-                setTitle(getString(R.string.lend_text).toUpperCase())
+                setTitle(getString(R.string.lend_text).toUpperCase(Locale.ROOT))
             }
             builder.create()
         }
@@ -96,8 +118,11 @@ class BookDetailsActivity : AppCompatActivity() {
         bookDetailsAuthors.text = bookDetailsViewModel.getBook().value?.authors
                 .toString()
                 .substring(1,bookDetailsViewModel.getBook().value?.authors.toString().length-1)
-        bookDetailsPublishedDate.text = bookDetailsViewModel.getBook().value?.publishedDate
+        bookDetailsPublishedDate.text = bookDetailsViewModel.getBook().value?.publishedYear
         bookDetailsPages.text = bookDetailsViewModel.getBook().value?.pageCount.toString()
         bookDetailsIsbn.text = bookDetailsViewModel.getBook().value?.isbn
+    }
+    private fun displayResultMessage(message: String){
+        Snackbar.make(this.bookDetailsParentLayout, message, Snackbar.LENGTH_SHORT).show()
     }
 }

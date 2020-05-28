@@ -9,14 +9,14 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 
 import com.szymanski.myownlibrary.R
-import com.szymanski.myownlibrary.data.models.Book
+import com.szymanski.myownlibrary.data.openLibraryAPI.models.Book
 
 import kotlinx.android.synthetic.main.wishlist_item.view.*
 
 class WishListAdapter(private val listener: ClickListener): RecyclerView.Adapter<WishListAdapter.ItemViewHolder>() {
-    private val books = ArrayList<Book>()
+    private val books = mutableListOf<Book>()
 
-    fun setBooks(books: ArrayList<Book>){
+    fun setBooks(books: MutableList<Book>){
         if(this.books.isNotEmpty()){
             this.books.clear()
         }

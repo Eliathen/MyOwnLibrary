@@ -1,6 +1,6 @@
-package com.szymanski.myownlibrary.data.services
+package com.szymanski.myownlibrary.data.openLibraryAPI.services
 
-import com.szymanski.myownlibrary.data.models.BookResult
+import com.szymanski.myownlibrary.data.openLibraryAPI.models.BookResult
 
 import retrofit2.http.GET
 import retrofit2.http.Query

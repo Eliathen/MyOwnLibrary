@@ -2,7 +2,7 @@ package com.szymanski.myownlibrary.adapters
 
 import android.text.Editable
 
-import com.szymanski.myownlibrary.data.models.Rent
+import com.szymanski.myownlibrary.data.firebase.Rent
 
 import android.view.LayoutInflater
 import android.view.View

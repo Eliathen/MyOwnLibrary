@@ -12,7 +12,7 @@ import com.bumptech.glide.Glide
 
 import com.szymanski.myownlibrary.R
 import com.szymanski.myownlibrary.adapters.SearchResultAdapter
-import com.szymanski.myownlibrary.data.models.Book
+import com.szymanski.myownlibrary.data.openLibraryAPI.models.Book
 
 import kotlinx.android.synthetic.main.activity_keyword_search_result.*
 import kotlinx.android.synthetic.main.search_item_details_dialog.*
@@ -79,7 +79,7 @@ class KeywordSearchResultActivity : AppCompatActivity(), SearchResultAdapter.OnI
             .load(book.cover)
             .error(R.drawable.books)
             .into(alertDialog.bookDetailsCover)
-        alertDialog.bookDetailsPublishedDate.text = book.publishedDate
+        alertDialog.bookDetailsPublishedDate.text = book.publishedYear
         alertDialog.bookDetailsAuthors.text = book.authors.toString()
         alertDialog.bookDetailsPages.text = book.pageCount.toString()
         alertDialog.bookDetailsIsbn.text = book.isbn

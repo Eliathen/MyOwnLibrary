@@ -12,8 +12,8 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.szymanski.myownlibrary.R
 import com.szymanski.myownlibrary.adapters.LendBorrowAdapter
-import com.szymanski.myownlibrary.data.models.Book
-import com.szymanski.myownlibrary.data.models.Rent
+import com.szymanski.myownlibrary.data.openLibraryAPI.models.Book
+import com.szymanski.myownlibrary.data.firebase.Rent
 import com.szymanski.myownlibrary.viewModels.MainViewModel
 import kotlinx.android.synthetic.main.fragment_lend_borrow.view.*
 
@@ -36,7 +36,7 @@ class LendBorrowFragment : Fragment() {
         initRecyclerView(rootView)
 
         this.activity?.let {
-            viewModel.getBorrowLendBooks().observe(it, Observer<List<Rent>> {rents ->
+            viewModel.getBorrowLendBooks().observe(it, Observer<List<Rent>> { rents ->
                 initRecyclerView(rootView)
             })
         }
@@ -47,8 +47,16 @@ class LendBorrowFragment : Fragment() {
 
         val books = arrayListOf<Rent>()
             val rent = Rent(
-                Book("9780641723445","The lightning thief", arrayListOf("Rick Riordan"),"2005",377,"https://covers.openlibrary.org/b/id/7989100-M.jpg"),
-                "startDate", "01/01/2020", "John Jones" )
+                Book(
+                    "9780641723445",
+                    "The lightning thief",
+                    arrayListOf("Rick Riordan"),
+                    "2005",
+                    377,
+                    "https://covers.openlibrary.org/b/id/7989100-M.jpg"
+                ),
+                "startDate", "01/01/2020", "John Jones"
+            )
             repeat(10){
                 books.add(rent)
             }

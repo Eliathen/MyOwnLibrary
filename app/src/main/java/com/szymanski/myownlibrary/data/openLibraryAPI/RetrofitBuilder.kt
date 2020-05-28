@@ -1,9 +1,9 @@
-package com.szymanski.myownlibrary.data
+package com.szymanski.myownlibrary.data.openLibraryAPI
 
 import com.google.gson.GsonBuilder
 
-import com.szymanski.myownlibrary.data.models.BookResult
-import com.szymanski.myownlibrary.data.services.BookService
+import com.szymanski.myownlibrary.data.openLibraryAPI.models.BookResult
+import com.szymanski.myownlibrary.data.openLibraryAPI.services.BookService
 
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -17,7 +17,10 @@ object RetrofitBuilder {
 
     private val retrofitBuilder: Retrofit.Builder by lazy{
         val gson = GsonBuilder()
-            .registerTypeAdapter(BookResult::class.java, BookJsonDeserializer())
+            .registerTypeAdapter(
+                BookResult::class.java,
+                BookJsonDeserializer()
+            )
             .create()
         Retrofit.Builder()
             .baseUrl(BASE_URL)

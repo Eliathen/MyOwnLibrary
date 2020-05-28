@@ -1,7 +1,5 @@
 package com.szymanski.myownlibrary.fragments
 
-import android.app.AlertDialog
-
 import android.os.Bundle
 
 import androidx.fragment.app.Fragment
@@ -21,13 +19,12 @@ import androidx.recyclerview.widget.LinearLayoutManager
 
 import com.szymanski.myownlibrary.R
 import com.szymanski.myownlibrary.adapters.MyBookAdapter
-import com.szymanski.myownlibrary.data.models.Book
+import com.szymanski.myownlibrary.data.openLibraryAPI.models.Book
 import com.szymanski.myownlibrary.fragments.dialogFragments.SaveBookDialogFragment
 import com.szymanski.myownlibrary.viewModels.MainViewModel
 
 import kotlinx.android.synthetic.main.fragment_my_books.view.*
 import kotlinx.android.synthetic.main.fragment_my_books.view.myBooks
-import kotlinx.android.synthetic.main.my_book_item.*
 
 /**
  * A simple [Fragment] subclass.

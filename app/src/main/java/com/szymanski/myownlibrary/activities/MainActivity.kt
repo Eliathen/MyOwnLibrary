@@ -22,11 +22,13 @@ import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.tabs.TabLayoutMediator
 
 import com.szymanski.myownlibrary.R
+import com.szymanski.myownlibrary.SortType
 import com.szymanski.myownlibrary.adapters.PagerAdapter
-import com.szymanski.myownlibrary.data.models.Book
+import com.szymanski.myownlibrary.data.openLibraryAPI.models.Book
 import com.szymanski.myownlibrary.viewModels.MainViewModel
 
 import kotlinx.android.synthetic.main.activity_main.*
+import java.util.*
 
 class MainActivity : AppCompatActivity() {
     private var doubleBackToExitPressedOnce = false
@@ -113,24 +115,32 @@ class MainActivity : AppCompatActivity() {
             mainViewModel.setBooks(array)
         }
     private fun displaySortOptions(){
+
+        var currentChoice = SortType.TITLE_ASCENDING
         AlertDialog.Builder(this)
             .setTitle("Choose sort option")
-            .setSingleChoiceItems(R.array.sort_options, 0, DialogInterface.OnClickListener{ dialog, id ->
-
-            })
+            .setSingleChoiceItems(R.array.sort_options, -1) { _, id ->
+                currentChoice = when(id){
+                    0 -> SortType.TITLE_ASCENDING
+                    1 -> SortType.TITLE_DESCENDING
+                    2 -> SortType.PUBLISHED_YEAR_ASCENDING
+                    3 -> SortType.PUBLISHED_YEAR_DESCENDING
+                    else -> SortType.TITLE_ASCENDING
+                }
+            }
             .setPositiveButton("Sort",
-                DialogInterface.OnClickListener{ dialog, id ->
-
+                DialogInterface.OnClickListener{ _, _ ->
+                    mainViewModel.sortAllLists(currentChoice)
                 })
             .setNegativeButton(R.string.cancel_button_text,
-                DialogInterface.OnClickListener { dialog, id ->
+                DialogInterface.OnClickListener { _, _ ->
 
                 })
             .create().show()
     }
     override fun onStart() {
         super.onStart()
-        //TODO get books list
+        mainViewModel.getBooks()
 
     }
 }

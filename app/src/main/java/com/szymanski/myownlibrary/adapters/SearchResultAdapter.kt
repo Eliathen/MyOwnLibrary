@@ -10,7 +10,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 
 import com.szymanski.myownlibrary.R
-import com.szymanski.myownlibrary.data.models.Book
+import com.szymanski.myownlibrary.data.openLibraryAPI.models.Book
 
 import kotlinx.android.synthetic.main.keyword_search_result_item.view.*
 
