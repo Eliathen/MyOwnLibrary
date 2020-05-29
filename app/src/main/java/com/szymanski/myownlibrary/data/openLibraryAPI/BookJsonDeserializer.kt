@@ -1,11 +1,11 @@
 package com.szymanski.myownlibrary.data.openLibraryAPI
 
+import BookInfo
 import com.google.gson.JsonDeserializationContext
 import com.google.gson.JsonDeserializer
 import com.google.gson.JsonElement
 import com.google.gson.JsonObject
 import com.szymanski.myownlibrary.data.openLibraryAPI.models.Book
-import com.szymanski.myownlibrary.data.openLibraryAPI.models.BookInfo
 import com.szymanski.myownlibrary.data.openLibraryAPI.models.BookResult
 import java.lang.reflect.Type
 

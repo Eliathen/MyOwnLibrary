@@ -19,7 +19,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 
 import com.szymanski.myownlibrary.R
 import com.szymanski.myownlibrary.adapters.MyBookAdapter
-import com.szymanski.myownlibrary.data.openLibraryAPI.models.Book
+import com.szymanski.myownlibrary.data.firebase.models.FirebaseBook
 import com.szymanski.myownlibrary.fragments.dialogFragments.SaveBookDialogFragment
 import com.szymanski.myownlibrary.viewModels.MainViewModel
 
@@ -44,8 +44,9 @@ class MyBooksFragment : Fragment(), ViewModelStoreOwner, MyBookAdapter.OnBookIte
         }
         viewModel = ViewModelProvider(requireActivity()).get(MainViewModel::class.java)
         initRecyclerView(rootView)
+        viewModel.getBookListFromDatabase()
         this.activity?.let {
-            viewModel.getBooks().observe(it, Observer<List<Book>> {books->
+            viewModel.getBooks().observe(it, Observer<List<FirebaseBook>> { books->
                 myBooksAdapter.setBooks(books)
             })
         }

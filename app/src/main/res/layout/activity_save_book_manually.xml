@@ -7,8 +7,8 @@
     tools:context=".activities.SaveBookManuallyActivity">
 
     <ScrollView
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
@@ -16,11 +16,9 @@
         >
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:paddingVertical="50dp"
-            android:paddingHorizontal="10dp">
+            android:layout_height="wrap_content">
             <EditText
-                android:id="@+id/title"
+                android:id="@+id/bookTitle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="textNoSuggestions"
@@ -31,27 +29,25 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 tools:ignore="Autofill" />
 
-            <EditText
-                android:id="@+id/authors"
-                android:layout_width="match_parent"
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/authorsList"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginHorizontal="20dp"
-                android:hint="@string/authors_hint"
-                android:inputType="textNoSuggestions"
-                app:layout_constraintBottom_toTopOf="@+id/guideline7"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/title"
-                tools:ignore="Autofill" />
+                app:layout_constraintBottom_toTopOf="@+id/cover"
+                app:layout_constraintEnd_toEndOf="@+id/bookTitle"
+                app:layout_constraintHorizontal_bias="1.0"
+                app:layout_constraintStart_toStartOf="@+id/bookTitle"
+                app:layout_constraintTop_toBottomOf="@+id/bookTitle" />
 
             <ImageView
-                android:id="@+id/imageView2"
-                android:layout_width="80dp"
-                android:layout_height="80dp"
+                android:id="@+id/cover"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
                 android:src="@drawable/books"
+                android:layout_marginTop="10dp"
                 app:layout_constraintEnd_toStartOf="@+id/guideline3"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/guideline7" />
+                app:layout_constraintTop_toBottomOf="@+id/authorsList" />
 
             <ImageButton
                 android:id="@+id/imageButton"
@@ -59,10 +55,10 @@
                 android:layout_height="wrap_content"
                 android:background="@android:drawable/btn_default"
                 android:src="@drawable/ic_camera_alt_black_24dp"
-                app:layout_constraintBottom_toTopOf="@+id/guideline6"
+                android:layout_marginTop="10dp"
                 app:layout_constraintEnd_toStartOf="@+id/guideline3"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/imageView2" />
+                app:layout_constraintTop_toBottomOf="@+id/cover" />
 
             <EditText
                 android:id="@+id/isbn"
@@ -70,11 +66,11 @@
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="20dp"
                 android:hint="@string/isbn_text_hint"
-                android:inputType="numberDecimal"
+                android:inputType="number"
                 app:layout_constraintBottom_toTopOf="@+id/imageButton"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="@+id/guideline3"
-                app:layout_constraintTop_toTopOf="@+id/guideline7"
+                app:layout_constraintTop_toTopOf="@+id/cover"
                 tools:ignore="Autofill" />
 
             <androidx.constraintlayout.widget.Guideline
@@ -84,20 +80,6 @@
                 android:orientation="vertical"
                 app:layout_constraintGuide_percent="0.5" />
 
-            <androidx.constraintlayout.widget.Guideline
-                android:id="@+id/guideline6"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                app:layout_constraintGuide_percent="0.53" />
-
-            <androidx.constraintlayout.widget.Guideline
-                android:id="@+id/guideline7"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                app:layout_constraintGuide_percent="0.26" />
-
             <TextView
                 android:id="@+id/publishedLabel"
                 android:layout_width="wrap_content"
@@ -106,30 +88,30 @@
                 android:textSize="20sp"
                 app:layout_constraintEnd_toStartOf="@+id/guideline3"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/publishedDate"
-                app:layout_constraintBottom_toBottomOf="@+id/publishedDate"/>
+                app:layout_constraintTop_toTopOf="@+id/publishedYear"
+                app:layout_constraintBottom_toBottomOf="@+id/publishedYear"/>
 
             <TextView
                 android:id="@+id/pagesLabel"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="20sp"
                 android:text="@string/pages_label"
+                android:textSize="20sp"
+                app:layout_constraintBottom_toBottomOf="@+id/pages"
                 app:layout_constraintStart_toStartOf="@+id/publishedLabel"
-                app:layout_constraintTop_toTopOf="@+id/pages"
-                app:layout_constraintBottom_toBottomOf="@+id/pages"/>
+                app:layout_constraintTop_toBottomOf="@+id/publishedLabel" />
 
             <EditText
-                android:id="@+id/publishedDate"
+                android:id="@+id/publishedYear"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="20dp"
                 android:hint="@string/date_format_hint"
-                android:inputType="date"
-                android:maxLength="10"
+                android:inputType="numberSigned"
+                android:maxLength="4"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="@+id/guideline3"
-                app:layout_constraintTop_toTopOf="@+id/guideline6"
+                app:layout_constraintTop_toBottomOf="@+id/imageButton"
                 tools:ignore="Autofill" />
 
             <EditText
@@ -138,10 +120,9 @@
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="20dp"
                 android:inputType="numberSigned"
-                app:layout_constraintBottom_toTopOf="@+id/guideline8"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="@+id/guideline3"
-                app:layout_constraintTop_toBottomOf="@+id/publishedDate"
+                app:layout_constraintTop_toBottomOf="@+id/publishedYear"
                 tools:ignore="Autofill" />
 
             <Button
@@ -150,17 +131,11 @@
                 android:layout_height="wrap_content"
                 android:background="@color/colorAccent"
                 android:text="@string/save_book_manually_button"
-                app:layout_constraintBottom_toBottomOf="parent"
+                android:layout_marginTop="20dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/guideline8" />
+                app:layout_constraintTop_toBottomOf="@+id/pages" />
 
-            <androidx.constraintlayout.widget.Guideline
-                android:id="@+id/guideline8"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                app:layout_constraintGuide_percent="0.7" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
 </androidx.constraintlayout.widget.ConstraintLayout>

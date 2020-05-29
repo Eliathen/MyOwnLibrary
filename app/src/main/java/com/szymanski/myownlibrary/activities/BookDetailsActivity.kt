@@ -13,7 +13,8 @@ import com.bumptech.glide.Glide
 import com.google.android.material.snackbar.Snackbar
 
 import com.szymanski.myownlibrary.R
-import com.szymanski.myownlibrary.data.openLibraryAPI.models.Book
+import com.szymanski.myownlibrary.converters.ImageConverter
+import com.szymanski.myownlibrary.data.firebase.models.FirebaseBook
 import com.szymanski.myownlibrary.viewModels.BookDetailsViewModel
 
 import kotlinx.android.synthetic.main.activity_book_details.*
@@ -25,7 +26,7 @@ import java.util.*
 
 class BookDetailsActivity : AppCompatActivity() {
     private lateinit var bookDetailsViewModel: BookDetailsViewModel
-    private lateinit var book: Book
+    private lateinit var firebaseBook: FirebaseBook
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -34,9 +35,9 @@ class BookDetailsActivity : AppCompatActivity() {
 
         bookDetailsViewModel = ViewModelProvider(this).get(BookDetailsViewModel::class.java)
 
-        book = this.intent.getSerializableExtra("Book") as Book
+        firebaseBook = this.intent.getSerializableExtra("Book") as FirebaseBook
 
-        bookDetailsViewModel.setBook(book)
+        bookDetailsViewModel.setBook(firebaseBook)
         bookDetailsViewModel.getBook().observe(this, Observer {
             loadDetails()
         })
@@ -112,7 +113,7 @@ class BookDetailsActivity : AppCompatActivity() {
     private fun loadDetails(){
         bookDetailsTitle.text = bookDetailsViewModel.getBook().value?.title
         Glide.with(this)
-            .load(bookDetailsViewModel.getBook().value?.cover)
+            .load(ImageConverter.base64ToBitmap(bookDetailsViewModel.getBook().value?.cover!!))
             .error(R.drawable.books)
             .into(bookDetailsCover)
         bookDetailsAuthors.text = bookDetailsViewModel.getBook().value?.authors

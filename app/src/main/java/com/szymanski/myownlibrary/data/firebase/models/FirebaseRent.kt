@@ -1,5 +1,8 @@
 package com.szymanski.myownlibrary.data.firebase.models
 
-import com.szymanski.myownlibrary.data.openLibraryAPI.models.Book
 
-data class FirebaseRent(val book: Book, val startDate: String, val endDate: String, val unit: String)
+data class FirebaseRent(var firebaseBook: FirebaseBook = FirebaseBook(),
+                        var startDate: String = "",
+                        var endDate: String = "",
+                        var unit: String = "",
+                        var isFinished: Boolean = false)

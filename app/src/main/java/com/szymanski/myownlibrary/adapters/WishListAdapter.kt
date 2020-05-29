@@ -9,18 +9,18 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 
 import com.szymanski.myownlibrary.R
-import com.szymanski.myownlibrary.data.openLibraryAPI.models.Book
+import com.szymanski.myownlibrary.data.firebase.models.FirebaseBook
 
 import kotlinx.android.synthetic.main.wishlist_item.view.*
 
 class WishListAdapter(private val listener: ClickListener): RecyclerView.Adapter<WishListAdapter.ItemViewHolder>() {
-    private val books = mutableListOf<Book>()
+    private val books = mutableListOf<FirebaseBook>()
 
-    fun setBooks(books: MutableList<Book>){
+    fun setBooks(firebaseBooks: MutableList<FirebaseBook>){
         if(this.books.isNotEmpty()){
             this.books.clear()
         }
-        this.books.addAll(books)
+        this.books.addAll(firebaseBooks)
         notifyDataSetChanged()
     }
 
@@ -41,14 +41,14 @@ class WishListAdapter(private val listener: ClickListener): RecyclerView.Adapter
 
     inner class ItemViewHolder(itemView: View, private val listener: ClickListener) : RecyclerView.ViewHolder(itemView), View.OnClickListener{
 
-        fun bind(book: Book){
+        fun bind(firebaseBook: FirebaseBook){
             with(itemView){
                 Glide.with(this)
-                    .load(book.cover)
+                    .load(firebaseBook.cover)
                     .error(R.drawable.books)
                     .into(wishItemCover)
-                wishItemTitle.text = book.title
-                wishItemAuthors.text = book.authors.toString()
+                wishItemTitle.text = firebaseBook.title
+                wishItemAuthors.text = firebaseBook.authors.toString()
                 itemOptions.setOnClickListener(this@ItemViewHolder)
             }
         }
