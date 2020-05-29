@@ -51,12 +51,12 @@ class LoginActivity : AppCompatActivity() {
         var focusView = View(baseContext)
         var cancel = false
         if(TextUtils.isEmpty(email)){
-            emailTextView.error = "This field is required"
+            emailTextView.error = getString(R.string.required_field_message)
             focusView = emailTextView
             cancel = true
         }
         if(TextUtils.isEmpty(password)){
-            passwordTextView.error = "This field is required"
+            passwordTextView.error = getString(R.string.required_field_message)
             focusView = passwordTextView
             cancel = true
         }

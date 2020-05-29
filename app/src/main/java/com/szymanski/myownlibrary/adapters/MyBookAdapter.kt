@@ -21,18 +21,19 @@ import com.bumptech.glide.request.target.Target
 
 import com.szymanski.myownlibrary.R
 import com.szymanski.myownlibrary.activities.BookDetailsActivity
-import com.szymanski.myownlibrary.data.openLibraryAPI.models.Book
+import com.szymanski.myownlibrary.converters.ImageConverter
+import com.szymanski.myownlibrary.data.firebase.models.FirebaseBook
 
 import kotlinx.android.synthetic.main.my_book_item.view.*
 
 class MyBookAdapter(var activity: FragmentActivity?, var onBookItemListener: OnBookItemListener): RecyclerView.Adapter<MyBookAdapter.MyBookViewHolder>() {
-    private val books by lazy { mutableListOf<Book>()}
+    private val books by lazy { mutableListOf<FirebaseBook>()}
 
-    fun setBooks(books: List<Book>){
-        if(books.isNotEmpty()){
+    fun setBooks(firebaseBooks: List<FirebaseBook>){
+        if(firebaseBooks.isNotEmpty()){
             this.books.clear()
         }
-        this.books.addAll(books)
+        this.books.addAll(firebaseBooks)
         notifyDataSetChanged()
     }
 
@@ -52,11 +53,12 @@ class MyBookAdapter(var activity: FragmentActivity?, var onBookItemListener: OnB
     }
     inner class MyBookViewHolder(itemView: View, onBookItemListener: OnBookItemListener): RecyclerView.ViewHolder(itemView), View.OnClickListener{
 
-        fun bind(book: Book){
+        fun bind(firebaseBook: FirebaseBook){
             with(itemView){
-                val cover = book.cover
+                val cover = firebaseBook.cover
+                imageProgressBar.visibility = View.VISIBLE
                 Glide.with(this)
-                    .load(cover)
+                    .load(ImageConverter.base64ToBitmap(cover))
                     .listener(object: RequestListener<Drawable>{
                         override fun onLoadFailed(
                             e: GlideException?,
@@ -64,7 +66,6 @@ class MyBookAdapter(var activity: FragmentActivity?, var onBookItemListener: OnB
                             target: Target<Drawable>?,
                             isFirstResource: Boolean
                         ): Boolean {
-                            imageProgressBar.visibility = View.VISIBLE
                             return false
                         }
 
@@ -81,13 +82,13 @@ class MyBookAdapter(var activity: FragmentActivity?, var onBookItemListener: OnB
                     })
                     .error(R.drawable.books)
                     .into(bookCover)
-                bookTitle.text = book.title
-                bookAuthors.text = SpannableStringBuilder(book.authors.toString().substring(1,book.authors.toString().length-1))
-                bookYear.text = book.publishedYear
+                bookTitle.text = firebaseBook.title
+                bookAuthors.text = SpannableStringBuilder(firebaseBook.authors.toString().substring(1,firebaseBook.authors.toString().length-1))
+                bookYear.text = firebaseBook.publishedYear
 
                 setOnClickListener {
                     val intent = Intent(this@MyBookAdapter.activity?.baseContext, BookDetailsActivity::class.java)
-                    intent.putExtra("Book", book)
+                    intent.putExtra("Book", firebaseBook)
                     this@MyBookAdapter.activity?.startActivity(intent)
                 }
                 myBookItemOptions.setOnClickListener(this@MyBookViewHolder)

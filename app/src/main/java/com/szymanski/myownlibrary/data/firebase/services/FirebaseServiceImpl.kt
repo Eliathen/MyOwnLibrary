@@ -1,24 +1,40 @@
 package com.szymanski.myownlibrary.data.firebase.services
 
+import android.util.Log
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.*
 import com.szymanski.myownlibrary.data.firebase.models.FirebaseBook
 
 class FirebaseServiceImpl:
     FirebaseService {
 
-    private lateinit var database: FirebaseDatabase
-    private lateinit var auth: FirebaseAuth
+    private var database: FirebaseDatabase
+    private var auth: FirebaseAuth
 
-    override fun saveMyBook(book: FirebaseBook) {
+    init {
         auth = FirebaseAuth.getInstance()
         database = FirebaseDatabase.getInstance()
+    }
+    override fun saveMyBook(book: FirebaseBook): String {
         val firebaseReference = database.reference
-        firebaseReference.child("users").child(auth.uid.toString()).child("myBooks").child(book.title).setValue(book)
+        var result = "Success"
+        firebaseReference.child("users")
+            .child(auth.uid.toString())
+            .child("myBooks")
+            .child(book.title)
+            .setValue(book, DatabaseReference.CompletionListener { databaseError, databaseReference ->
+                if(databaseError != null){
+                    result = databaseError.message
+                }
+            })
+        return result
     }
 
-    override fun getMyBookList(): MutableList<FirebaseBook> {
-        return mutableListOf()
+    override fun getMyBookReference(): DatabaseReference {
+        return database.reference
+            .child("users")
+            .child(auth.uid.toString())
+            .child("myBooks")
     }
 
 }

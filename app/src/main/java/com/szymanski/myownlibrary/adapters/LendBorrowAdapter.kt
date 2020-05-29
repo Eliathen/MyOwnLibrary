@@ -49,10 +49,10 @@ class LendBorrowAdapter(var activity: FragmentActivity?): RecyclerView.Adapter<L
         fun bind(firebaseRent: FirebaseRent){
             with(itemView){
                 Glide.with(this)
-                    .load(firebaseRent.book.cover)
+                    .load(firebaseRent.firebaseBook.cover)
                     .error(R.drawable.books)
                     .into(cover)
-                title.text = firebaseRent.book.title
+                title.text = firebaseRent.firebaseBook.title
                 unit.text = Editable.Factory.getInstance().newEditable(firebaseRent.unit)
                 date.text = firebaseRent.endDate
                 endRentButton.setOnClickListener {

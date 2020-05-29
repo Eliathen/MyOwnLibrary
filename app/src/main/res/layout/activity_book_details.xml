@@ -170,6 +170,7 @@
                     android:layout_height="wrap_content"
                     android:background="@drawable/button_shape"
                     android:text="@string/borrow_button_text"
+                    android:textColor="@color/colorPrimaryText"
                     app:layout_constraintEnd_toStartOf="@+id/lendButton"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -180,6 +181,7 @@
                     android:layout_height="wrap_content"
                     android:background="@drawable/button_shape"
                     android:text="@string/lend_button_text"
+                    android:textColor="@color/colorPrimaryText"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toEndOf="@id/borrowButton"
                     app:layout_constraintTop_toTopOf="parent" />

@@ -12,7 +12,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.szymanski.myownlibrary.R
 import com.szymanski.myownlibrary.adapters.LendBorrowAdapter
-import com.szymanski.myownlibrary.data.openLibraryAPI.models.Book
+import com.szymanski.myownlibrary.data.firebase.models.FirebaseBook
 import com.szymanski.myownlibrary.data.firebase.models.FirebaseRent
 import com.szymanski.myownlibrary.viewModels.MainViewModel
 import kotlinx.android.synthetic.main.fragment_lend_borrow.view.*
@@ -32,7 +32,7 @@ class LendBorrowFragment : Fragment() {
 
         viewModel = ViewModelProvider(requireActivity()).get(MainViewModel::class.java)
 
-        viewModel.loadExampleBorrowBook()
+//        viewModel.loadExampleBorrowBook()
         initRecyclerView(rootView)
 
         this.activity?.let {
@@ -48,7 +48,7 @@ class LendBorrowFragment : Fragment() {
         val books = arrayListOf<FirebaseRent>()
             val rent =
                 FirebaseRent(
-                    Book(
+                    FirebaseBook(
                         "9780641723445",
                         "The lightning thief",
                         arrayListOf("Rick Riordan"),

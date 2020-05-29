@@ -1,10 +1,13 @@
 package com.szymanski.myownlibrary.data.firebase.services
 
+import com.google.firebase.database.DatabaseReference
 import com.szymanski.myownlibrary.data.firebase.models.FirebaseBook
 
 interface FirebaseService {
 
-    fun saveMyBook(book: FirebaseBook)
+    fun saveMyBook(book: FirebaseBook): String
 
-    fun getMyBookList(): MutableList<FirebaseBook>
+    fun getMyBookReference(): DatabaseReference
+
+
 }

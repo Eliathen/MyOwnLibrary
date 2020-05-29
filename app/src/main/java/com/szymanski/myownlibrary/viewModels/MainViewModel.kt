@@ -5,34 +5,44 @@ import android.app.Application
 import android.graphics.Bitmap
 import android.graphics.drawable.Drawable
 import android.util.Base64
+import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.target.CustomTarget
 import com.bumptech.glide.request.transition.Transition
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.ValueEventListener
 
 import com.szymanski.myownlibrary.SortType
-import com.szymanski.myownlibrary.data.firebase.FirebaseBookConverter
+
+import com.szymanski.myownlibrary.converters.BookConverter
+
+import com.szymanski.myownlibrary.data.firebase.models.FirebaseBook
+import com.szymanski.myownlibrary.data.firebase.models.FirebaseRent
+
 
 import com.szymanski.myownlibrary.data.firebase.services.FirebaseService
 import com.szymanski.myownlibrary.data.firebase.services.FirebaseServiceImpl
-
 import com.szymanski.myownlibrary.data.openLibraryAPI.models.Book
-import com.szymanski.myownlibrary.data.firebase.models.FirebaseRent
+
 import com.szymanski.myownlibrary.data.openLibraryAPI.repositories.BookRepository
+
 import com.szymanski.myownlibrary.exceptions.NotFoundIsbn
 
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+
 import java.io.ByteArrayOutputStream
 import java.util.*
 
 class MainViewModel(application: Application): AndroidViewModel(application) {
-    private val books = MutableLiveData<MutableList<Book>>()
+    private val books = MutableLiveData<MutableList<FirebaseBook>>()
     private val borrowLendBooks = MutableLiveData<MutableList<FirebaseRent>>()
-    private val wishList = MutableLiveData<MutableList<Book>>()
+    private val wishList = MutableLiveData<MutableList<FirebaseBook>>()
     private val error = MutableLiveData<NotFoundIsbn>()
     private var isBookSave = MutableLiveData<Boolean>()
     private lateinit var firebaseService: FirebaseService
@@ -45,10 +55,6 @@ class MainViewModel(application: Application): AndroidViewModel(application) {
             }
             result.onSuccess {
                 saveBook(it.bookInfo.book)
-                val list: MutableList<Book> = mutableListOf()
-                books.value?.let { books -> list.addAll(books) }
-                list.add(it.bookInfo.book)
-                books.value = list
                 isBookSave.value = true
             }
             result.onFailure {
@@ -58,20 +64,20 @@ class MainViewModel(application: Application): AndroidViewModel(application) {
     }
 
 
-    fun getBooks(): MutableLiveData<MutableList<Book>>{
+    fun getBooks(): MutableLiveData<MutableList<FirebaseBook>>{
         return books
     }
-    fun getWishList(): MutableLiveData<MutableList<Book>>{
+    fun getWishList(): MutableLiveData<MutableList<FirebaseBook>>{
         return wishList
     }
-    fun setWishList(list: MutableList<Book>){
+    fun setWishList(list: MutableList<FirebaseBook>){
         this.wishList.value = list
     }
     fun getBorrowLendBooks(): MutableLiveData<MutableList<FirebaseRent>>{
         return borrowLendBooks
     }
-    fun selectedBook(book: Book){
-        books.value?.add(book)
+    fun selectedBook(firebaseBook: FirebaseBook){
+        books.value?.add(firebaseBook)
     }
     fun getError(): MutableLiveData<NotFoundIsbn>{
         return error
@@ -82,39 +88,14 @@ class MainViewModel(application: Application): AndroidViewModel(application) {
     fun setIsBookSaved(isSaved: Boolean){
         this.isBookSave.value = isSaved
     }
-    fun loadExampleBorrowBook(){
-        val rent = FirebaseRent(
-            Book(
-                "9780641723445",
-                "The ligthing thief",
-                arrayListOf("Rick Riordan"),
-                "2005",
-                377,
-                "https://covers.openlibrary.org/b/id/7989100-M.jpg"
-            ),
-            "startDate", "end", "To John"
-        )
-        val rent1 = FirebaseRent(
-            Book(
-                "9781857230765",
-                "The Eye of the World (Wheel of Time)",
-                arrayListOf("Robert Jordan"),
-                "1992",
-                377,
-                "https://covers.openlibrary.org/b/id/908780-M.jpg"
-            ),
-            "startDate1", "end1", "To Johnny"
-        )
-        borrowLendBooks.value?.add(rent)
-        borrowLendBooks.value?.add(rent1)
+
+    fun setBooks(firebaseBooks: MutableList<FirebaseBook>){
+        this.books.value = firebaseBooks
     }
-    fun setBooks(books: MutableList<Book>){
-        this.books.value = books
-    }
-    fun removeBookFromWishList(book: Book){
+    fun removeBookFromWishList(firebaseBook: FirebaseBook){
 
     }
-    fun markBookFromWishListAsOwn(book: Book){
+    fun markBookFromWishListAsOwn(firebaseBook: FirebaseBook){
 
     }
     fun sortAllLists(type: SortType){
@@ -156,10 +137,26 @@ class MainViewModel(application: Application): AndroidViewModel(application) {
                     val stream = ByteArrayOutputStream()
                     if(resource.compress(Bitmap.CompressFormat.PNG, 100, stream)) {
                         val image = Base64.encodeToString(stream.toByteArray(), Base64.DEFAULT)
-                        val fireBook = FirebaseBookConverter().toFirebaseBook(book, image)
+                        val fireBook = BookConverter().toFirebaseBook(book, image)
                         firebaseService.saveMyBook(fireBook)
                     }
                 }
             })
+    }
+    fun getBookListFromDatabase(){
+        firebaseService = FirebaseServiceImpl()
+        firebaseService.getMyBookReference().addValueEventListener(object: ValueEventListener {
+            override fun onCancelled(p0: DatabaseError) {
+                TODO("Not yet implemented")
+            }
+
+            override fun onDataChange(p0: DataSnapshot) {
+                val bookList = mutableListOf<FirebaseBook>()
+                p0.children.forEach {
+                    bookList.add(it.getValue(FirebaseBook::class.java)!!)
+                }
+                books.value = bookList
+            }
+        })
     }
 }

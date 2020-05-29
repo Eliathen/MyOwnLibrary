@@ -58,6 +58,7 @@
     <string name="error_message">Unknown error occurred</string>
     <string name="borrow_success_message">Book marked as borrowed</string>
     <string name="lend_success_message">Book marked as lent</string>
+    <string name="required_field_message">This field is required</string>
 
     <string-array name="instructions_text">
         <item name="instruction_title">Instrukcja</item>

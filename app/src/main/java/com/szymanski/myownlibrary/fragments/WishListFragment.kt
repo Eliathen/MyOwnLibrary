@@ -6,13 +6,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.PopupMenu
-import android.widget.Toast
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.szymanski.myownlibrary.R
 import com.szymanski.myownlibrary.adapters.WishListAdapter
-import com.szymanski.myownlibrary.data.openLibraryAPI.models.Book
+import com.szymanski.myownlibrary.data.firebase.models.FirebaseBook
 import com.szymanski.myownlibrary.viewModels.MainViewModel
 import kotlinx.android.synthetic.main.fragment_wish_list.view.wishListBooks
 
@@ -42,14 +41,14 @@ class WishListFragment : Fragment(), WishListAdapter.ClickListener {
     }
 
     private fun initRecyclerView(rootView: View) {
-        val books = arrayListOf<Book>()
-        val book = Book("9780641723445",
+        val books = arrayListOf<FirebaseBook>()
+        val book = FirebaseBook("9780641723445",
             "The lightning thief",
             arrayListOf("Rick Riordan"),
             "2005",
             377,
             "https://covers.openlibrary.org/b/id/7989100-M.jpg")
-        val book1 = Book(
+        val book1 = FirebaseBook(
             "9781857230765",
             "The Eye of the World (Wheel of Time)",
             arrayListOf("Robert Jordan"),
