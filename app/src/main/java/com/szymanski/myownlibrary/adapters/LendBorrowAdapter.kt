@@ -1,6 +1,8 @@
 package com.szymanski.myownlibrary.adapters
 
+import android.annotation.SuppressLint
 import android.text.Editable
+import android.util.Log
 
 import com.szymanski.myownlibrary.data.firebase.models.FirebaseRent
 
@@ -17,10 +19,13 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 
 import com.szymanski.myownlibrary.R
+import com.szymanski.myownlibrary.converters.ImageConverter
 
 import kotlinx.android.synthetic.main.lend_borrow_item.view.*
+import java.text.SimpleDateFormat
+import java.util.*
 
-class LendBorrowAdapter(var activity: FragmentActivity?): RecyclerView.Adapter<LendBorrowAdapter.RentViewHolder>() {
+class LendBorrowAdapter(var activity: FragmentActivity?, var listeners: LendBorrowItemListeners): RecyclerView.Adapter<LendBorrowAdapter.RentViewHolder>() {
     private val rents by lazy { mutableListOf<FirebaseRent>()}
 
     fun setRents(firebaseRents: List<FirebaseRent>){
@@ -33,7 +38,7 @@ class LendBorrowAdapter(var activity: FragmentActivity?): RecyclerView.Adapter<L
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RentViewHolder {
         val itemView = LayoutInflater.from(parent.context).inflate(R.layout.lend_borrow_item, parent, false)
-        return RentViewHolder(itemView)
+        return RentViewHolder(itemView, listeners)
     }
 
     override fun getItemCount(): Int {
@@ -44,21 +49,27 @@ class LendBorrowAdapter(var activity: FragmentActivity?): RecyclerView.Adapter<L
         val rent = rents[position]
         holder.bind(rent)
     }
-    inner class RentViewHolder(itemView: View): RecyclerView.ViewHolder(itemView){
-
+    inner class RentViewHolder(itemView: View, private val listeners: LendBorrowItemListeners): RecyclerView.ViewHolder(itemView), View.OnClickListener{
+        @SuppressLint("SimpleDateFormat")
         fun bind(firebaseRent: FirebaseRent){
             with(itemView){
                 Glide.with(this)
-                    .load(firebaseRent.firebaseBook.cover)
+                    .load(ImageConverter.base64ToBitmap(firebaseRent.firebaseBook.cover))
                     .error(R.drawable.books)
                     .into(cover)
                 title.text = firebaseRent.firebaseBook.title
                 unit.text = Editable.Factory.getInstance().newEditable(firebaseRent.unit)
-                date.text = firebaseRent.endDate
-                endRentButton.setOnClickListener {
-                    Toast.makeText(activity,"Finished rent", Toast.LENGTH_SHORT).show()
-                }
+                date.text = SimpleDateFormat("dd/MM/yyyy").format(firebaseRent.endDate.time)
+                endRentButton.setOnClickListener(this@RentViewHolder)
             }
         }
+
+        override fun onClick(v: View?) {
+            listeners.markBookAsReturn(v, adapterPosition)
+        }
+    }
+
+    interface LendBorrowItemListeners{
+        fun markBookAsReturn(view: View?, position: Int)
     }
 }

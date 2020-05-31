@@ -123,9 +123,4 @@ class MainActivity : AppCompatActivity() {
                 })
             .create().show()
     }
-    override fun onStart() {
-        super.onStart()
-        mainViewModel.getBooks()
-
-    }
 }
