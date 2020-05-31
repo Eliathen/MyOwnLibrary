@@ -1,8 +1,12 @@
 package com.szymanski.myownlibrary.activities
 
+import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
 
 import android.os.Bundle
+import android.util.Log
+import android.widget.Button
+import android.widget.Toast
 
 import androidx.appcompat.app.AlertDialog
 
@@ -20,6 +24,7 @@ import com.szymanski.myownlibrary.viewModels.BookDetailsViewModel
 import kotlinx.android.synthetic.main.activity_book_details.*
 import kotlinx.android.synthetic.main.borrow_lend_dialog.*
 import kotlinx.android.synthetic.main.borrow_lend_dialog.view.*
+import java.time.LocalDate
 
 import java.util.*
 
@@ -38,34 +43,37 @@ class BookDetailsActivity : AppCompatActivity() {
         firebaseBook = this.intent.getSerializableExtra("Book") as FirebaseBook
 
         bookDetailsViewModel.setBook(firebaseBook)
+
+        setListeners()
         bookDetailsViewModel.getBook().observe(this, Observer {
             loadDetails()
         })
-        lendButton.setOnClickListener {
-            displayLendDialog()
-        }
-        borrowButton.setOnClickListener {
-            displayBorrowDialog()
-        }
+
     }
 
     private fun displayBorrowDialog() {
+
         val inflater = this.layoutInflater
         val alertDialog: AlertDialog? = this.let {
             val dialogLayout = inflater.inflate(R.layout.borrow_lend_dialog, null)
             dialogLayout.calendarView.minDate = Calendar.getInstance().timeInMillis
+            var date = Date()
+            dialogLayout.calendarView.setOnDateChangeListener { view, year, month, dayOfMonth ->
+                date = Date(GregorianCalendar(year, month - 1, dayOfMonth).timeInMillis)
+            }
             val builder = AlertDialog.Builder(it).apply {
                 setView(dialogLayout)
                 setPositiveButton(R.string.borrow_text
                 ) { _, _ ->
                     val unit = dialogLayout.unit_dialog.text.toString()
-                    val date = Date(dialogLayout.calendarView.date)
-                    if(bookDetailsViewModel.markBookAsBorrowed(unit, date)){
+                    val result = bookDetailsViewModel.markBookAsBorrowed(unit, date)
+                    if(result == "Success"){
                         displayResultMessage(getString(R.string.borrow_success_message))
+                        setButtonAsDisable(lendButton)
+                        setButtonAsDisable(borrowButton)
                     } else {
                         displayResultMessage(getString(R.string.error_message))
                     }
-
                 }
                 setNegativeButton(android.R.string.cancel
                 ) { dialog, _ ->
@@ -85,20 +93,26 @@ class BookDetailsActivity : AppCompatActivity() {
         val alertDialog: AlertDialog? = this.let {
             val dialogLayout = inflater.inflate(R.layout.borrow_lend_dialog, null)
             dialogLayout.calendarView.minDate = Calendar.getInstance().timeInMillis
+            var date = Date()
+            dialogLayout.calendarView.setOnDateChangeListener { view, year, month, dayOfMonth ->
+                date = Date(GregorianCalendar(year, month - 1, dayOfMonth).timeInMillis)
+            }
             val builder = AlertDialog.Builder(it).apply {
                 setView(dialogLayout)
                 setPositiveButton(R.string.lend_text
                 ) { _, _ ->
                     val unit = dialogLayout.unit_dialog.text.toString()
-                    val date = Calendar.getInstance().time
-                    if(bookDetailsViewModel.markBookAsLent(unit, date)){
-                        displayResultMessage(getString(R.string.lend_success_message))
+                    val result = bookDetailsViewModel.markBookAsLent(unit, date)
+                    if(result == "Success"){
+                        displayResultMessage(getString(R.string.lent_success_message))
+                        setButtonAsDisable(lendButton)
+                        setButtonAsDisable(borrowButton)
                     } else {
-                        displayResultMessage(getString(R.string.error_message))
+                        displayResultMessage(bookDetailsViewModel.markBookAsLent(unit, date))
                     }
                 }
                 setNegativeButton(android.R.string.cancel
-                ) { dialog, id ->
+                ) { dialog, _ ->
                     dialog.cancel()
                 }
                 setTitle(getString(R.string.lend_text).toUpperCase(Locale.ROOT))
@@ -111,19 +125,40 @@ class BookDetailsActivity : AppCompatActivity() {
 
 
     private fun loadDetails(){
-        bookDetailsTitle.text = bookDetailsViewModel.getBook().value?.title
+        val book = bookDetailsViewModel.getBook().value!!
+        bookDetailsTitle.text = book.title
         Glide.with(this)
-            .load(ImageConverter.base64ToBitmap(bookDetailsViewModel.getBook().value?.cover!!))
+            .load(ImageConverter.base64ToBitmap(book.cover))
             .error(R.drawable.books)
             .into(bookDetailsCover)
-        bookDetailsAuthors.text = bookDetailsViewModel.getBook().value?.authors
+        bookDetailsAuthors.text = book.authors
                 .toString()
-                .substring(1,bookDetailsViewModel.getBook().value?.authors.toString().length-1)
-        bookDetailsPublishedDate.text = bookDetailsViewModel.getBook().value?.publishedYear
-        bookDetailsPages.text = bookDetailsViewModel.getBook().value?.pageCount.toString()
-        bookDetailsIsbn.text = bookDetailsViewModel.getBook().value?.isbn
+                .substring(1,book.authors.toString().length-1)
+        bookDetailsPublishedDate.text = book.publishedYear
+        bookDetailsPages.text = book.pageCount.toString()
+        bookDetailsIsbn.text = book.isbn
+
     }
     private fun displayResultMessage(message: String){
         Snackbar.make(this.bookDetailsParentLayout, message, Snackbar.LENGTH_SHORT).show()
+    }
+    private fun setButtonAsDisable(button: Button){
+        button.setBackgroundResource(R.drawable.disable_button_shape)
+        button.setOnClickListener {
+            Toast.makeText(baseContext, "Book is already borrowed/lent", Toast.LENGTH_SHORT).show()
+        }
+    }
+    private fun setListeners(){
+        if(bookDetailsViewModel.getBook().value!!.isBorrow){
+            setButtonAsDisable(lendButton)
+            setButtonAsDisable(borrowButton)
+        } else {
+            lendButton.setOnClickListener {
+                displayLendDialog()
+            }
+            borrowButton.setOnClickListener {
+                displayBorrowDialog()
+            }
+        }
     }
 }

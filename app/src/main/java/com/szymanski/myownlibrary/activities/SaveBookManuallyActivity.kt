@@ -8,6 +8,7 @@ import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.os.Bundle
 import android.provider.MediaStore
+import android.text.Editable
 import android.util.Base64
 import android.util.Log
 import android.view.View
@@ -18,6 +19,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.bumptech.glide.Glide
 import com.szymanski.myownlibrary.R
 import com.szymanski.myownlibrary.adapters.AuthorsAdapter
 import com.szymanski.myownlibrary.converters.BookConverter
@@ -46,9 +48,8 @@ class SaveBookManuallyActivity : AppCompatActivity() {
             }
         })
         initRecyclerView()
-        saveButton.setOnClickListener {
-
-        }
+        val book = intent.extras?.getSerializable("editBook") as FirebaseBook
+        loadData(book)
         imageButton.setOnClickListener {
             if(checkSelfPermission(android.Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED){
                 requestPermissions(arrayOf(android.Manifest.permission.CAMERA),1)
@@ -152,7 +153,6 @@ class SaveBookManuallyActivity : AppCompatActivity() {
     }
 
     private fun getPhoto(){
-        val intent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
         val int = Intent(MediaStore.ACTION_IMAGE_CAPTURE).also {takePictureIntent ->
             takePictureIntent.resolveActivity(packageManager)?.also{
                 startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE)
@@ -167,6 +167,18 @@ class SaveBookManuallyActivity : AppCompatActivity() {
 
             }
         }.create().show()
+    }
+    private fun loadData(book:FirebaseBook){
+        val editableFactory = Editable.Factory.getInstance()
+        bookTitle.text = editableFactory.newEditable(book.title)
+        authorsAdapter.setAuthors(book.authors as ArrayList<String>)
+        val image = ImageConverter.base64ToBitmap(book.cover)
+        Glide.with(cover)
+            .load(image)
+            .into(cover)
+        isbn.text = editableFactory.newEditable(book.isbn)
+        publishedYear.text = editableFactory.newEditable(book.publishedYear)
+        pages.text = editableFactory.newEditable(book.pageCount.toString())
     }
 
 }

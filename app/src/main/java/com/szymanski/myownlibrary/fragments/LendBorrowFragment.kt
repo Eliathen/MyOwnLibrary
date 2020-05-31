@@ -20,7 +20,7 @@ import kotlinx.android.synthetic.main.fragment_lend_borrow.view.*
 /**
  * A simple [Fragment] subclass.
  */
-class LendBorrowFragment : Fragment() {
+class LendBorrowFragment : Fragment(), LendBorrowAdapter.LendBorrowItemListeners {
     private lateinit var viewModel: MainViewModel
     private lateinit var lendBorrowAdapter: LendBorrowAdapter
     @RequiresApi(Build.VERSION_CODES.O)
@@ -32,40 +32,25 @@ class LendBorrowFragment : Fragment() {
 
         viewModel = ViewModelProvider(requireActivity()).get(MainViewModel::class.java)
 
-//        viewModel.loadExampleBorrowBook()
         initRecyclerView(rootView)
-
+        viewModel.getBorrowLendListFromDatabase()
         this.activity?.let {
             viewModel.getBorrowLendBooks().observe(it, Observer<List<FirebaseRent>> { rents ->
-                initRecyclerView(rootView)
+                lendBorrowAdapter.setRents(rents)
             })
         }
         return rootView
     }
 
     private fun initRecyclerView(rootView: View) {
-
-        val books = arrayListOf<FirebaseRent>()
-            val rent =
-                FirebaseRent(
-                    FirebaseBook(
-                        "9780641723445",
-                        "The lightning thief",
-                        arrayListOf("Rick Riordan"),
-                        "2005",
-                        377,
-                        "https://covers.openlibrary.org/b/id/7989100-M.jpg"
-                    ),
-                    "startDate", "01/01/2020", "John Jones"
-                )
-            repeat(10){
-                books.add(rent)
-            }
         val recyclerView = rootView.lendBorrowBooks
         recyclerView.layoutManager = LinearLayoutManager(rootView.context)
-        this.lendBorrowAdapter = LendBorrowAdapter(activity)
-        lendBorrowAdapter.setRents(books)
+        this.lendBorrowAdapter = LendBorrowAdapter(activity, this)
         recyclerView.adapter = lendBorrowAdapter
+    }
+
+    override fun markBookAsReturn(view: View?, position: Int) {
+        viewModel.getBorrowLendBooks().value?.get(position)?.let { viewModel.markBookAsReturn(it) }
     }
 
 }
