@@ -1,6 +1,5 @@
 package com.szymanski.myownlibrary.activities
 
-import android.content.DialogInterface
 import android.content.Intent
 
 import android.os.Bundle
@@ -14,6 +13,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.SearchView
 
 import androidx.lifecycle.ViewModelProvider
 
@@ -24,7 +24,6 @@ import com.google.android.material.tabs.TabLayoutMediator
 import com.szymanski.myownlibrary.R
 import com.szymanski.myownlibrary.SortType
 import com.szymanski.myownlibrary.adapters.PagerAdapter
-import com.szymanski.myownlibrary.data.firebase.models.FirebaseBook
 import com.szymanski.myownlibrary.viewModels.MainViewModel
 
 import kotlinx.android.synthetic.main.activity_main.*
@@ -43,12 +42,12 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.main_activity_menu, menu)
-
+        val searchButton = menu?.findItem(R.id.searchButton)?.actionView as SearchView
+        searchButton.maxWidth = 700
         return (super.onCreateOptionsMenu(menu))
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        Log.i("MainActivity", "OnContextItemSelected")
         return when(item.itemId){
             R.id.searchButton -> {
                 Log.i("MainActivity", "Search button clicked")
@@ -103,7 +102,7 @@ class MainActivity : AppCompatActivity() {
 
         var currentChoice = SortType.TITLE_ASCENDING
         AlertDialog.Builder(this)
-            .setTitle("Choose sort option")
+            .setTitle(getString(R.string.choose_sort_option_text))
             .setSingleChoiceItems(R.array.sort_options, -1) { _, id ->
                 currentChoice = when(id){
                     0 -> SortType.TITLE_ASCENDING
@@ -113,14 +112,12 @@ class MainActivity : AppCompatActivity() {
                     else -> SortType.TITLE_ASCENDING
                 }
             }
-            .setPositiveButton("Sort",
-                DialogInterface.OnClickListener{ _, _ ->
+            .setPositiveButton(getString(R.string.sort_button_text)){ _, _ ->
                     mainViewModel.sortAllLists(currentChoice)
-                })
-            .setNegativeButton(R.string.cancel_button_text,
-                DialogInterface.OnClickListener { _, _ ->
+                }
+            .setNegativeButton(R.string.cancel_button_text) { _, _ ->
 
-                })
+            }
             .create().show()
     }
 }

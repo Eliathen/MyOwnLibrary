@@ -48,8 +48,10 @@ class SaveBookManuallyActivity : AppCompatActivity() {
             }
         })
         initRecyclerView()
+        if(intent.hasExtra("editBook")){
         val book = intent.extras?.getSerializable("editBook") as FirebaseBook
-        loadData(book)
+            loadData(book)
+        }
         imageButton.setOnClickListener {
             if(checkSelfPermission(android.Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED){
                 requestPermissions(arrayOf(android.Manifest.permission.CAMERA),1)
@@ -60,8 +62,6 @@ class SaveBookManuallyActivity : AppCompatActivity() {
         saveButton.setOnClickListener {
             attemptSaveBook()
         }
-
-
     }
 
     private fun attemptSaveBook() {

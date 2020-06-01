@@ -6,13 +6,13 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.szymanski.myownlibrary.R
 import com.szymanski.myownlibrary.adapters.LendBorrowAdapter
-import com.szymanski.myownlibrary.data.firebase.models.FirebaseBook
 import com.szymanski.myownlibrary.data.firebase.models.FirebaseRent
 import com.szymanski.myownlibrary.viewModels.MainViewModel
 import kotlinx.android.synthetic.main.fragment_lend_borrow.view.*
@@ -23,23 +23,35 @@ import kotlinx.android.synthetic.main.fragment_lend_borrow.view.*
 class LendBorrowFragment : Fragment(), LendBorrowAdapter.LendBorrowItemListeners {
     private lateinit var viewModel: MainViewModel
     private lateinit var lendBorrowAdapter: LendBorrowAdapter
+    private lateinit var rootView: View
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val rootView = inflater.inflate(R.layout.fragment_lend_borrow, container, false)
+        rootView = inflater.inflate(R.layout.fragment_lend_borrow, container, false)
 
         viewModel = ViewModelProvider(requireActivity()).get(MainViewModel::class.java)
 
         initRecyclerView(rootView)
-        viewModel.getBorrowLendListFromDatabase()
+        initDataValue(rootView)
+        viewModel.getLendBorrowListFromDatabase()
+        return rootView
+    }
+
+    private fun initDataValue(rootView: View) {
         this.activity?.let {
-            viewModel.getBorrowLendBooks().observe(it, Observer<List<FirebaseRent>> { rents ->
+            viewModel.getLendBorrowBooks().observe(it, Observer<List<FirebaseRent>> { rents ->
                 lendBorrowAdapter.setRents(rents)
             })
+            viewModel.getLendBorrowLoaded().observe(it, Observer { isLoaded ->
+                if (isLoaded) {
+                    rootView.lendBorrowProgressBar.visibility = View.GONE
+                } else {
+                    rootView.lendBorrowProgressBar.visibility = View.VISIBLE
+                }
+            })
         }
-        return rootView
     }
 
     private fun initRecyclerView(rootView: View) {
@@ -50,7 +62,13 @@ class LendBorrowFragment : Fragment(), LendBorrowAdapter.LendBorrowItemListeners
     }
 
     override fun markBookAsReturn(view: View?, position: Int) {
-        viewModel.getBorrowLendBooks().value?.get(position)?.let { viewModel.markBookAsReturn(it) }
+        val result = viewModel.getLendBorrowBooks().value?.get(position)?.let { viewModel.markBookAsReturn(it) }
+            if (result != null) {
+                displayResultToastMessage(result)
+            }
+    }
+    private fun displayResultToastMessage(message: String){
+        Toast.makeText(rootView.context, message, Toast.LENGTH_SHORT).show()
     }
 
 }

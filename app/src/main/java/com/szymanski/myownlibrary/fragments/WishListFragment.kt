@@ -13,7 +13,7 @@ import com.szymanski.myownlibrary.R
 import com.szymanski.myownlibrary.adapters.WishListAdapter
 import com.szymanski.myownlibrary.data.firebase.models.FirebaseBook
 import com.szymanski.myownlibrary.viewModels.MainViewModel
-import kotlinx.android.synthetic.main.fragment_wish_list.view.wishListBooks
+import kotlinx.android.synthetic.main.fragment_wish_list.view.*
 
 /**
  * A simple [Fragment] subclass.
@@ -35,8 +35,14 @@ class WishListFragment : Fragment(), WishListAdapter.ClickListener {
             viewModel.getWishList().observe(it, Observer { list ->
                 wishListAdapter.setBooks(list)
             })
+            viewModel.getWishListLoaded().observe(it, Observer{isLoaded ->
+                if(isLoaded){
+                    rootView.wishListProgressBar.visibility = View.GONE
+                } else {
+                    rootView.wishListProgressBar.visibility = View.VISIBLE
+                }
+            })
         }
-
         return rootView
     }
 

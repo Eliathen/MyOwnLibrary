@@ -8,13 +8,9 @@ import com.szymanski.myownlibrary.data.firebase.models.FirebaseRent
 class FirebaseServiceImpl:
     FirebaseService {
 
-    private var database: FirebaseDatabase
-    private var auth: FirebaseAuth
+    private var database: FirebaseDatabase = FirebaseDatabase.getInstance()
+    private var auth: FirebaseAuth = FirebaseAuth.getInstance()
 
-    init {
-        auth = FirebaseAuth.getInstance()
-        database = FirebaseDatabase.getInstance()
-    }
     override fun saveMyBook(book: FirebaseBook): String {
         var result = "Success"
         getMyBookReference()
@@ -47,6 +43,7 @@ class FirebaseServiceImpl:
                 _: DatabaseReference ->
             if(databaseError != null){
                 result = databaseError.message
+            } else {
             }
         }
         return result

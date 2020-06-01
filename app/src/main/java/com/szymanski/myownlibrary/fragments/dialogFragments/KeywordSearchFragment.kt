@@ -22,7 +22,6 @@ class KeywordSearchFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
         val rootView = inflater.inflate(R.layout.fragment_keyword_search, container, false)
 
         rootView.searchByKeywords.setOnClickListener{
