@@ -60,6 +60,8 @@
     <string name="lend_success_message">Book marked as lent</string>
     <string name="required_field_message">This field is required</string>
     <string name="lent_success_message">Book marked as lent</string>
+    <string name="sort_button_text">Sort</string>
+    <string name="choose_sort_option_text">Choose sort option</string>
 
     <string-array name="instructions_text">
         <item name="instruction_title">Instrukcja</item>

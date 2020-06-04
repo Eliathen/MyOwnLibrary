@@ -56,11 +56,16 @@ class MyBooksFragment : Fragment(), ViewModelStoreOwner, MyBookAdapter.OnBookIte
         viewModel = ViewModelProvider(requireActivity()).get(MainViewModel::class.java)
         initRecyclerView(rootView)
         viewModel.getBookListFromDatabase()
-        this.activity?.let {
-            viewModel.getBooks().observe(it, Observer<List<FirebaseBook>> { books->
-                Log.d("MyBooksFragment", "XDDD")
-                println(books.toString())
+        this.activity?.let { fragmentActivity ->
+            viewModel.getBooks().observe(fragmentActivity, Observer<List<FirebaseBook>> { books->
                 myBooksAdapter.setBooks(books)
+            })
+            viewModel.getMyBookLoaded().observe(fragmentActivity, Observer{
+                if(it){
+                    rootView.myBookProgressBar.visibility = View.GONE
+                } else {
+                    rootView.myBookProgressBar.visibility = View.VISIBLE
+                }
             })
         }
 

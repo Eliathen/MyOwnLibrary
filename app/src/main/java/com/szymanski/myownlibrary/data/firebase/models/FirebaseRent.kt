@@ -5,7 +5,7 @@ import java.util.*
 
 
 data class FirebaseRent(
-    @Exclude var key: String = "",
+    @Exclude var key: String="",
     var firebaseBook: FirebaseBook = FirebaseBook(),
     var startDate: Date = Date(),
     var endDate: Date = Date(),

@@ -41,14 +41,18 @@ import java.util.*
 
 class MainViewModel(application: Application): AndroidViewModel(application) {
     private val books = MutableLiveData<MutableList<FirebaseBook>>()
-    private val borrowLendBooks = MutableLiveData<MutableList<FirebaseRent>>()
+    private val lendBorrowBooks = MutableLiveData<MutableList<FirebaseRent>>()
     private val wishList = MutableLiveData<MutableList<FirebaseBook>>()
     private val error = MutableLiveData<NotFoundIsbn>()
     private var isBookSave = MutableLiveData<Boolean>()
     private lateinit var firebaseService: FirebaseService
+    private var isMyBookLoaded = MutableLiveData<Boolean>().apply{ value = false}
+    private var isWishListLoaded = MutableLiveData<Boolean>().apply{ value = false}
+    private var isLendBorrowLoaded = MutableLiveData<Boolean>().apply{ value = false}
+
 
     fun searchBookByIsbn(isbn: String){
-        var readyIsbn = "isbn:" + isbn.trim().replace("-", "")
+        val readyIsbn = "isbn:" + isbn.trim().replace("-", "")
         viewModelScope.launch {
             val result = withContext(Dispatchers.IO){
                 runCatching{BookRepository.getBookByIsbn(readyIsbn)}
@@ -69,8 +73,32 @@ class MainViewModel(application: Application): AndroidViewModel(application) {
     fun markBookFromWishListAsOwn(firebaseBook: FirebaseBook){
 
     }
-    fun markBookAsReturn(firebaseRent: FirebaseRent){
+    fun markBookAsReturn(firebaseRent: FirebaseRent): String {
+        var message = ""
+        Log.d("MainViewModel", firebaseRent.key)
+        val firebaseService = FirebaseServiceImpl()
+            firebaseService.getBorrowedBookReference()
+            .child(firebaseRent.key)
+            .child("finished")
+            .setValue(true)
+            .addOnSuccessListener {
+                firebaseService
+                    .getMyBookReference()
+                    .child(firebaseRent.firebaseBook.isbn)
+                    .child("borrow")
+                    .setValue(false)
+                    .addOnCompleteListener {
+                        message = "Book has been marked successful"
+                        lendBorrowBooks.value?.remove(firebaseRent)
+                    }
+                    .addOnFailureListener {
+                        message = it.message.toString()
+                    }
 
+            }.addOnFailureListener {
+                    message = it.message.toString()
+                }
+        return message
     }
     fun sortAllLists(type: SortType){
         val myBooks = books.value
@@ -118,10 +146,11 @@ class MainViewModel(application: Application): AndroidViewModel(application) {
             })
     }
     fun getBookListFromDatabase(){
+        isMyBookLoaded.value = false
         firebaseService = FirebaseServiceImpl()
         firebaseService.getMyBookReference().addValueEventListener(object: ValueEventListener {
             override fun onCancelled(p0: DatabaseError) {
-                TODO("Not yet implemented")
+                isMyBookLoaded.value = true
             }
             override fun onDataChange(p0: DataSnapshot) {
                 val bookList = mutableListOf<FirebaseBook>()
@@ -129,22 +158,49 @@ class MainViewModel(application: Application): AndroidViewModel(application) {
                     bookList.add(it.getValue(FirebaseBook::class.java)!!)
                 }
                 books.value = bookList
+                isMyBookLoaded.value = true
             }
         })
     }
     fun removeBook(firebaseBook: FirebaseBook): String{
         firebaseService = FirebaseServiceImpl()
-        val message = firebaseService.removeBook(firebaseBook)
+        var message = firebaseService.removeBook(firebaseBook)
         if(message == "Success"){
             books.value?.remove(firebaseBook)
+            viewModelScope.launch {
+                withContext(Dispatchers.IO){
+                    runCatching{
+                        FirebaseServiceImpl().getBorrowedBookReference().addListenerForSingleValueEvent(object: ValueEventListener{
+                            override fun onCancelled(p0: DatabaseError) {
+                                TODO("Not yet implemented")
+                            }
+                            override fun onDataChange(p0: DataSnapshot) {
+                                p0.children.forEach{
+                                    val rent = it.getValue(FirebaseRent::class.java)!!
+                                    rent.key = it.key!!
+                                    if(rent.firebaseBook.isbn == firebaseBook.isbn){
+                                        val firebaseService = FirebaseServiceImpl()
+                                        firebaseService.getBorrowedBookReference()
+                                            .child(rent.key)
+                                            .child("finished")
+                                            .setValue(true)
+                                    }
+                                }
+                            }
+
+                        })
+                    }
+                }
+            }
         }
         return message
     }
-    fun getBorrowLendListFromDatabase(){
+    fun getLendBorrowListFromDatabase(){
+        isLendBorrowLoaded.value = false
         firebaseService = FirebaseServiceImpl()
         firebaseService.getBorrowedBookReference().addValueEventListener(object: ValueEventListener{
             override fun onCancelled(p0: DatabaseError) {
-                TODO("Not yet implemented")
+                isLendBorrowLoaded.value = false
             }
             override fun onDataChange(p0: DataSnapshot) {
                 val borrowLendList = mutableListOf<FirebaseRent>()
@@ -153,9 +209,9 @@ class MainViewModel(application: Application): AndroidViewModel(application) {
                     rent.key = dataSnapshot.key!!
                     rent.takeIf { !it.isFinished }?.let { it1 -> borrowLendList.add(it1) }
                 }
-                borrowLendBooks.value = borrowLendList
+                lendBorrowBooks.value = borrowLendList
+                isLendBorrowLoaded.value = true
             }
-
         })
     }
     fun getBooks(): MutableLiveData<MutableList<FirebaseBook>>{
@@ -167,8 +223,8 @@ class MainViewModel(application: Application): AndroidViewModel(application) {
     fun setWishList(list: MutableList<FirebaseBook>){
         this.wishList.value = list
     }
-    fun getBorrowLendBooks(): MutableLiveData<MutableList<FirebaseRent>>{
-        return borrowLendBooks
+    fun getLendBorrowBooks(): MutableLiveData<MutableList<FirebaseRent>>{
+        return lendBorrowBooks
     }
     fun getError(): MutableLiveData<NotFoundIsbn>{
         return error
@@ -179,8 +235,13 @@ class MainViewModel(application: Application): AndroidViewModel(application) {
     fun setIsBookSaved(isSaved: Boolean){
         this.isBookSave.value = isSaved
     }
-
-    fun setBooks(firebaseBooks: MutableList<FirebaseBook>){
-        this.books.value = firebaseBooks
+    fun getMyBookLoaded(): MutableLiveData<Boolean>{
+        return isMyBookLoaded
+    }
+    fun getWishListLoaded(): MutableLiveData<Boolean>{
+        return isWishListLoaded
+    }
+    fun getLendBorrowLoaded(): MutableLiveData<Boolean>{
+        return isLendBorrowLoaded
     }
 }

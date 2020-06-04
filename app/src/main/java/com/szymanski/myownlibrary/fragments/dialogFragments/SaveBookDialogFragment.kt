@@ -18,9 +18,6 @@ class SaveBookDialogFragment: DialogFragment(){
 
     private lateinit var viewPager: ViewPager2
 
-    override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
-        return super.onCreateDialog(savedInstanceState)
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater,

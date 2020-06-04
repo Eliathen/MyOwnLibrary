@@ -9,10 +9,19 @@
     android:fitsSystemWindows="true"
     xmlns:android="http://schemas.android.com/apk/res/android">
 
+    <ProgressBar
+        android:id="@+id/myBookProgressBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:visibility="gone"
+        />
+
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/myBooks"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_below="@+id/myBookProgressBar"
             />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
