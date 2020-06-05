@@ -1,11 +1,12 @@
 package com.szymanski.myownlibrary.data.openLibraryAPI
 
-import BookInfo
+import android.util.Log
 import com.google.gson.JsonDeserializationContext
 import com.google.gson.JsonDeserializer
 import com.google.gson.JsonElement
 import com.google.gson.JsonObject
 import com.szymanski.myownlibrary.data.openLibraryAPI.models.Book
+import com.szymanski.myownlibrary.data.openLibraryAPI.models.BookInfo
 import com.szymanski.myownlibrary.data.openLibraryAPI.models.BookResult
 import java.lang.reflect.Type
 
@@ -15,7 +16,6 @@ class BookJsonDeserializer: JsonDeserializer<BookResult> {
         typeOfT: Type?,
         context: JsonDeserializationContext?
     ): BookResult {
-
         val bookInfo = json?.asJsonObject?.get(json.asJsonObject.keySet().first().toString())?.asJsonObject
 
         val authors = arrayListOf<String>()
@@ -31,7 +31,7 @@ class BookJsonDeserializer: JsonDeserializer<BookResult> {
                     authors,
                     extractYearFromData(ifNotNullGetStringValue(bookInfo,"publish_date")),
                     ifNotNullGetIntValue(bookInfo, "number_of_pages"),
-                    ifNotNullGetStringValue(bookInfo?.get("cover")?.asJsonObject, "medium")
+                    if(bookInfo?.has("cover")!!) ifNotNullGetStringValue(bookInfo.get("cover")?.asJsonObject, "medium") else ""
                 )
             )
         )
@@ -58,4 +58,5 @@ class BookJsonDeserializer: JsonDeserializer<BookResult> {
             data
         }
     }
+
 }

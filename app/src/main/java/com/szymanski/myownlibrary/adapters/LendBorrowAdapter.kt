@@ -26,6 +26,7 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 class LendBorrowAdapter(var activity: FragmentActivity?, var listeners: LendBorrowItemListeners): RecyclerView.Adapter<LendBorrowAdapter.RentViewHolder>() {
+
     private val rents by lazy { mutableListOf<FirebaseRent>()}
 
     fun setRents(firebaseRents: List<FirebaseRent>){
@@ -53,10 +54,12 @@ class LendBorrowAdapter(var activity: FragmentActivity?, var listeners: LendBorr
         @SuppressLint("SimpleDateFormat")
         fun bind(firebaseRent: FirebaseRent){
             with(itemView){
-                Glide.with(this)
-                    .load(ImageConverter.base64ToBitmap(firebaseRent.firebaseBook.cover))
-                    .error(R.drawable.books)
-                    .into(cover)
+                if(firebaseRent.firebaseBook.cover.isNotEmpty()){
+                    Glide.with(this)
+                        .load(ImageConverter.base64ToBitmap(firebaseRent.firebaseBook.cover))
+                        .error(R.drawable.books)
+                        .into(cover)
+                }
                 title.text = firebaseRent.firebaseBook.title
                 unit.text = Editable.Factory.getInstance().newEditable(firebaseRent.unit)
                 date.text = SimpleDateFormat("dd/MM/yyyy").format(firebaseRent.endDate.time)

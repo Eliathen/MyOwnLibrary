@@ -2,16 +2,21 @@ package com.szymanski.myownlibrary.viewModels
 
 
 import android.app.Application
+
 import android.graphics.Bitmap
 import android.graphics.drawable.Drawable
+
 import android.util.Base64
 import android.util.Log
+
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
+
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.target.CustomTarget
 import com.bumptech.glide.request.transition.Transition
+
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ValueEventListener
@@ -39,6 +44,7 @@ import kotlinx.coroutines.withContext
 import java.io.ByteArrayOutputStream
 import java.util.*
 
+
 class MainViewModel(application: Application): AndroidViewModel(application) {
     private val books = MutableLiveData<MutableList<FirebaseBook>>()
     private val lendBorrowBooks = MutableLiveData<MutableList<FirebaseRent>>()
@@ -55,11 +61,12 @@ class MainViewModel(application: Application): AndroidViewModel(application) {
         val readyIsbn = "isbn:" + isbn.trim().replace("-", "")
         viewModelScope.launch {
             val result = withContext(Dispatchers.IO){
-                runCatching{BookRepository.getBookByIsbn(readyIsbn)}
+                runCatching{
+                    BookRepository.getBookByIsbn(readyIsbn)
+                }
             }
             result.onSuccess {
                 saveBook(it.bookInfo.book)
-                isBookSave.value = true
             }
             result.onFailure {
                 error.value = NotFoundIsbn("book not found")
@@ -73,9 +80,8 @@ class MainViewModel(application: Application): AndroidViewModel(application) {
     fun markBookFromWishListAsOwn(firebaseBook: FirebaseBook){
 
     }
-    fun markBookAsReturn(firebaseRent: FirebaseRent): String {
+    fun markBookAsReturn(firebaseRent: FirebaseRent, position: Int): String {
         var message = ""
-        Log.d("MainViewModel", firebaseRent.key)
         val firebaseService = FirebaseServiceImpl()
             firebaseService.getBorrowedBookReference()
             .child(firebaseRent.key)
@@ -89,7 +95,6 @@ class MainViewModel(application: Application): AndroidViewModel(application) {
                     .setValue(false)
                     .addOnCompleteListener {
                         message = "Book has been marked successful"
-                        lendBorrowBooks.value?.remove(firebaseRent)
                     }
                     .addOnFailureListener {
                         message = it.message.toString()
@@ -128,7 +133,11 @@ class MainViewModel(application: Application): AndroidViewModel(application) {
     private fun saveBook(book: Book){
         firebaseService =
             FirebaseServiceImpl()
-
+        if(book.cover.isEmpty()){
+            val fireBook = BookConverter().toFirebaseBook(book, "")
+            firebaseService.saveMyBook(fireBook)
+            return
+        }
         Glide.with(getApplication<Application>().baseContext)
             .asBitmap()
             .load(book.cover)
