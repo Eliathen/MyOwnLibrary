@@ -14,6 +14,7 @@ import com.szymanski.myownlibrary.data.firebase.models.FirebaseBook
 import kotlinx.android.synthetic.main.wishlist_item.view.*
 
 class WishListAdapter(private val listener: ClickListener): RecyclerView.Adapter<WishListAdapter.ItemViewHolder>() {
+
     private val books = mutableListOf<FirebaseBook>()
 
     fun setBooks(firebaseBooks: MutableList<FirebaseBook>){
@@ -43,10 +44,12 @@ class WishListAdapter(private val listener: ClickListener): RecyclerView.Adapter
 
         fun bind(firebaseBook: FirebaseBook){
             with(itemView){
-                Glide.with(this)
-                    .load(firebaseBook.cover)
-                    .error(R.drawable.books)
-                    .into(wishItemCover)
+                if(firebaseBook.cover.isNotEmpty()){
+                    Glide.with(this)
+                        .load(firebaseBook.cover)
+                        .error(R.drawable.books)
+                        .into(wishItemCover)
+                }
                 wishItemTitle.text = firebaseBook.title
                 wishItemAuthors.text = firebaseBook.authors.toString()
                 itemOptions.setOnClickListener(this@ItemViewHolder)

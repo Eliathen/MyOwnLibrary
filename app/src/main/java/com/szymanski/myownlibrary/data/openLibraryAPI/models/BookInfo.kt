@@ -1,6 +1,6 @@
+package com.szymanski.myownlibrary.data.openLibraryAPI.models
 
 import com.google.gson.annotations.SerializedName
-import com.szymanski.myownlibrary.data.openLibraryAPI.models.Book
 
 data class BookInfo (
     @SerializedName("details")

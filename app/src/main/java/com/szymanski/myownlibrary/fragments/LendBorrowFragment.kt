@@ -2,6 +2,7 @@ package com.szymanski.myownlibrary.fragments
 
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -21,9 +22,11 @@ import kotlinx.android.synthetic.main.fragment_lend_borrow.view.*
  * A simple [Fragment] subclass.
  */
 class LendBorrowFragment : Fragment(), LendBorrowAdapter.LendBorrowItemListeners {
+
     private lateinit var viewModel: MainViewModel
     private lateinit var lendBorrowAdapter: LendBorrowAdapter
     private lateinit var rootView: View
+
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -32,17 +35,22 @@ class LendBorrowFragment : Fragment(), LendBorrowAdapter.LendBorrowItemListeners
         rootView = inflater.inflate(R.layout.fragment_lend_borrow, container, false)
 
         viewModel = ViewModelProvider(requireActivity()).get(MainViewModel::class.java)
-
         initRecyclerView(rootView)
-        initDataValue(rootView)
         viewModel.getLendBorrowListFromDatabase()
+        initDataValue()
         return rootView
     }
 
-    private fun initDataValue(rootView: View) {
+    private fun initDataValue() {
         this.activity?.let {
             viewModel.getLendBorrowBooks().observe(it, Observer<List<FirebaseRent>> { rents ->
-                lendBorrowAdapter.setRents(rents)
+                if(rents.isEmpty()){
+                    rootView.lendBorrowBooks.visibility = View.GONE
+                    rootView.lendBorrowProgressBar.visibility = View.GONE
+                } else {
+                    lendBorrowAdapter.setRents(rents)
+                    rootView.lendBorrowBooks.visibility = View.VISIBLE
+                }
             })
             viewModel.getLendBorrowLoaded().observe(it, Observer { isLoaded ->
                 if (isLoaded) {
@@ -62,7 +70,8 @@ class LendBorrowFragment : Fragment(), LendBorrowAdapter.LendBorrowItemListeners
     }
 
     override fun markBookAsReturn(view: View?, position: Int) {
-        val result = viewModel.getLendBorrowBooks().value?.get(position)?.let { viewModel.markBookAsReturn(it) }
+        val result = viewModel.getLendBorrowBooks()
+            .value?.get(position)?.let { viewModel.markBookAsReturn(it, position) }
             if (result != null) {
                 displayResultToastMessage(result)
             }

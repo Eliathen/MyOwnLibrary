@@ -127,10 +127,12 @@ class BookDetailsActivity : AppCompatActivity() {
     private fun loadDetails(){
         val book = bookDetailsViewModel.getBook().value!!
         bookDetailsTitle.text = book.title
-        Glide.with(this)
-            .load(ImageConverter.base64ToBitmap(book.cover))
-            .error(R.drawable.books)
-            .into(bookDetailsCover)
+        if(book.cover.isNotEmpty()){
+            Glide.with(this)
+                .load(ImageConverter.base64ToBitmap(book.cover))
+                .error(R.drawable.books)
+                .into(bookDetailsCover)
+        }
         bookDetailsAuthors.text = book.authors
                 .toString()
                 .substring(1,book.authors.toString().length-1)

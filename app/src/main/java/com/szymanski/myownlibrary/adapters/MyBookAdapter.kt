@@ -26,6 +26,8 @@ import com.szymanski.myownlibrary.data.firebase.models.FirebaseBook
 
 import kotlinx.android.synthetic.main.my_book_item.view.*
 
+import android.util.Log
+
 class MyBookAdapter(var activity: FragmentActivity?, var onBookItemListener: OnBookItemListener): RecyclerView.Adapter<MyBookAdapter.MyBookViewHolder>() {
     private val books by lazy { mutableListOf<FirebaseBook>()}
 
@@ -57,31 +59,33 @@ class MyBookAdapter(var activity: FragmentActivity?, var onBookItemListener: OnB
             with(itemView){
                 val cover = firebaseBook.cover
                 imageProgressBar.visibility = View.VISIBLE
-                Glide.with(this)
-                    .load(ImageConverter.base64ToBitmap(cover))
-                    .listener(object: RequestListener<Drawable>{
-                        override fun onLoadFailed(
-                            e: GlideException?,
-                            model: Any?,
-                            target: Target<Drawable>?,
-                            isFirstResource: Boolean
-                        ): Boolean {
-                            return false
-                        }
+                if(cover.isNotEmpty()) {
+                    Glide.with(this)
+                        .load(ImageConverter.base64ToBitmap(cover))
+                        .listener(object : RequestListener<Drawable> {
+                            override fun onLoadFailed(
+                                e: GlideException?,
+                                model: Any?,
+                                target: Target<Drawable>?,
+                                isFirstResource: Boolean
+                            ): Boolean {
+                                return false
+                            }
 
-                        override fun onResourceReady(
-                            resource: Drawable?,
-                            model: Any?,
-                            target: Target<Drawable>?,
-                            dataSource: DataSource?,
-                            isFirstResource: Boolean
-                        ): Boolean {
-                            imageProgressBar.visibility = View.INVISIBLE
-                            return false
-                        }
-                    })
-                    .error(R.drawable.books)
-                    .into(bookCover)
+                            override fun onResourceReady(
+                                resource: Drawable?,
+                                model: Any?,
+                                target: Target<Drawable>?,
+                                dataSource: DataSource?,
+                                isFirstResource: Boolean
+                            ): Boolean {
+                                imageProgressBar.visibility = View.INVISIBLE
+                                return false
+                            }
+                        })
+                        .error(R.drawable.books)
+                        .into(bookCover)
+                }
                 bookTitle.text = firebaseBook.title
                 bookAuthors.text = SpannableStringBuilder(firebaseBook.authors.toString().substring(1,firebaseBook.authors.toString().length-1))
                 bookYear.text = firebaseBook.publishedYear

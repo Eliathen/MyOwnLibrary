@@ -63,14 +63,14 @@ class IsbnSearchFragment : Fragment() {
         }
     }
 
-    override fun onDestroyView() {
-        super.onDestroyView()
-        //TODO("Remove Observer")
-        Log.d("ISBN", "DestroyView")
-        mainViewModel.getIsBookSaved().removeObserver {
-            bookSavedObserver
-        }
-    }
+//    override fun onDestroyView() {
+//        super.onDestroyView()
+//        //TODO("Remove Observer")
+//        Log.d("ISBN", "DestroyView")
+//        mainViewModel.getIsBookSaved().removeObserver {
+//            bookSavedObserver
+//        }
+//    }
     inner class BookSavedObserver: Observer<Boolean>{
         override fun onChanged(t: Boolean) {
             if (t) {

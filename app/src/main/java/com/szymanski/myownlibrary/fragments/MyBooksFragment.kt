@@ -40,7 +40,6 @@ import kotlinx.android.synthetic.main.fragment_my_books.view.myBooks
  */
 class MyBooksFragment : Fragment(), ViewModelStoreOwner, MyBookAdapter.OnBookItemListener {
 
-    private val EDIT_BOOK_REQUEST = 1
     private lateinit var viewModel: MainViewModel
     private lateinit var myBooksAdapter: MyBookAdapter
 
