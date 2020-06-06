@@ -48,11 +48,11 @@ class WishListAdapter(private val listener: ClickListener): RecyclerView.Adapter
                     Glide.with(this)
                         .load(firebaseBook.cover)
                         .error(R.drawable.books)
-                        .into(wishItemCover)
+                        .into(resultItemCover)
                 } else {
                     Glide.with(this)
                         .load(R.drawable.books)
-                        .into(wishItemCover)
+                        .into(resultItemCover)
                 }
                 wishItemTitle.text = firebaseBook.title
                 wishItemAuthors.text = firebaseBook.authors.toString()

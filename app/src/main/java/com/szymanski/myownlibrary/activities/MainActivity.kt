@@ -84,7 +84,6 @@ class MainActivity : AppCompatActivity() {
                     }
 
                     override fun onMenuItemActionCollapse(item: MenuItem?): Boolean {
-                        Log.d("MainActivity", "XDDD")
                         mainViewModel.setBooks(mainViewModel.getBookCopy())
                         return true
                     }

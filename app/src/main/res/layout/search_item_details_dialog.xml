@@ -22,7 +22,7 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/bookDetailsTitle"
                 android:layout_marginTop="20dp"
-                tools:srcCompat="@drawable/books" />
+                android:src = "@drawable/blank_cover" />
 
             <TextView
                 android:id="@+id/bookDetailsTitle"
