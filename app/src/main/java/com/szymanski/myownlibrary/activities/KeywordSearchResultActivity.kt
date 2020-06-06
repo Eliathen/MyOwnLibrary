@@ -1,5 +1,6 @@
 package com.szymanski.myownlibrary.activities
 
+import android.content.DialogInterface
 import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.util.Log
@@ -20,6 +21,7 @@ import com.bumptech.glide.load.DataSource
 import com.bumptech.glide.load.engine.GlideException
 import com.bumptech.glide.request.RequestListener
 import com.bumptech.glide.request.target.Target
+import com.google.android.material.snackbar.Snackbar
 
 import com.szymanski.myownlibrary.R
 import com.szymanski.myownlibrary.adapters.SearchResultAdapter
@@ -28,7 +30,9 @@ import com.szymanski.myownlibrary.data.openLibraryAPI.models.SearchBook
 import com.szymanski.myownlibrary.viewModels.KeywordSearchResultViewModel
 
 import kotlinx.android.synthetic.main.activity_keyword_search_result.*
+import kotlinx.android.synthetic.main.keyword_search_result_item.*
 import kotlinx.android.synthetic.main.keyword_search_result_item.view.*
+import kotlinx.android.synthetic.main.keyword_search_result_item.view.saveBookProgressBar
 import kotlinx.android.synthetic.main.search_item_details_dialog.*
 
 class KeywordSearchResultActivity : AppCompatActivity(), SearchResultAdapter.OnItemListener {
@@ -36,6 +40,8 @@ class KeywordSearchResultActivity : AppCompatActivity(), SearchResultAdapter.OnI
     private lateinit var searchResultAdapter: SearchResultAdapter
 
     private var books: ArrayList<Book> = ArrayList()
+
+    private lateinit var bookDetails: AlertDialog
 
     private lateinit var viewModel: KeywordSearchResultViewModel
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -63,6 +69,12 @@ class KeywordSearchResultActivity : AppCompatActivity(), SearchResultAdapter.OnI
                 searchBookDetailsProgressBar.visibility = View.VISIBLE
             }
         })
+        viewModel.getResult().observe(this, Observer {
+            displayResultDialog(it)
+            saveBookProgressBar.visibility = View.GONE
+            bookDetails.progressBar.visibility = View.GONE
+
+        })
     }
 
     private fun initRecyclerView() {
@@ -80,19 +92,20 @@ class KeywordSearchResultActivity : AppCompatActivity(), SearchResultAdapter.OnI
         }
     }
 
-    override fun saveBook(position: Int) {
-        Toast.makeText(this, "Clicked button saveBook", Toast.LENGTH_SHORT).show()
+    override fun saveBook(v: View, position: Int) {
+        saveBookProgressBar.visibility = View.VISIBLE
+        viewModel.getSearchResult().value?.get(position)?.let { viewModel.saveBook(it) }
     }
 
     private fun createDetailsDialog(book: SearchBook) {
-        val alertDialog: AlertDialog = this.let{
+        bookDetails = this.let{
             val builder = AlertDialog.Builder(it)
             builder.apply{
                 setView(this@KeywordSearchResultActivity.layoutInflater.inflate(R.layout.search_item_details_dialog, null))
             }.create()
         }
-        alertDialog.show()
-        loadDataToDialogDetails(alertDialog, book)
+        bookDetails.show()
+        loadDataToDialogDetails(bookDetails, book)
     }
 
     private fun loadDataToDialogDetails(
@@ -120,8 +133,7 @@ class KeywordSearchResultActivity : AppCompatActivity(), SearchResultAdapter.OnI
                     dataSource: DataSource?,
                     isFirstResource: Boolean
                 ): Boolean {
-                    Log.d("KeywordSearchResult", resource?.intrinsicWidth.toString())
-                    if(resource?.intrinsicWidth == 300){
+                    if(resource?.intrinsicWidth == 600){
                         alertDialog.bookDetailsCover.setImageResource(R.drawable.blank_cover)
                         return true
                     }
@@ -131,8 +143,12 @@ class KeywordSearchResultActivity : AppCompatActivity(), SearchResultAdapter.OnI
             .into(alertDialog.bookDetailsCover)
         alertDialog.bookDetailsPublishedDate.text = book.year
         alertDialog.bookDetailsAuthors.text = book.authors.toString()
-        alertDialog.bookDetailsPages.text = book.pages.toString()
         alertDialog.bookDetailsIsbn.text = book.isbn
+        alertDialog.saveButton.setOnClickListener {
+            alertDialog.progressBar.visibility = View.VISIBLE
+            viewModel.saveBook(book)
+
+        }
     }
     private fun setSearchViewListeners(){
         searchView.setOnQueryTextListener(object: SearchView.OnQueryTextListener{
@@ -149,6 +165,21 @@ class KeywordSearchResultActivity : AppCompatActivity(), SearchResultAdapter.OnI
             }
 
         })
+    }
+    private fun displayResultDialog(message: String){
+        val alertDialog: AlertDialog = this.let{
+            val builder = AlertDialog.Builder(it)
+            builder.apply{
+                setTitle("Message")
+                setMessage(message)
+                setNeutralButton("OK") { _: DialogInterface, _: Int ->
+                    if(bookDetails!=null){
+                        bookDetails.cancel()
+                    }
+                }
+            }.create()
+        }
+        alertDialog.show()
     }
 
 }
