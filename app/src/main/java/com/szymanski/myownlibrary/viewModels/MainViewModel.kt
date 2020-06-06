@@ -40,6 +40,7 @@ import com.szymanski.myownlibrary.exceptions.NotFoundIsbn
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import okhttp3.internal.notifyAll
 
 import java.io.ByteArrayOutputStream
 import java.util.*
@@ -55,7 +56,7 @@ class MainViewModel(application: Application): AndroidViewModel(application) {
     private var isMyBookLoaded = MutableLiveData<Boolean>().apply{ value = false}
     private var isWishListLoaded = MutableLiveData<Boolean>().apply{ value = false}
     private var isLendBorrowLoaded = MutableLiveData<Boolean>().apply{ value = false}
-
+    private var booksCopy = mutableListOf<FirebaseBook>()
 
     fun searchBookByIsbn(isbn: String){
         val readyIsbn = "isbn:" + isbn.trim().replace("-", "")
@@ -108,26 +109,33 @@ class MainViewModel(application: Application): AndroidViewModel(application) {
     fun sortAllLists(type: SortType){
         val myBooks = books.value
         val wish = wishList.value
+        val lendBorrow = lendBorrowBooks.value
+
         when(type){
             SortType.TITLE_ASCENDING -> {
                 myBooks?.sortBy { it.title.toLowerCase(Locale.ROOT) }
                 wish?.sortBy { it.title.toLowerCase(Locale.ROOT) }
+                lendBorrow?.sortBy { it.firebaseBook.title.toLowerCase(Locale.ROOT) }
             }
             SortType.TITLE_DESCENDING -> {
                 myBooks?.sortByDescending { it.title.toLowerCase(Locale.ROOT) }
                 wish?.sortByDescending { it.title.toLowerCase(Locale.ROOT) }
+                lendBorrow?.sortByDescending { it.firebaseBook.title.toLowerCase(Locale.ROOT) }
             }
             SortType.PUBLISHED_YEAR_ASCENDING -> {
                 myBooks?.sortByDescending { it.publishedYear }
                 wish?.sortByDescending { it.publishedYear }
+                lendBorrow?.sortByDescending { it.endDate }
             }
             SortType.PUBLISHED_YEAR_DESCENDING -> {
                 myBooks?.sortBy { it.publishedYear }
                 wish?.sortBy { it.publishedYear }
+                lendBorrow?.sortBy { it.endDate }
             }
         }
-        myBooks?.let { books.value = it }
-        wish?.let { this.wishList.value = it}
+        myBooks?.let { this.books.value = it }
+        wish?.let { this.wishList.value = it }
+        lendBorrow?.let { this.lendBorrowBooks.value = it }
     }
 
     private fun saveBook(book: Book){
@@ -167,6 +175,7 @@ class MainViewModel(application: Application): AndroidViewModel(application) {
                     bookList.add(it.getValue(FirebaseBook::class.java)!!)
                 }
                 books.value = bookList
+                booksCopy = bookList
                 isMyBookLoaded.value = true
             }
         })
@@ -181,7 +190,6 @@ class MainViewModel(application: Application): AndroidViewModel(application) {
                     runCatching{
                         FirebaseServiceImpl().getBorrowedBookReference().addListenerForSingleValueEvent(object: ValueEventListener{
                             override fun onCancelled(p0: DatabaseError) {
-                                TODO("Not yet implemented")
                             }
                             override fun onDataChange(p0: DataSnapshot) {
                                 p0.children.forEach{
@@ -223,6 +231,9 @@ class MainViewModel(application: Application): AndroidViewModel(application) {
             }
         })
     }
+    fun setBooks(books: MutableList<FirebaseBook>){
+        this.books.value = books
+    }
     fun getBooks(): MutableLiveData<MutableList<FirebaseBook>>{
         return books
     }
@@ -252,5 +263,14 @@ class MainViewModel(application: Application): AndroidViewModel(application) {
     }
     fun getLendBorrowLoaded(): MutableLiveData<Boolean>{
         return isLendBorrowLoaded
+    }
+    fun getBookCopy(): MutableList<FirebaseBook>{
+        return booksCopy
+    }
+    fun setBookCopy(books: MutableList<FirebaseBook>){
+        if(booksCopy.isNotEmpty()){
+            booksCopy.clear()
+        }
+        booksCopy.addAll(books)
     }
 }

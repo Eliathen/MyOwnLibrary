@@ -55,18 +55,16 @@ class MyBooksFragment : Fragment(), ViewModelStoreOwner, MyBookAdapter.OnBookIte
         viewModel = ViewModelProvider(requireActivity()).get(MainViewModel::class.java)
         initRecyclerView(rootView)
         viewModel.getBookListFromDatabase()
-        this.activity?.let { fragmentActivity ->
-            viewModel.getBooks().observe(fragmentActivity, Observer<List<FirebaseBook>> { books->
-                myBooksAdapter.setBooks(books)
-            })
-            viewModel.getMyBookLoaded().observe(fragmentActivity, Observer{
-                if(it){
-                    rootView.myBookProgressBar.visibility = View.GONE
-                } else {
-                    rootView.myBookProgressBar.visibility = View.VISIBLE
-                }
-            })
-        }
+        viewModel.getBooks().observe(viewLifecycleOwner, Observer { books->
+            myBooksAdapter.setBooks(books)
+        })
+        viewModel.getMyBookLoaded().observe(viewLifecycleOwner, Observer{
+            if(it){
+                rootView.myBookProgressBar.visibility = View.GONE
+            } else {
+                rootView.myBookProgressBar.visibility = View.VISIBLE
+            }
+        })
 
         return rootView
     }
@@ -75,10 +73,8 @@ class MyBooksFragment : Fragment(), ViewModelStoreOwner, MyBookAdapter.OnBookIte
         val recyclerView = rootView.myBooks
         recyclerView.layoutManager = LinearLayoutManager(activity)
         val dividerItemDecoration = DividerItemDecoration(context, LinearLayoutManager.HORIZONTAL)
-
         recyclerView.addItemDecoration(dividerItemDecoration)
         this.myBooksAdapter = MyBookAdapter(activity, this)
-        viewModel.getBooks().value?.let { myBooksAdapter.setBooks(it) }
         recyclerView.adapter = myBooksAdapter
     }
 

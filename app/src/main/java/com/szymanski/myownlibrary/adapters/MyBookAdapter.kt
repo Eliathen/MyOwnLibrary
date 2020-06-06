@@ -27,6 +27,7 @@ import com.szymanski.myownlibrary.data.firebase.models.FirebaseBook
 import kotlinx.android.synthetic.main.my_book_item.view.*
 
 import android.util.Log
+import kotlinx.android.synthetic.main.lend_borrow_item.view.*
 
 class MyBookAdapter(var activity: FragmentActivity?, var onBookItemListener: OnBookItemListener): RecyclerView.Adapter<MyBookAdapter.MyBookViewHolder>() {
     private val books by lazy { mutableListOf<FirebaseBook>()}
@@ -84,6 +85,10 @@ class MyBookAdapter(var activity: FragmentActivity?, var onBookItemListener: OnB
                             }
                         })
                         .error(R.drawable.books)
+                        .into(bookCover)
+                } else {
+                    Glide.with(this)
+                        .load(R.drawable.books)
                         .into(bookCover)
                 }
                 bookTitle.text = firebaseBook.title

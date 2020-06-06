@@ -12,7 +12,7 @@
         android:layout_height="100dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:src="@drawable/books" />
+        android:src="@drawable/books" />
 
     <TextView
         android:id="@+id/wishItemTitle"

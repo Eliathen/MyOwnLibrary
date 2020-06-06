@@ -13,14 +13,11 @@ class BookDetailsViewModel: ViewModel() {
     private val firebaseBook: MutableLiveData<FirebaseBook> = MutableLiveData<FirebaseBook>()
 
 
-    public fun lendBook(unit: String, endDate: LocalDate){
-        //TODO("ADD book to rent books")
-    }
-    public fun setBook(firebaseBook:FirebaseBook){
+    fun setBook(firebaseBook:FirebaseBook){
         this.firebaseBook.value = firebaseBook
     }
 
-    public fun getBook(): MutableLiveData<FirebaseBook> {
+    fun getBook(): MutableLiveData<FirebaseBook> {
         return firebaseBook
     }
     fun markBookAsBorrowed(unit: String, date: Date): String {
