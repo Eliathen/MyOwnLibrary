@@ -84,7 +84,7 @@ class MyBookAdapter(var activity: FragmentActivity?, var onBookItemListener: OnB
                                 return false
                             }
                         })
-                        .error(R.drawable.books)
+                        .error(R.drawable.blank_cover)
                         .into(bookCover)
                 } else {
                     Glide.with(this)

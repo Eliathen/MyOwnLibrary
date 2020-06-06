@@ -142,7 +142,7 @@ class MainViewModel(application: Application): AndroidViewModel(application) {
         firebaseService =
             FirebaseServiceImpl()
         if(book.cover.isEmpty()){
-            val fireBook = BookConverter().toFirebaseBook(book, "")
+            val fireBook = BookConverter.toFirebaseBook(book, "")
             firebaseService.saveMyBook(fireBook)
             return
         }
@@ -156,7 +156,7 @@ class MainViewModel(application: Application): AndroidViewModel(application) {
                     val stream = ByteArrayOutputStream()
                     if(resource.compress(Bitmap.CompressFormat.PNG, 100, stream)) {
                         val image = Base64.encodeToString(stream.toByteArray(), Base64.DEFAULT)
-                        val fireBook = BookConverter().toFirebaseBook(book, image)
+                        val fireBook = BookConverter.toFirebaseBook(book, image)
                         firebaseService.saveMyBook(fireBook)
                     }
                 }

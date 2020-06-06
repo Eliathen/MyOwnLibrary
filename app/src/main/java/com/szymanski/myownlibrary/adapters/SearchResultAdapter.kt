@@ -88,7 +88,7 @@ class SearchResultAdapter(private val onItemListener: OnItemListener): RecyclerV
                     .into(resultItemCover)
                 searchTitle.text = book.title
                 searchAuthors.text = getAuthors(book.authors)
-                saveBookButton.setOnClickListener { onItemListener.saveBook(adapterPosition) }
+                saveBookButton.setOnClickListener { onItemListener.saveBook(this, adapterPosition) }
                 this.setOnClickListener(this@ViewHolder)
             }
         }
@@ -107,6 +107,6 @@ class SearchResultAdapter(private val onItemListener: OnItemListener): RecyclerV
 
     interface OnItemListener{
         fun onItemClick(position: Int)
-        fun saveBook(position: Int)
+        fun saveBook(v: View, position: Int)
     }
 }

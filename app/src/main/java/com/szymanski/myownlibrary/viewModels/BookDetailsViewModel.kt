@@ -27,7 +27,6 @@ class BookDetailsViewModel: ViewModel() {
             isLent = false,
             isFinished = false
         )
-        Log.d("BookDetails", "Start = ${rent.startDate}, End = ${rent.endDate}")
         return firebaseService.markBookAsBorrowed(rent)
 
     }
