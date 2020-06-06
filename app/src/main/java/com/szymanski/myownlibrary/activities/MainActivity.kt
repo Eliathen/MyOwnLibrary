@@ -14,6 +14,8 @@ import androidx.appcompat.app.AlertDialog
 
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
+import androidx.core.view.get
+import androidx.fragment.app.findFragment
 
 import androidx.lifecycle.ViewModelProvider
 
@@ -24,9 +26,12 @@ import com.google.android.material.tabs.TabLayoutMediator
 import com.szymanski.myownlibrary.R
 import com.szymanski.myownlibrary.SortType
 import com.szymanski.myownlibrary.adapters.PagerAdapter
+import com.szymanski.myownlibrary.data.firebase.models.FirebaseBook
+import com.szymanski.myownlibrary.fragments.MyBooksFragment
 import com.szymanski.myownlibrary.viewModels.MainViewModel
 
 import kotlinx.android.synthetic.main.activity_main.*
+import java.util.*
 
 class MainActivity : AppCompatActivity() {
     private var doubleBackToExitPressedOnce = false
@@ -42,15 +47,49 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.main_activity_menu, menu)
-        val searchButton = menu?.findItem(R.id.searchButton)?.actionView as SearchView
-        searchButton.maxWidth = 700
+        val searchView = menu?.findItem(R.id.searchButton)?.actionView as SearchView
+        searchView.maxWidth = 700
         return (super.onCreateOptionsMenu(menu))
     }
-
+    private fun searchBook(item: MenuItem){
+        val searchView = item.actionView as SearchView
+        searchView.setOnQueryTextListener(object: SearchView.OnQueryTextListener{
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                mainViewModel.setBooks(mainViewModel.getBookCopy())
+                val searchResult = mutableListOf<FirebaseBook>()
+                mainViewModel.getBooks().value?.forEach { firebaseBook ->
+                    if(query?.let { q ->
+                            firebaseBook.title.toLowerCase(Locale.ROOT)
+                                .contains(q.toLowerCase(Locale.ROOT))}!!) {
+                        searchResult.add(firebaseBook)
+                    }
+                }
+                mainViewModel.setBooks(searchResult)
+                return true
+            }
+            override fun onQueryTextChange(newText: String?): Boolean {
+                return false
+            }
+        })
+    }
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when(item.itemId){
             R.id.searchButton -> {
-                Log.i("MainActivity", "Search button clicked")
+                item.setOnActionExpandListener(object: MenuItem.OnActionExpandListener{
+                    override fun onMenuItemActionExpand(item: MenuItem?): Boolean {
+                        if (item != null) {
+                            searchBook(item)
+                        }
+                        return true
+                    }
+
+                    override fun onMenuItemActionCollapse(item: MenuItem?): Boolean {
+                        Log.d("MainActivity", "XDDD")
+                        mainViewModel.setBooks(mainViewModel.getBookCopy())
+                        return true
+                    }
+
+                })
                 true
             }
             R.id.sortButton -> {
@@ -58,7 +97,6 @@ class MainActivity : AppCompatActivity() {
                 true
             }
             R.id.helpButton -> {
-                Log.i("MainActivity", "Help button clicked")
                 val intent = Intent(this,
                     HelpActivity::class.java)
                 startActivity(intent)

@@ -38,6 +38,7 @@ class LendBorrowFragment : Fragment(), LendBorrowAdapter.LendBorrowItemListeners
         initRecyclerView(rootView)
         viewModel.getLendBorrowListFromDatabase()
         initDataValue()
+
         return rootView
     }
 

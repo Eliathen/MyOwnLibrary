@@ -15,7 +15,7 @@
         android:layout_height="90dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/books" />
+        android:src="@drawable/books" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="0dp"

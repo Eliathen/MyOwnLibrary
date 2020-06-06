@@ -10,8 +10,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 
-import android.widget.Toast
-
 import androidx.fragment.app.FragmentActivity
 
 import androidx.recyclerview.widget.RecyclerView
@@ -23,7 +21,6 @@ import com.szymanski.myownlibrary.converters.ImageConverter
 
 import kotlinx.android.synthetic.main.lend_borrow_item.view.*
 import java.text.SimpleDateFormat
-import java.util.*
 
 class LendBorrowAdapter(var activity: FragmentActivity?, var listeners: LendBorrowItemListeners): RecyclerView.Adapter<LendBorrowAdapter.RentViewHolder>() {
 
@@ -58,6 +55,10 @@ class LendBorrowAdapter(var activity: FragmentActivity?, var listeners: LendBorr
                     Glide.with(this)
                         .load(ImageConverter.base64ToBitmap(firebaseRent.firebaseBook.cover))
                         .error(R.drawable.books)
+                        .into(cover)
+                } else {
+                    Glide.with(this)
+                        .load(R.drawable.books)
                         .into(cover)
                 }
                 title.text = firebaseRent.firebaseBook.title
