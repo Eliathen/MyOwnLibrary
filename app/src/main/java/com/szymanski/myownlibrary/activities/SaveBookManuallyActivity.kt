@@ -172,10 +172,15 @@ class SaveBookManuallyActivity : AppCompatActivity() {
         val editableFactory = Editable.Factory.getInstance()
         bookTitle.text = editableFactory.newEditable(book.title)
         authorsAdapter.setAuthors(book.authors as ArrayList<String>)
-        val image = ImageConverter.base64ToBitmap(book.cover)
-        Glide.with(cover)
-            .load(image)
-            .into(cover)
+        if(book.cover.isNotEmpty()){
+            Glide.with(cover)
+                .load(ImageConverter.base64ToBitmap(book.cover))
+                .into(cover)
+        } else {
+            Glide.with(cover)
+                .load(R.drawable.books)
+                .into(cover)
+        }
         isbn.text = editableFactory.newEditable(book.isbn)
         publishedYear.text = editableFactory.newEditable(book.publishedYear)
         pages.text = editableFactory.newEditable(book.pageCount.toString())

@@ -1,6 +1,5 @@
-package com.szymanski.myownlibrary.data.openLibraryAPI
+package com.szymanski.myownlibrary.data.openLibraryAPI.jsonDeserializers
 
-import android.util.Log
 import com.google.gson.JsonDeserializationContext
 import com.google.gson.JsonDeserializer
 import com.google.gson.JsonElement

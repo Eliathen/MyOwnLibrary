@@ -4,32 +4,42 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="5dp"
-    android:background="@drawable/search_list_item_background"
     xmlns:tools="http://schemas.android.com/tools">
 
     <ImageView
-        android:id="@+id/wishItemCover"
+        android:id="@+id/resultItemCover"
         android:layout_width="100dp"
         android:layout_height="100dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:src="@drawable/books" />
+        android:src = "@drawable/blank_cover" />
 
+    <ProgressBar
+        android:id="@+id/loadCoverProgressBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="@+id/resultItemCover"
+        app:layout_constraintEnd_toEndOf="@+id/resultItemCover"
+        app:layout_constraintStart_toStartOf="@+id/resultItemCover"
+        app:layout_constraintTop_toTopOf="@+id/resultItemCover"
+        android:visibility="visible"/>
     <TextView
         android:id="@+id/searchTitle"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:textColor="@color/colorSecondaryText"
         app:layout_constraintEnd_toStartOf="@+id/linearLayout2"
-        app:layout_constraintStart_toEndOf="@id/wishItemCover"
-        app:layout_constraintTop_toTopOf="@id/wishItemCover"
+        app:layout_constraintStart_toEndOf="@id/resultItemCover"
+        app:layout_constraintTop_toTopOf="@id/resultItemCover"
         tools:text="Title" />
 
     <TextView
         android:id="@+id/searchAuthors"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintBottom_toBottomOf="@+id/wishItemCover"
-        app:layout_constraintStart_toEndOf="@+id/wishItemCover"
+        android:textColor="@color/colorSecondaryText"
+        app:layout_constraintBottom_toBottomOf="@+id/resultItemCover"
+        app:layout_constraintStart_toEndOf="@+id/resultItemCover"
         tools:text="Authors" />
 
     <LinearLayout
