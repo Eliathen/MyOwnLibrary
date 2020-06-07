@@ -4,6 +4,7 @@ import android.app.Application
 import android.graphics.Bitmap
 import android.graphics.drawable.Drawable
 import android.util.Base64
+import android.util.Log
 
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
@@ -27,11 +28,15 @@ class KeywordSearchResultViewModel(application: Application): AndroidViewModel(a
 
     private val searchResult = MutableLiveData<MutableList<SearchBook>>()
 
-    private val isDataLoaded = MutableLiveData<Boolean>().apply{ value = false}
+    private val isDataLoaded = MutableLiveData<Boolean>().apply { value = false }
 
-    private val result = MutableLiveData<String>()
+    private val isBookSave = MutableLiveData<String>()
 
-    fun findBooks(keyword: String){
+    private val isBookSaveByDetails = MutableLiveData<String>()
+
+    private val isBookAddToWishList = MutableLiveData<String>()
+
+    fun findBooks(keyword: String) {
         isDataLoaded.value = false
         viewModelScope.launch {
             withContext(Dispatchers.IO) {
@@ -49,53 +54,124 @@ class KeywordSearchResultViewModel(application: Application): AndroidViewModel(a
 
         }
     }
-    fun saveBook(searchBook: SearchBook){
+
+    fun saveBook(
+        searchBook: SearchBook,
+        isBookSavedByDetailsDialog: Boolean
+    ) {
         val firebaseService = FirebaseServiceImpl()
-        var message = ""
+        var message = "Success"
         viewModelScope.launch {
-            withContext(Dispatchers.IO){
-                kotlin.runCatching {
+            withContext(Dispatchers.IO) {
+                val result = kotlin.runCatching {
                     val book = BookRepository.getBookByIsbn(searchBook.isbn).bookInfo.book
-                    if(book.cover.isEmpty()){
+                    if (book.cover.isEmpty()) {
                         val fireBook = BookConverter.toFirebaseBook(book, "")
-                        result.postValue(firebaseService.saveMyBook(fireBook))
-
+                        return@runCatching firebaseService.saveMyBook(fireBook)
+                    }
+                    Glide.with(getApplication<Application>().baseContext)
+                        .asBitmap()
+                        .load(book.cover)
+                        .into(object : CustomTarget<Bitmap>() {
+                            override fun onLoadCleared(placeholder: Drawable?) {
+                            }
+                            override fun onResourceReady(
+                                resource: Bitmap,
+                                transition: Transition<in Bitmap>?
+                            ) {
+                                val stream = ByteArrayOutputStream()
+                                if (resource.compress(Bitmap.CompressFormat.PNG, 100, stream)) {
+                                    val image = Base64.encodeToString(
+                                        stream.toByteArray(),
+                                        Base64.DEFAULT
+                                    )
+                                    val fireBook = BookConverter.toFirebaseBook(book, image)
+                                    message = firebaseService.saveMyBook(fireBook)
+                                }
+                            }
+                        })
+                        return@runCatching message
+                }
+                result.onSuccess {
+                    searchBook.isBookSaved = true
+                    if(!isBookSavedByDetailsDialog){
+                        isBookSave.postValue(message)
                     } else {
-                        Glide.with(getApplication<Application>().baseContext)
-                            .asBitmap()
-                            .load(book.cover)
-                            .into(object : CustomTarget<Bitmap>() {
-                                override fun onLoadCleared(placeholder: Drawable?) {
-                                }
-
-                                override fun onResourceReady(
-                                    resource: Bitmap,
-                                    transition: Transition<in Bitmap>?
-                                ) {
-                                    val stream = ByteArrayOutputStream()
-                                    if (resource.compress(Bitmap.CompressFormat.PNG, 100, stream)) {
-                                        val image = Base64.encodeToString(
-                                            stream.toByteArray(),
-                                            Base64.DEFAULT
-                                        )
-                                        val fireBook = BookConverter.toFirebaseBook(book, image)
-                                        result.postValue(firebaseService.saveMyBook(fireBook))
-                                    }
-                                }
-                            })
+                        isBookSaveByDetails.postValue(message)
                     }
                 }
-
+                result.onFailure {
+                    if(!isBookSavedByDetailsDialog){
+                        isBookSave.postValue(message)
+                    } else {
+                        isBookSaveByDetails.postValue(message)
+                    }
+                }
             }
         }
     }
-    fun getSearchResult(): MutableLiveData<MutableList<SearchBook>>{
+    fun addBookToWishList(searchBook: SearchBook){
+        val firebaseService = FirebaseServiceImpl()
+        viewModelScope.launch {
+            withContext(Dispatchers.IO){
+                val book = BookRepository.getBookByIsbn(searchBook.isbn).bookInfo.book
+                if(book.cover.isNotEmpty()){
+                    Glide.with(getApplication<Application>().baseContext)
+                        .asBitmap()
+                        .load(book.cover)
+                        .into(object: CustomTarget<Bitmap>(){
+                            override fun onLoadCleared(placeholder: Drawable?) {
+                            }
+                            override fun onResourceReady(resource: Bitmap, transition: Transition<in Bitmap>?) {
+                                Log.d("KeyWord", "OnResourceReady")
+                                val stream = ByteArrayOutputStream()
+                                if(resource.compress(Bitmap.CompressFormat.PNG, 100, stream)) {
+                                    val image = Base64.encodeToString(stream.toByteArray(), Base64.DEFAULT)
+                                    val fireBook = BookConverter.toFirebaseBook(book, image)
+                                    firebaseService.getWishListReference().child(searchBook.isbn).setValue(fireBook)
+                                        .addOnSuccessListener {
+                                            searchBook.isBookInWishList = true
+                                            isBookAddToWishList.value = "Success"
+                                        }
+                                        .addOnFailureListener {
+                                            isBookAddToWishList.value = it.message
+                                        }
+                                }
+                            }
+                        })
+                } else {
+                    Log.d("KeyWord", "If cover is empty")
+
+                    firebaseService.getWishListReference().child(searchBook.isbn).setValue(BookConverter.toFirebaseBook(book, ""))
+                        .addOnSuccessListener {
+                            searchBook.isBookInWishList = true
+                            isBookAddToWishList.value = "Success"
+                        }
+                        .addOnFailureListener {
+                            isBookAddToWishList.value = it.message
+                        }
+                }
+            }
+        }
+
+
+    }
+    fun getSearchResult(): MutableLiveData<MutableList<SearchBook>> {
         return searchResult
     }
-    fun getDataLoaded(): MutableLiveData<Boolean>{
+
+    fun getDataLoaded(): MutableLiveData<Boolean> {
         return isDataLoaded
     }
-    fun getResult(): MutableLiveData<String>{
-        return result
+
+    fun getBookSaved(): MutableLiveData<String> {
+        return isBookSave
     }
+    fun getBookSavedByDetails(): MutableLiveData<String> {
+        return isBookSaveByDetails
+    }
+    fun getBookAddToWishList(): MutableLiveData<String>{
+        return isBookAddToWishList
+    }
+
 }

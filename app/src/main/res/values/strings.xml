@@ -115,7 +115,7 @@
     <string-array name="sort_options">
         <item>Title ascending</item>
         <item>Title descending</item>
-        <item>Publish year ascending</item>
-        <item>Publish year descending</item>
+        <item>Date ascending</item>
+        <item>Date descending</item>
     </string-array>
 </resources>

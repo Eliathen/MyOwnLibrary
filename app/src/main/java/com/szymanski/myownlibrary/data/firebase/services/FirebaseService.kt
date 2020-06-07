@@ -12,6 +12,8 @@ interface FirebaseService {
 
     fun getBorrowedBookReference(): DatabaseReference
 
+    fun getWishListReference(): DatabaseReference
+
     fun removeBook(book: FirebaseBook): String
 
     fun markBookAsBorrowed(rent: FirebaseRent): String

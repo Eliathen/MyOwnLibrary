@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 
 import com.szymanski.myownlibrary.R
+import com.szymanski.myownlibrary.converters.ImageConverter
 import com.szymanski.myownlibrary.data.firebase.models.FirebaseBook
 
 import kotlinx.android.synthetic.main.wishlist_item.view.*
@@ -46,12 +47,13 @@ class WishListAdapter(private val listener: ClickListener): RecyclerView.Adapter
             with(itemView){
                 if(firebaseBook.cover.isNotEmpty()){
                     Glide.with(this)
-                        .load(firebaseBook.cover)
-                        .error(R.drawable.books)
+                        .asBitmap()
+                        .load(ImageConverter.base64ToBitmap(firebaseBook.cover))
+                        .error(R.drawable.blank_cover)
                         .into(resultItemCover)
                 } else {
                     Glide.with(this)
-                        .load(R.drawable.books)
+                        .load(R.drawable.blank_cover)
                         .into(resultItemCover)
                 }
                 wishItemTitle.text = firebaseBook.title

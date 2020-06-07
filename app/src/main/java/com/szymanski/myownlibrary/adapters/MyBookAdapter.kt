@@ -88,7 +88,7 @@ class MyBookAdapter(var activity: FragmentActivity?, var onBookItemListener: OnB
                         .into(bookCover)
                 } else {
                     Glide.with(this)
-                        .load(R.drawable.books)
+                        .load(R.drawable.blank_cover)
                         .into(bookCover)
                 }
                 bookTitle.text = firebaseBook.title
