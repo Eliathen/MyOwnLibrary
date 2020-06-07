@@ -9,11 +9,14 @@ import android.widget.PopupMenu
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.android.material.snackbar.Snackbar
 import com.szymanski.myownlibrary.R
 import com.szymanski.myownlibrary.adapters.WishListAdapter
 import com.szymanski.myownlibrary.data.firebase.models.FirebaseBook
 import com.szymanski.myownlibrary.viewModels.MainViewModel
+import kotlinx.android.synthetic.main.fragment_wish_list.*
 import kotlinx.android.synthetic.main.fragment_wish_list.view.*
+import kotlinx.android.synthetic.main.fragment_wish_list.view.wishListContainer
 
 /**
  * A simple [Fragment] subclass.
@@ -43,28 +46,11 @@ class WishListFragment : Fragment(), WishListAdapter.ClickListener {
                 }
             })
         }
+        viewModel.getWishListFromDatabase()
         return rootView
     }
 
     private fun initRecyclerView(rootView: View) {
-        val books = arrayListOf<FirebaseBook>()
-        val book = FirebaseBook("9780641723445",
-            "The lightning thief",
-            arrayListOf("Rick Riordan"),
-            "2005",
-            377,
-            "https://covers.openlibrary.org/b/id/7989100-M.jpg")
-        val book1 = FirebaseBook(
-            "9781857230765",
-            "The Eye of the World (Wheel of Time)",
-            arrayListOf("Robert Jordan"),
-            "1992",
-            377,
-            "https://covers.openlibrary.org/b/id/908780-M.jpg"
-        )
-            books.add(book)
-            books.add(book1)
-        viewModel.setWishList(books)
         val recyclerView = rootView.wishListBooks
         recyclerView.layoutManager = LinearLayoutManager(rootView.context)
         viewModel.getWishList().value?.let { wishListAdapter.setBooks(it) }
@@ -80,12 +66,15 @@ class WishListFragment : Fragment(), WishListAdapter.ClickListener {
                     viewModel.markBookFromWishListAsOwn(viewModel.getWishList().value?.get(position)!!)
                 }
                 R.id.removeItem -> {
-                    viewModel.removeBookFromWishList(viewModel.getWishList().value?.get(position)!!)
+                    var message = viewModel.removeBookFromWishList(viewModel.getWishList().value?.get(position)!!)
+                    displaySnackBar(message)
                 }
             }
             true
         }
         popupMenu.show()
     }
-
+    fun displaySnackBar(message:String){
+        Snackbar.make(this.wishListContainer, message, Snackbar.LENGTH_SHORT).show()
+    }
 }

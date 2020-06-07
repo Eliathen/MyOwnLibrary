@@ -4,7 +4,6 @@ import android.content.Intent
 
 import android.os.Bundle
 import android.os.Handler
-import android.util.Log
 
 import android.view.Menu
 import android.view.MenuItem
@@ -14,8 +13,6 @@ import androidx.appcompat.app.AlertDialog
 
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
-import androidx.core.view.get
-import androidx.fragment.app.findFragment
 
 import androidx.lifecycle.ViewModelProvider
 
@@ -27,7 +24,6 @@ import com.szymanski.myownlibrary.R
 import com.szymanski.myownlibrary.SortType
 import com.szymanski.myownlibrary.adapters.PagerAdapter
 import com.szymanski.myownlibrary.data.firebase.models.FirebaseBook
-import com.szymanski.myownlibrary.fragments.MyBooksFragment
 import com.szymanski.myownlibrary.viewModels.MainViewModel
 
 import kotlinx.android.synthetic.main.activity_main.*
@@ -144,8 +140,8 @@ class MainActivity : AppCompatActivity() {
                 currentChoice = when(id){
                     0 -> SortType.TITLE_ASCENDING
                     1 -> SortType.TITLE_DESCENDING
-                    2 -> SortType.PUBLISHED_YEAR_ASCENDING
-                    3 -> SortType.PUBLISHED_YEAR_DESCENDING
+                    2 -> SortType.DATE_ASCENDING
+                    3 -> SortType.DATE_DESCENDING
                     else -> SortType.TITLE_ASCENDING
                 }
             }

@@ -36,6 +36,14 @@ class FirebaseServiceImpl:
             .child(auth.uid.toString())
             .child("borrowedLent")
     }
+
+    override fun getWishListReference(): DatabaseReference {
+        return database.reference
+            .child("users")
+            .child(auth.uid.toString())
+            .child("wishList")
+    }
+
     override fun removeBook(book: FirebaseBook): String {
         var result = "Success"
         getMyBookReference().child(book.isbn).removeValue{
@@ -43,7 +51,6 @@ class FirebaseServiceImpl:
                 _: DatabaseReference ->
             if(databaseError != null){
                 result = databaseError.message
-            } else {
             }
         }
         return result

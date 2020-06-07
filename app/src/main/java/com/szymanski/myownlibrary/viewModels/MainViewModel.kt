@@ -40,7 +40,6 @@ import com.szymanski.myownlibrary.exceptions.NotFoundIsbn
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import okhttp3.internal.notifyAll
 
 import java.io.ByteArrayOutputStream
 import java.util.*
@@ -75,12 +74,6 @@ class MainViewModel(application: Application): AndroidViewModel(application) {
         }
     }
 
-    fun removeBookFromWishList(firebaseBook: FirebaseBook){
-
-    }
-    fun markBookFromWishListAsOwn(firebaseBook: FirebaseBook){
-
-    }
     fun markBookAsReturn(firebaseRent: FirebaseRent, position: Int): String {
         var message = ""
         val firebaseService = FirebaseServiceImpl()
@@ -122,12 +115,12 @@ class MainViewModel(application: Application): AndroidViewModel(application) {
                 wish?.sortByDescending { it.title.toLowerCase(Locale.ROOT) }
                 lendBorrow?.sortByDescending { it.firebaseBook.title.toLowerCase(Locale.ROOT) }
             }
-            SortType.PUBLISHED_YEAR_ASCENDING -> {
+            SortType.DATE_ASCENDING -> {
                 myBooks?.sortByDescending { it.publishedYear }
                 wish?.sortByDescending { it.publishedYear }
                 lendBorrow?.sortByDescending { it.endDate }
             }
-            SortType.PUBLISHED_YEAR_DESCENDING -> {
+            SortType.DATE_DESCENDING -> {
                 myBooks?.sortBy { it.publishedYear }
                 wish?.sortBy { it.publishedYear }
                 lendBorrow?.sortBy { it.endDate }
@@ -157,6 +150,7 @@ class MainViewModel(application: Application): AndroidViewModel(application) {
                     if(resource.compress(Bitmap.CompressFormat.PNG, 100, stream)) {
                         val image = Base64.encodeToString(stream.toByteArray(), Base64.DEFAULT)
                         val fireBook = BookConverter.toFirebaseBook(book, image)
+                        Log.d("OnResourceReady", fireBook.toString())
                         firebaseService.saveMyBook(fireBook)
                     }
                 }
@@ -180,6 +174,51 @@ class MainViewModel(application: Application): AndroidViewModel(application) {
             }
         })
     }
+    fun getWishListFromDatabase(){
+        isWishListLoaded.value = false
+        FirebaseServiceImpl().getWishListReference().addValueEventListener(object: ValueEventListener{
+            override fun onCancelled(p0: DatabaseError) {
+                isWishListLoaded.value = true
+            }
+            override fun onDataChange(p0: DataSnapshot) {
+                val bookList = mutableListOf<FirebaseBook>()
+                p0.children.forEach {
+                    bookList.add(it.getValue(FirebaseBook::class.java)!!)
+                }
+                wishList.value = bookList
+                isWishListLoaded.value = true
+            }
+
+        })
+    }
+    fun removeBookFromWishList(firebaseBook: FirebaseBook): String{
+        var result = "Success"
+        FirebaseServiceImpl().getWishListReference().child(firebaseBook.isbn).removeValue().addOnFailureListener {
+            result = it.message.toString()
+        }
+        return result
+    }
+
+    fun markBookFromWishListAsOwn(firebaseBook: FirebaseBook){
+        val firebaseService = FirebaseServiceImpl()
+        viewModelScope.launch {
+            withContext(Dispatchers.IO){
+                firebaseService.getWishListReference().child(firebaseBook.isbn).addListenerForSingleValueEvent(object: ValueEventListener{
+                    override fun onCancelled(p0: DatabaseError) {
+                        TODO("Not yet implemented")
+                    }
+                    override fun onDataChange(p0: DataSnapshot) {
+                        val book = p0.getValue(FirebaseBook::class.java)!!
+                        book.isbn = p0.key!!
+                        Log.d("OnDataChange", book.toString())
+                        firebaseService.saveMyBook(book)
+                        removeBookFromWishList(book)
+                    }
+                })
+            }
+        }
+    }
+
     fun removeBook(firebaseBook: FirebaseBook): String{
         firebaseService = FirebaseServiceImpl()
         var message = firebaseService.removeBook(firebaseBook)

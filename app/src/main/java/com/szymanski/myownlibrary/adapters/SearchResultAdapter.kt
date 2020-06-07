@@ -88,13 +88,17 @@ class SearchResultAdapter(private val onItemListener: OnItemListener): RecyclerV
                     .into(resultItemCover)
                 searchTitle.text = book.title
                 searchAuthors.text = getAuthors(book.authors)
-                saveBookButton.setOnClickListener { onItemListener.saveBook(this, adapterPosition) }
+                if(book.isBookSaved){
+                    saveBookButton.setBackgroundResource(R.drawable.ic_gray_add_24)
+                } else {
+                    saveBookButton.setOnClickListener { onItemListener.saveBook(this, adapterPosition) }
+                }
                 this.setOnClickListener(this@ViewHolder)
             }
         }
 
         override fun onClick(v: View?) {
-                        onItemListener.onItemClick(adapterPosition)
+                        onItemListener.onItemClick(v!!, adapterPosition)
         }
         private fun getAuthors(authors: MutableList<String>): String {
             var readyAuthors = ""
@@ -106,7 +110,7 @@ class SearchResultAdapter(private val onItemListener: OnItemListener): RecyclerV
     }
 
     interface OnItemListener{
-        fun onItemClick(position: Int)
+        fun onItemClick(v: View, position: Int)
         fun saveBook(v: View, position: Int)
     }
 }
