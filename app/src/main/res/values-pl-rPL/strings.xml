@@ -72,6 +72,7 @@
         <item >3. Moje książki. Zawiera listę książek posiadanych przez użytkownika.</item>
         <item >4. Wypożyczone/Pożyczone. Zawiera listę książek, które użytkownik komuś pożyczył lub od kogoś wypożyczył</item>
         <item >5. Lista życzeń. Zawiera listę książek, które użytkownik chciałby posiadać</item>
+        <item >6. Dodaj książki manualnie</item>
     </string-array>
     <string-array name="instructions_text">
         <item name="app_bar_instruction">
