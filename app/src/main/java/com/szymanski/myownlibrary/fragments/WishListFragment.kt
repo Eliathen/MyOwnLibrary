@@ -74,7 +74,7 @@ class WishListFragment : Fragment(), WishListAdapter.ClickListener {
         }
         popupMenu.show()
     }
-    fun displaySnackBar(message:String){
+    private fun displaySnackBar(message:String){
         Snackbar.make(this.wishListContainer, message, Snackbar.LENGTH_SHORT).show()
     }
 }

@@ -53,16 +53,27 @@
     <string name="remove_book_text">Czy chcesz usunąć tą książkę?\nTa opcja jest nieodwracalna!</string>
     <string name="remove_button_text">Usuń</string>
     <string name="cancel_button_text">Anuluj</string>
+    <string name="edit_item_text">Edytuj</string>
+    <string name="registration_attempt_failed">Rejestracja zakończona niepowodzeniem</string>
+    <string name="error_text">Błąd</string>
+    <string name="error_message">Wystąpił nieznany błąd</string>
+    <string name="borrow_success_message">Książka oznaczona jako pożyczona</string>
+    <string name="lend_success_message">Książka oznaczona jako wypożyczona</string>
+    <string name="required_field_message">To pole jest wymagane</string>
+    <string name="lent_success_message">Książka oznaczona jako wypożyczona</string>
+    <string name="sort_button_text">Sortuj</string>
+    <string name="choose_sort_option_text">Wybierz opcje sortowania</string>
 
+    <string name="instruction_title">Instrukcja</string>
+    <string name="instruction_subtitle" >Ekran główny posiada 5 głównych elementów:</string>
+    <string-array name="instruction_contents">
+        <item >1. Pasek nawigacji. Zawiera podstawowe elemenety nawigacji</item>
+        <item >2. Pasek zakładek.</item>
+        <item >3. Moje książki. Zawiera listę książek posiadanych przez użytkownika.</item>
+        <item >4. Wypożyczone/Pożyczone. Zawiera listę książek, które użytkownik komuś pożyczył lub od kogoś wypożyczył</item>
+        <item >5. Lista życzeń. Zawiera listę książek, które użytkownik chciałby posiadać</item>
+    </string-array>
     <string-array name="instructions_text">
-        <item name="instruction_title">Instrukcja</item>
-        <item name="main_activity_instruction">
-            Ekran główny posiada 5 głównych elementów: \n
-            1. Pasek nawigacji. Zawiera podstawowe elemenety nawigacji\n
-            2. Pasek zakładek.\n
-            3. Moje książki. Zawiera listę książek posiadanych przez użytkownika.\n
-            4. Wypożyczone/Pożyczone. Zawiera listę książek, które użytkownik komuś pożyczył lub od kogoś wypożyczył\n
-            5. Lista życzeń. Zawiera listę książek, które użytkownik chciałby posiadać</item>
         <item name="app_bar_instruction">
             Pasek Nawigacji:\n
             -Pozwala na wyszukiwanie książek spośród posiadanych.\n
@@ -102,5 +113,11 @@
             Wyświetla ekran dodania książki manualnie. Użytkownik może wtedy sam uzupełnić podstawowe informacje odnośnie książki.\n
             Np. tytuł, autorów czy dodać zdjęcie. Przycisk zapisz dodaje książkę
         </item>
+    </string-array>
+    <string-array name="sort_options">
+        <item>Tytuł A-Z</item>
+        <item>Tytuł Z-A</item>
+        <item>Data najwcześniejsza</item>
+        <item>Data najpóźniejsza</item>
     </string-array>
 </resources>

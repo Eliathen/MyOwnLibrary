@@ -63,19 +63,21 @@
     <string name="sort_button_text">Sort</string>
     <string name="choose_sort_option_text">Choose sort option</string>
 
+    <string name="instruction_title">Instrukcja</string>
+    <string name="instruction_subtitle" >Ekran główny posiada 5 głównych elementów:</string>
+    <string-array name="instruction_contents">
+        <item >1. Pasek nawigacji. Zawiera podstawowe elemenety nawigacji</item>
+        <item >2. Pasek zakładek.</item>
+        <item >3. Moje książki. Zawiera listę książek posiadanych przez użytkownika.</item>
+        <item >4. Wypożyczone/Pożyczone. Zawiera listę książek, które użytkownik komuś pożyczył lub od kogoś wypożyczył</item>
+        <item >5. Lista życzeń. Zawiera listę książek, które użytkownik chciałby posiadać</item>
+        <item >6. Dodaj książki manualnie</item>
+    </string-array>
     <string-array name="instructions_text">
-        <item name="instruction_title">Instrukcja</item>
-        <item name="main_activity_instruction">
-            Ekran główny posiada 5 głównych elementów: \n
-            1. Pasek nawigacji. Zawiera podstawowe elemenety nawigacji\n
-            2. Pasek zakładek.\n
-            3. Moje książki. Zawiera listę książek posiadanych przez użytkownika.\n
-            4. Wypożyczone/Pożyczone. Zawiera listę książek, które użytkownik komuś pożyczył lub od kogoś wypożyczył\n
-            5. Lista życzeń. Zawiera listę książek, które użytkownik chciałby posiadać</item>
         <item name="app_bar_instruction">
             Pasek Nawigacji:\n
             -Pozwala na wyszukiwanie książek spośród posiadanych.\n
-            -Sortowanie listy książek po tytule\n
+            -Sortowanie listy książek po tytule oraz dacie\n
             -Podmenu które pozwala na wyświetlenie pomocy.
         </item>
         <item name="my_book_instruction">
@@ -112,6 +114,7 @@
             Np. tytuł, autorów czy dodać zdjęcie. Przycisk zapisz dodaje książkę
         </item>
     </string-array>
+
     <string-array name="sort_options">
         <item>Title ascending</item>
         <item>Title descending</item>
